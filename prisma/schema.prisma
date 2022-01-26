@@ -17,6 +17,13 @@ model student_detail {
   attendance      attendance[]
 }
 
+model teacher_detail {
+  id              Int      @id @default(autoincrement())
+  name            String
+  teacher_id      String   @unique
+  password        String
+}
+
 model attendance{
   id              Int             @id @default(autoincrement())
   date            DateTime        @db.Date

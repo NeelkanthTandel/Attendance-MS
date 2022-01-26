@@ -1,7 +1,10 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const bcrypt = require("bcrypt");
+const { text } = require("body-parser");
+const saltRounds = 10;
 
-async function createUser(name, rfid_id) {
+async function createStudent(name, rfid_id) {
   const user = await prisma.student_detail.create({
     data: {
       name,
@@ -11,6 +14,48 @@ async function createUser(name, rfid_id) {
   // const user = await prisma.student_detail.delete({ where: { id: 2 } });
   console.log("Done creating new student", user);
   // console.log("Done");
+}
+
+function hashPassword(password) {
+  bcrypt.hash(password, saltRounds, function (err, hash) {
+    // Store hash in your password DB.
+    console.log("Hash Psas: ", hash);
+
+    return hash;
+
+    // bcrypt.compare("someOtherPlaintextPassword", hash, function (err, result) {
+    //   // result == false
+    //   console.log("Result: ", result);
+    // });
+  });
+}
+
+async function createTeacher(teacherId, name, password) {
+  bcrypt.hash(password, saltRounds, async function (err, hash) {
+    // Store hash in your password DB.
+    console.log("Hash Psas: ", hash);
+
+    if (hash) {
+      const user = await prisma.teacher_detail.create({
+        data: {
+          name,
+          teacher_id: teacherId.toUpperCase(),
+          password: hash,
+        },
+      });
+      return user;
+    }
+    return err;
+  });
+}
+
+async function getTeacher(userId) {
+  const user = await prisma.teacher_detail.findUnique({
+    where: {
+      teacher_id: userId.toUpperCase(),
+    },
+  });
+  return user;
 }
 
 async function markAttendance(userid) {
@@ -25,21 +70,9 @@ async function markAttendance(userid) {
   return attendance;
 }
 
-async function getUser(rfid_id) {
+async function getStudent(rfid_id) {
   const user = await prisma.student_detail.findUnique({ where: { rfid_id } });
   return user;
-}
-
-function formatDate(date) {
-  var d = new Date(date),
-    month = "" + (d.getMonth() + 1),
-    day = "" + d.getDate(),
-    year = d.getFullYear();
-
-  if (month.length < 2) month = "0" + month;
-  if (day.length < 2) day = "0" + day;
-
-  return [year, month, day].join("-");
 }
 
 async function isTodayAttendanceMarked(userid) {
@@ -79,7 +112,7 @@ async function toggleTodayAttendance(attId, status) {
 }
 
 async function toggleOrMarkAttendance(rfid_id) {
-  const user = await getUser(rfid_id);
+  const user = await getStudent(rfid_id);
   if (user) {
     var todayAtt = await isTodayAttendanceMarked(user.id);
 
@@ -100,9 +133,13 @@ async function toggleOrMarkAttendance(rfid_id) {
 
 // toggleOrMarkAttendance(";d46279c0?e");
 
-// createUser("Bhavdeep Dhaduk", ";70a8d840?e");
+// createStudent("Bhavdeep Dhaduk", ";70a8d840?e");
+
+// createTeacher("20ce002", "Hetvi Soni", "Hetvi002");
+
+// getTeacher("20ce002", "Hetvi002");
 
 module.exports = {
-  createUser,
+  getTeacher,
   toggleOrMarkAttendance,
 };
