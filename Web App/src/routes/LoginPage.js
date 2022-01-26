@@ -1,12 +1,12 @@
 import React from "react";
-import "./App.css";
-import logo from "./images/icon.png";
+import "../css/LoginPage.css";
+import logo from "../images/icon.png";
+import { useNavigate } from "react-router-dom";
 
-function App() {
+const LoginPage = () => {
+  const navigate = useNavigate();
   const handleLogin = async (event) => {
     event.preventDefault();
-    console.log(event.target.userId.value);
-    console.log(event.target.password.value);
     const response = await fetch("http://localhost:5000/auth/login", {
       method: "POST",
       headers: {
@@ -18,7 +18,11 @@ function App() {
       }),
     });
     const data = await response.json();
-    console.log("User: ", data.user.name);
+    console.log("User: ", data);
+    if (!data.isError && data.isCredMatch) {
+      console.log("Navigate");
+      navigate("/home");
+    }
   };
 
   return (
@@ -46,6 +50,6 @@ function App() {
       </form>
     </div>
   );
-}
+};
 
-export default App;
+export default LoginPage;
