@@ -1,19 +1,98 @@
 import React from "react";
-import { StyleSheet, View, ScrollView, Text } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
-import { Table, Row, Rows, TableWrapper } from "react-native-table-component";
+import CustomText from "../Constants/CustomText";
 import color from "../Constants/Color";
 
-const table = [
-  (tableHead = ["Id", "Student", "Attendance"]),
-  (tableData = [
-    ["1", "Hetvi", "P"],
-    ["2", "Neelkanth", "A"],
-  ]),
-];
+const TableRow = (props) => {
+  return (
+    <View style={{ flexDirection: "row", width: "100%", marginBottom: 15 }}>
+      <CustomText style={{ width: "12%" }}>{props.id}</CustomText>
+      <CustomText style={{ width: "78%" }} numberOfLines={1}>
+        {props.name}
+      </CustomText>
+      <CustomText style={{ width: "10%" }}>
+        {props.isPresent ? "P" : "A"}
+      </CustomText>
+    </View>
+  );
+};
 
 const ModifyAttendScreen = (props) => {
+  const dummyData = [
+    {
+      id: 1,
+      name: "Neelkanth Tandel",
+      isPresent: true,
+    },
+    {
+      id: 2,
+      name: "Hetvi Soni",
+      isPresent: false,
+    },
+    {
+      id: 3,
+      name: "Neelkanth Tandel",
+      isPresent: true,
+    },
+    {
+      id: 4,
+      name: "Hetvi Soni",
+      isPresent: false,
+    },
+    {
+      id: 5,
+      name: "Neelkanth Tandel",
+      isPresent: true,
+    },
+    {
+      id: 6,
+      name: "Hetvi Soni",
+      isPresent: false,
+    },
+    {
+      id: 7,
+      name: "Neelkanth Tandel",
+      isPresent: true,
+    },
+    {
+      id: 8,
+      name: "Hetvi Soni",
+      isPresent: false,
+    },
+    {
+      id: 9,
+      name: "Neelkanth Tandel",
+      isPresent: true,
+    },
+    {
+      id: 10,
+      name: "Hetvi Soni",
+      isPresent: false,
+    },
+    {
+      id: 11,
+      name: "Neelkanth Tandel",
+      isPresent: true,
+    },
+    {
+      id: 12,
+      name: "Hetvi Soni",
+      isPresent: false,
+    },
+    {
+      id: 13,
+      name: "Neelkanth Tandel",
+      isPresent: true,
+    },
+    {
+      id: 14,
+      name: "Hetvi Soni",
+      isPresent: false,
+    },
+  ];
+
   return (
     <View style={styles.container}>
       <View>
@@ -51,65 +130,85 @@ const ModifyAttendScreen = (props) => {
           <Ionicons name="md-calendar" size={24} color="white" />
         </View>
       </View>
-      <View>
-        <View style={{ flexDirection: "row", paddingTop: 30, paddingLeft: 30 }}>
-          <Ionicons name={"ios-checkbox"} size={26} color={color.primary} />
-          <Text
+      <ScrollView
+        style={{
+          padding: 30,
+        }}
+      >
+        <View>
+          <View
             style={{
-              color: color.primary,
-              fontSize: 16,
-              paddingLeft: 10,
-              paddingTop: 5,
+              flexDirection: "row",
             }}
           >
-            Present
-          </Text>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            paddingTop: 10,
-            paddingLeft: 30,
-            paddingBottom: 30,
-          }}
-        >
-          <Ionicons name={"ios-checkbox"} size={26} color={color.primary} />
-          <Text
-            style={{
-              color: color.primary,
-              fontSize: 16,
-              paddingLeft: 10,
-              paddingTop: 5,
-            }}
-          >
-            Absent
-          </Text>
-        </View>
-      </View>
-      <View style={{ paddingLeft: 30, paddingRight: 30 }}>
-        <ScrollView>
-          <Table
-            borderStyle={{
-              borderWidth: 1,
-              width: "90%",
-            }}
-            borderWidth="90%"
-            borderColor={color.primary}
-            style={{ borderRadius: 20 }}
-          >
-            <Row
-              data={tableHead}
-              style={styles.HeadStyle}
-              textStyle={{
-                fontWeight: "bold",
+            <Ionicons name={"ios-checkbox"} size={26} color={color.primary} />
+            <CustomText
+              style={{
                 color: color.primary,
                 fontSize: 16,
+                paddingLeft: 10,
+                paddingTop: 5,
               }}
-            />
-            <Rows data={tableData} textStyle={styles.TableText} />
-          </Table>
-        </ScrollView>
-      </View>
+            >
+              Present
+            </CustomText>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              paddingTop: 10,
+              paddingBottom: 30,
+            }}
+          >
+            <Ionicons name={"ios-checkbox"} size={26} color={color.primary} />
+            <CustomText
+              style={{
+                color: color.primary,
+                fontSize: 16,
+                paddingLeft: 10,
+                paddingTop: 5,
+              }}
+            >
+              Absent
+            </CustomText>
+          </View>
+        </View>
+        <View style={{ borderWidth: 1, borderRadius: 10, marginBottom: 50 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              width: "100%",
+              marginBottom: 15,
+              borderBottomWidth: 1,
+              padding: 10,
+            }}
+          >
+            <CustomText
+              style={{ width: "12%", minWidth: 18, fontWeight: "700" }}
+            >
+              Id
+            </CustomText>
+            <CustomText style={{ width: "78%", fontWeight: "700" }}>
+              Name
+            </CustomText>
+            <CustomText
+              style={{ width: "10%", minWidth: 28, fontWeight: "700" }}
+            >
+              P/A
+            </CustomText>
+          </View>
+          <View style={{ paddingHorizontal: 10 }}>
+            {dummyData.map((item, index) => (
+              <TableRow
+                id={item.id}
+                name={item.name}
+                isPresent={item.isPresent}
+                key={index}
+              />
+            ))}
+          </View>
+        </View>
+      </ScrollView>
     </View>
   );
 };

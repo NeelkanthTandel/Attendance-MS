@@ -75,6 +75,7 @@ const HomeScreen = (props) => {
         >
           <TouchableOpacity
             style={{ ...styles.tabs, marginRight: 15 }}
+            activeOpacity
             onPress={() => {
               props.navigation.navigate("ModifyAttend");
             }}
