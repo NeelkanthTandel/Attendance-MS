@@ -1,5 +1,7 @@
 const color = {
-  primary: "red",
+  primary: "#1c2a40",
+  secondary: "white",
+  background: "#f6f6f6",
 };
 
 export default color;
