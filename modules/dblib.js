@@ -57,10 +57,10 @@ async function getTeacher(userId) {
   return user;
 }
 
-async function markAttendance(userid) {
+async function markAttendance(stu_id) {
   const attendance = await prisma.attendance.create({
     data: {
-      student_id: userid,
+      student_id: stu_id,
       status: true,
       date: new Date(),
     },
@@ -74,7 +74,7 @@ async function getStudent(rfid_id) {
   return user;
 }
 
-async function isTodayAttendanceMarked(userid) {
+async function isTodayAttendanceMarked(stu_id) {
   var prevDaySchoolClosingTime = new Date();
   prevDaySchoolClosingTime.setDate(prevDaySchoolClosingTime.getDate() - 1); //set to yesterday
   // prevDaySchoolClosingTime.setHours(15, 00, 00); //set time to 3 pm
@@ -82,7 +82,7 @@ async function isTodayAttendanceMarked(userid) {
 
   const attendance = await prisma.attendance.findMany({
     where: {
-      student_id: userid,
+      student_id: stu_id,
       date: {
         equals: new Date(),
       },
@@ -113,10 +113,10 @@ async function toggleTodayAttendance(attId, status) {
 async function toggleOrMarkAttendance(rfid_id) {
   const user = await getStudent(rfid_id);
   if (user) {
-    var todayAtt = await isTodayAttendanceMarked(user.id);
+    var todayAtt = await isTodayAttendanceMarked(user.stu_id);
 
     if (!todayAtt.isMarked) {
-      return await markAttendance(user.id);
+      return await markAttendance(user.stu_id);
     } else {
       return await toggleTodayAttendance(todayAtt.id, todayAtt.status);
     }
@@ -125,6 +125,30 @@ async function toggleOrMarkAttendance(rfid_id) {
     return null;
   }
 }
+
+const updateAttendanceTable = async () => {
+  const stu_id = await prisma.student_detail.findMany({
+    select: { stu_id: true },
+  });
+
+  const att_det = [];
+
+  for (var i = 0; i < stu_id.length; i++) {
+    att_det.push({
+      student_id: stu_id[i].stu_id,
+      status: false,
+      date: new Date(),
+    });
+  }
+
+  const count = await prisma.attendance.createMany({
+    data: att_det,
+  });
+
+  console.log(count);
+};
+
+// updateAttendanceTable();
 
 // markAttendance(";d46279c0?e");
 

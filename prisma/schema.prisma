@@ -38,8 +38,8 @@ model attendance{
   id              Int             @id @default(autoincrement())
   date            DateTime        @db.Date
   status          Boolean         @default(false)
-  student_id      Int
-  student_detail  student_detail  @relation(fields: [student_id], references: [id])
+  student_id      String
+  student_detail  student_detail  @relation(fields: [student_id], references: [stu_id])
 }
 
 model class_detail{
