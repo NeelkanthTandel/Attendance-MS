@@ -11,17 +11,27 @@ datasource db {
 }
 
 model student_detail {
-  id              Int      @id @default(autoincrement())
-  name            String   
-  rfid_id         String   @unique
+  id              Int       @id @default(autoincrement())
+  stu_id          String    @unique
+  name            String
+  rfid_id         String    @unique
+  parents_number  String
+  class_id        String
+  class_detail    class_detail     @relation(fields: [class_id], references: [class_id])
   attendance      attendance[]
 }
 
 model teacher_detail {
-  id              Int      @id @default(autoincrement())
+  id              Int       @id @default(autoincrement())
   name            String
-  teacher_id      String   @unique
+  teacher_id      String    @unique
   password        String
+  mail_id         String    @unique
+  phone_number    String    @unique
+  address         String
+  class_id        String
+  class_detail    class_detail     @relation(fields: [class_id], references: [class_id])
+  isAdmin         Boolean   @default(false)
 }
 
 model attendance{
@@ -30,4 +40,13 @@ model attendance{
   status          Boolean         @default(false)
   student_id      Int
   student_detail  student_detail  @relation(fields: [student_id], references: [id])
+}
+
+model class_detail{
+  id              Int             @id @default(autoincrement())
+  class_id        String          @unique
+  standard        Int
+  div             String
+  student_detail  student_detail[]
+  teacher_detail  teacher_detail[]
 }

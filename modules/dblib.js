@@ -1,7 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
-const { text } = require("body-parser");
 const saltRounds = 10;
 
 async function createStudent(name, rfid_id) {
