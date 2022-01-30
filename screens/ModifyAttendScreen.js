@@ -8,75 +8,39 @@ import color from "../Constants/Color";
 import { API_URL } from "../keys";
 import Global from "../components/utils/global";
 
-const TableRow = (props) => {
-  const [isPresentACheck, setIsPresentACheck] = useState(props.isPresent);
-  if (props.isPresentCheck) {
-    //check if isPresent return body else null
-    if (props.isPresentCheck && props.isAbsentCheck) {
-      return (
-        <View style={{ flexDirection: "row", width: "100%", marginBottom: 15 }}>
-          <CustomText style={{ width: "12%" }}>{props.id}</CustomText>
-          <CustomText style={{ width: "78%" }} numberOfLines={1}>
-            {props.name}
-          </CustomText>
-          <CustomText style={{ width: "10%" }}>
-            <CheckBox
-              isChecked={isPresentACheck}
-              onClick={() => {
-                setIsPresentACheck(!isPresentACheck);
-              }}
-              tintColors={{
-                true: color.primary,
-              }}
-            />
-          </CustomText>
-        </View>
-      );
-    } else if (props.isPresent) {
-      return (
-        <View style={{ flexDirection: "row", width: "100%", marginBottom: 15 }}>
-          <CustomText style={{ width: "12%" }}>{props.id}</CustomText>
-          <CustomText style={{ width: "78%" }} numberOfLines={1}>
-            {props.name}
-          </CustomText>
-          <CustomText style={{ width: "10%" }}>
-            <CheckBox
-              isChecked={isPresentACheck}
-              onClick={() => {
-                setIsPresentACheck(!isPresentACheck);
-              }}
-              tintColors={{
-                true: color.primary,
-              }}
-            />
-          </CustomText>
-        </View>
-      );
+const ModifyAttendScreen = (props) => {
+  const [attendanceDetail, setAttendanceDetail] = useState();
+  const [updatedAttDet, setUpdatedAttDet] = useState();
+
+  const fetchStuAttendance = async () => {
+    const response = await fetch(`${API_URL}/getAttendance`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: "Bearer " + Global.token,
+      },
+      body: JSON.stringify({
+        date: new Date(),
+      }),
+    });
+    const data = await response.json();
+    console.log("att det: ", data);
+    if (!data.isError) {
+      setAttendanceDetail(data.stu_att);
+      setUpdatedAttDet(data.stu_att);
     }
-  } else if (props.isAbsentCheck) {
-    //check if !isPresent return body else null
-    if (!props.isPresent) {
-      return (
-        <View style={{ flexDirection: "row", width: "100%", marginBottom: 15 }}>
-          <CustomText style={{ width: "12%" }}>{props.id}</CustomText>
-          <CustomText style={{ width: "78%" }} numberOfLines={1}>
-            {props.name}
-          </CustomText>
-          <CustomText style={{ width: "10%" }}>
-            <CheckBox
-              isChecked={isPresentACheck}
-              onClick={() => {
-                setIsPresentACheck(!isPresentACheck);
-              }}
-              tintColors={{
-                true: color.primary,
-              }}
-            />
-          </CustomText>
-        </View>
-      );
-    }
-  } else if (!props.isPresentCheck && !props.isAbsentCheck) {
+  };
+
+  useEffect(() => {
+    fetchStuAttendance();
+  }, []);
+
+  const [isPresentCheck, setIsPresentCheck] = useState(false);
+  const [isAbsentCheck, setIsAbsentCheck] = useState(false);
+
+  const TableRow = (props) => {
+    const [isPresentACheck, setIsPresentACheck] = useState(props.isPresent);
+
     return (
       <View style={{ flexDirection: "row", width: "100%", marginBottom: 15 }}>
         <CustomText style={{ width: "12%" }}>{props.id}</CustomText>
@@ -96,104 +60,26 @@ const TableRow = (props) => {
         </CustomText>
       </View>
     );
-  }
-  return null;
-};
-
-const ModifyAttendScreen = (props) => {
-  const fetchStuAttendance = async () => {
-    const response = await fetch(`${API_URL}/getAttendance`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: "Bearer " + Global.token,
-      },
-      body: JSON.stringify({
-        date: new Date(),
-      }),
-    });
-    const data = await response.json();
-    console.log("att det: ", data);
   };
 
   useEffect(() => {
-    fetchStuAttendance();
-  }, []);
-
-  const [isPresentCheck, setIsPresentCheck] = useState(false);
-  const [isAbsentCheck, setIsAbsentCheck] = useState(false);
-  const dummyData = [
-    {
-      id: 1,
-      name: "Neelkanth Tandel",
-      isPresent: true,
-    },
-    {
-      id: 2,
-      name: "Hetvi Soni",
-      isPresent: false,
-    },
-    {
-      id: 3,
-      name: "Neelkanth Tandel",
-      isPresent: true,
-    },
-    {
-      id: 4,
-      name: "Hetvi Soni",
-      isPresent: false,
-    },
-    {
-      id: 5,
-      name: "Neelkanth Tandel",
-      isPresent: true,
-    },
-    {
-      id: 6,
-      name: "Hetvi Soni",
-      isPresent: false,
-    },
-    {
-      id: 7,
-      name: "Neelkanth Tandel",
-      isPresent: true,
-    },
-    {
-      id: 8,
-      name: "Hetvi Soni",
-      isPresent: false,
-    },
-    {
-      id: 9,
-      name: "Neelkanth Tandel",
-      isPresent: true,
-    },
-    {
-      id: 10,
-      name: "Hetvi Soni",
-      isPresent: false,
-    },
-    {
-      id: 11,
-      name: "Neelkanth Tandel",
-      isPresent: true,
-    },
-    {
-      id: 12,
-      name: "Hetvi Soni",
-      isPresent: false,
-    },
-    {
-      id: 13,
-      name: "Neelkanth Tandel",
-      isPresent: true,
-    },
-    {
-      id: 14,
-      name: "Hetvi Soni",
-      isPresent: false,
-    },
-  ];
+    if (
+      (!isPresentCheck && !isAbsentCheck) ||
+      (isPresentCheck && isAbsentCheck)
+    ) {
+      setUpdatedAttDet(attendanceDetail);
+    } else if (isPresentCheck) {
+      //keep stu with status true
+      setUpdatedAttDet(
+        attendanceDetail.filter((data) => data.attendance[0].status)
+      );
+    } else if (isAbsentCheck) {
+      //keep stu with status false
+      setUpdatedAttDet(
+        attendanceDetail.filter((data) => !data.attendance[0].status)
+      );
+    }
+  }, [attendanceDetail, isPresentCheck, isAbsentCheck]);
 
   return (
     <View style={styles.container}>
@@ -319,16 +205,22 @@ const ModifyAttendScreen = (props) => {
             </CustomText>
           </View>
           <View style={{ paddingHorizontal: 10 }}>
-            {dummyData.map((item, index) => (
-              <TableRow
-                id={item.id}
-                name={item.name}
-                isPresent={item.isPresent}
-                key={index}
-                isPresentCheck={isPresentCheck}
-                isAbsentCheck={isAbsentCheck}
-              />
-            ))}
+            {updatedAttDet ? (
+              updatedAttDet.map((item, index) => (
+                <TableRow
+                  id={item.id}
+                  name={item.name}
+                  isPresent={item.attendance[0].status}
+                  key={index}
+                  isPresentCheck={isPresentCheck}
+                  isAbsentCheck={isAbsentCheck}
+                />
+              ))
+            ) : (
+              <CustomText style={{ textAlign: "center", marginBottom: 15 }}>
+                Loading Data...
+              </CustomText>
+            )}
           </View>
         </View>
       </ScrollView>
