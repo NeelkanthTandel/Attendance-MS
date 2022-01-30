@@ -1,24 +1,103 @@
-import React, { useEffect } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
 import { SearchBar } from "react-native-elements";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import CheckBox from "react-native-check-box";
 import CustomText from "../Constants/CustomText";
 import color from "../Constants/Color";
 import { API_URL } from "../keys";
 import Global from "../components/utils/global";
 
 const TableRow = (props) => {
-  return (
-    <View style={{ flexDirection: "row", width: "100%", marginBottom: 15 }}>
-      <CustomText style={{ width: "12%" }}>{props.id}</CustomText>
-      <CustomText style={{ width: "78%" }} numberOfLines={1}>
-        {props.name}
-      </CustomText>
-      <CustomText style={{ width: "10%" }}>
-        {props.isPresent ? "P" : "A"}
-      </CustomText>
-    </View>
-  );
+  const [isPresentACheck, setIsPresentACheck] = useState(props.isPresent);
+  if (props.isPresentCheck) {
+    //check if isPresent return body else null
+    if (props.isPresentCheck && props.isAbsentCheck) {
+      return (
+        <View style={{ flexDirection: "row", width: "100%", marginBottom: 15 }}>
+          <CustomText style={{ width: "12%" }}>{props.id}</CustomText>
+          <CustomText style={{ width: "78%" }} numberOfLines={1}>
+            {props.name}
+          </CustomText>
+          <CustomText style={{ width: "10%" }}>
+            <CheckBox
+              isChecked={isPresentACheck}
+              onClick={() => {
+                setIsPresentACheck(!isPresentACheck);
+              }}
+              tintColors={{
+                true: color.primary,
+              }}
+            />
+          </CustomText>
+        </View>
+      );
+    } else if (props.isPresent) {
+      return (
+        <View style={{ flexDirection: "row", width: "100%", marginBottom: 15 }}>
+          <CustomText style={{ width: "12%" }}>{props.id}</CustomText>
+          <CustomText style={{ width: "78%" }} numberOfLines={1}>
+            {props.name}
+          </CustomText>
+          <CustomText style={{ width: "10%" }}>
+            <CheckBox
+              isChecked={isPresentACheck}
+              onClick={() => {
+                setIsPresentACheck(!isPresentACheck);
+              }}
+              tintColors={{
+                true: color.primary,
+              }}
+            />
+          </CustomText>
+        </View>
+      );
+    }
+  } else if (props.isAbsentCheck) {
+    //check if !isPresent return body else null
+    if (!props.isPresent) {
+      return (
+        <View style={{ flexDirection: "row", width: "100%", marginBottom: 15 }}>
+          <CustomText style={{ width: "12%" }}>{props.id}</CustomText>
+          <CustomText style={{ width: "78%" }} numberOfLines={1}>
+            {props.name}
+          </CustomText>
+          <CustomText style={{ width: "10%" }}>
+            <CheckBox
+              isChecked={isPresentACheck}
+              onClick={() => {
+                setIsPresentACheck(!isPresentACheck);
+              }}
+              tintColors={{
+                true: color.primary,
+              }}
+            />
+          </CustomText>
+        </View>
+      );
+    }
+  } else if (!props.isPresentCheck && !props.isAbsentCheck) {
+    return (
+      <View style={{ flexDirection: "row", width: "100%", marginBottom: 15 }}>
+        <CustomText style={{ width: "12%" }}>{props.id}</CustomText>
+        <CustomText style={{ width: "78%" }} numberOfLines={1}>
+          {props.name}
+        </CustomText>
+        <CustomText style={{ width: "10%" }}>
+          <CheckBox
+            isChecked={isPresentACheck}
+            onClick={() => {
+              setIsPresentACheck(!isPresentACheck);
+            }}
+            tintColors={{
+              true: color.primary,
+            }}
+          />
+        </CustomText>
+      </View>
+    );
+  }
+  return null;
 };
 
 const ModifyAttendScreen = (props) => {
@@ -41,6 +120,8 @@ const ModifyAttendScreen = (props) => {
     fetchStuAttendance();
   }, []);
 
+  const [isPresentCheck, setIsPresentCheck] = useState(false);
+  const [isAbsentCheck, setIsAbsentCheck] = useState(false);
   const dummyData = [
     {
       id: 1,
@@ -148,7 +229,9 @@ const ModifyAttendScreen = (props) => {
               width: "90%",
             }}
           />
-          <Ionicons name="md-calendar" size={24} color="white" />
+          <TouchableOpacity>
+            <FontAwesome5 name="calendar-alt" size={23} color="white" />
+          </TouchableOpacity>
         </View>
       </View>
       <ScrollView
@@ -162,16 +245,24 @@ const ModifyAttendScreen = (props) => {
               flexDirection: "row",
             }}
           >
-            <Ionicons name={"ios-checkbox"} size={26} color={color.primary} />
+            <CheckBox
+              isChecked={isPresentCheck}
+              onClick={() => {
+                setIsPresentCheck(!isPresentCheck);
+              }}
+              tintColors={{
+                true: color.primary,
+              }}
+            />
             <CustomText
               style={{
                 color: color.primary,
                 fontSize: 16,
                 paddingLeft: 10,
-                paddingTop: 5,
+                paddingTop: 1,
               }}
             >
-              Present
+              Show Present
             </CustomText>
           </View>
           <View
@@ -181,16 +272,25 @@ const ModifyAttendScreen = (props) => {
               paddingBottom: 30,
             }}
           >
-            <Ionicons name={"ios-checkbox"} size={26} color={color.primary} />
+            <CheckBox
+              // disabled={true }
+              isChecked={isAbsentCheck}
+              onClick={(v) => {
+                setIsAbsentCheck(!isAbsentCheck);
+              }}
+              tintColors={{
+                true: color.primary,
+              }}
+            />
             <CustomText
               style={{
                 color: color.primary,
                 fontSize: 16,
                 paddingLeft: 10,
-                paddingTop: 5,
+                paddingTop: 1,
               }}
             >
-              Absent
+              Show Absent
             </CustomText>
           </View>
         </View>
@@ -225,6 +325,8 @@ const ModifyAttendScreen = (props) => {
                 name={item.name}
                 isPresent={item.isPresent}
                 key={index}
+                isPresentCheck={isPresentCheck}
+                isAbsentCheck={isAbsentCheck}
               />
             ))}
           </View>

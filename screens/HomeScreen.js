@@ -25,6 +25,20 @@ const HomeScreen = (props) => {
           />
         </TouchableOpacity>
       ),
+      headerLeft: () => (
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate("Profile");
+          }}
+        >
+          <AntDesign
+            name="user"
+            size={20}
+            color={color.secondary}
+            style={{ marginLeft: 5 }}
+          />
+        </TouchableOpacity>
+      ),
     });
   }, []);
 
@@ -79,7 +93,7 @@ const HomeScreen = (props) => {
         >
           <TouchableOpacity
             style={{ ...styles.tabs, marginRight: 15 }}
-            activeOpacity
+            activeOpacity={0.6}
             onPress={() => {
               props.navigation.navigate("ModifyAttend");
             }}
@@ -105,6 +119,7 @@ const HomeScreen = (props) => {
             onPress={() => {
               props.navigation.navigate("ViewAttend");
             }}
+            activeOpacity={0.6}
           >
             <Feather
               name="user-check"

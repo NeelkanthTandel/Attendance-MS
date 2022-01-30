@@ -2,12 +2,13 @@ import * as React from "react";
 import { TouchableOpacity } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { SimpleLineIcons, AntDesign } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import color from "../Constants/Color";
 import LoginScreen from "../screens/LoginScreen";
 import HomeScreen from "../screens/HomeScreen";
 import ModifyAttendScreen from "../screens/ModifyAttendScreen";
 import ViewAttendScreen from "../screens/ViewAttendScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -33,17 +34,6 @@ export default function MainNaviator(props) {
               fontSize: 18,
             },
             headerTitleAlign: "center",
-
-            headerLeft: () => (
-              <TouchableOpacity onPress={() => {}}>
-                <AntDesign
-                  name="user"
-                  size={20}
-                  color={color.secondary}
-                  style={{ marginLeft: 5 }}
-                />
-              </TouchableOpacity>
-            ),
           }}
         />
         <Stack.Screen
@@ -68,6 +58,26 @@ export default function MainNaviator(props) {
           options={{
             title: "View Attendance",
             headerStyle: { backgroundColor: color.primary },
+            headerShadowVisible: false,
+            headerTintColor: color.secondary,
+            headerTitleStyle: {
+              fontFamily: "Roboto",
+              fontWeight: "bold",
+              fontSize: 18,
+            },
+            headerTitleAlign: "center",
+          }}
+        />
+        <Stack.Screen
+          component={ProfileScreen}
+          name="Profile"
+          options={{
+            title: "Profile Screen",
+            headerStyle: {
+              backgroundColor: color.primary,
+              borderBottomRightRadius: 20,
+              borderBottomRightRadius: 20,
+            },
             headerShadowVisible: false,
             headerTintColor: color.secondary,
             headerTitleStyle: {
