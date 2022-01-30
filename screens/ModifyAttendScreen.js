@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
 import CustomText from "../Constants/CustomText";
 import color from "../Constants/Color";
+import { API_URL } from "../keys";
+import Global from "../components/utils/global";
 
 const TableRow = (props) => {
   return (
@@ -20,6 +22,25 @@ const TableRow = (props) => {
 };
 
 const ModifyAttendScreen = (props) => {
+  const fetchStuAttendance = async () => {
+    const response = await fetch(`${API_URL}/getAttendance`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: "Bearer " + Global.token,
+      },
+      body: JSON.stringify({
+        date: new Date(),
+      }),
+    });
+    const data = await response.json();
+    console.log("att det: ", data);
+  };
+
+  useEffect(() => {
+    fetchStuAttendance();
+  }, []);
+
   const dummyData = [
     {
       id: 1,

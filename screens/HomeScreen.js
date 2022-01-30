@@ -5,6 +5,8 @@ import color from "../Constants/Color";
 import { SimpleLineIcons, AntDesign } from "@expo/vector-icons";
 
 import CustomText from "../Constants/CustomText";
+import Global from "../components/utils/global";
+import { API_URL } from "../keys";
 
 const HomeScreen = (props) => {
   useEffect(() => {
@@ -39,7 +41,9 @@ const HomeScreen = (props) => {
           paddingHorizontal: 30,
         }}
       >
-        <CustomText style={styles.customText}>Welcome UserName! </CustomText>
+        <CustomText style={styles.customText}>
+          Welcome {Global.user.name}!
+        </CustomText>
         <CustomText
           style={{
             color: "#b5b5b5",

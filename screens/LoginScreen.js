@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import Global from "../components/utils/global";
 import color from "../Constants/Color";
 import CustomText from "../Constants/CustomText";
 import { API_URL } from "../keys";
@@ -26,6 +27,8 @@ const LoginScreen = (props) => {
       const data = await response.json();
       console.log("Data: ", data);
       if (!data.isError && data.isCredMatch) {
+        Global.user = data.user;
+        Global.token = data.token;
         return props.navigation.navigate("Home");
       }
       if (data.isError) {
