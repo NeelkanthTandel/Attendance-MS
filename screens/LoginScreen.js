@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -8,8 +8,42 @@ import {
 } from "react-native";
 import color from "../Constants/Color";
 import CustomText from "../Constants/CustomText";
+import { API_URL } from "../keys";
 
 const LoginScreen = (props) => {
+  const signInHandler = async () => {
+    try {
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          teacherId: username,
+          password: password,
+        }),
+      });
+      const data = await response.json();
+      console.log("Data: ", data);
+      if (!data.isError && data.isCredMatch) {
+        return props.navigation.navigate("Home");
+      }
+      if (data.isError) {
+        //alert
+        console.log("Login error message: ", data.message);
+      }
+    } catch (err) {
+      console.log("Login Error: ", err);
+      //server down
+    }
+  };
+
+  useEffect(() => {
+    // isServerUp();
+  }, []);
+
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
   return (
     <View style={styles.container}>
       <View style={{ paddingHorizontal: 88 }}>
@@ -36,6 +70,10 @@ const LoginScreen = (props) => {
             placeholder="User Id"
             placeholderTextColor={"#656565"}
             // placeholderStyle={{ marginTop: 9 }}
+            onChangeText={(value) => {
+              setUsername(value);
+            }}
+            value={username}
           />
         </View>
         <View style={{ paddingTop: 20 }}>
@@ -50,6 +88,10 @@ const LoginScreen = (props) => {
             <TextInput
               placeholder="Password"
               placeholderTextColor={"#656565"}
+              onChangeText={(value) => {
+                setPassword(value);
+              }}
+              value={password}
             />
           </View>
         </View>
@@ -65,7 +107,8 @@ const LoginScreen = (props) => {
         >
           <TouchableOpacity
             onPress={() => {
-              props.navigation.navigate("Home");
+              signInHandler();
+              // props.navigation.navigate("Home");
             }}
           >
             <Text
