@@ -126,6 +126,41 @@ async function toggleOrMarkAttendance(rfid_id) {
   }
 }
 
+const getAttendance = async (teacher_id, date) => {
+  const teachDet = await prisma.teacher_detail.findUnique({
+    select: {
+      class_id: true,
+    },
+    where: {
+      teacher_id,
+    },
+  });
+  const stuDet = await prisma.student_detail.findMany({
+    where: {
+      class_id: teachDet.class_id,
+    },
+
+    select: {
+      id: true,
+      class_id: true,
+      name: true,
+      stu_id: true,
+      attendance: {
+        where: {
+          date,
+        },
+        select: {
+          status: true,
+        },
+      },
+    },
+  });
+  // console.log(JSON.stringify(stuDet));
+  return stuDet;
+};
+
+// getAttendance("SNT002", new Date());
+
 const updateAttendanceTable = async () => {
   const stu_id = await prisma.student_detail.findMany({
     select: { stu_id: true },
@@ -150,19 +185,8 @@ const updateAttendanceTable = async () => {
 
 // updateAttendanceTable();
 
-// markAttendance(";d46279c0?e");
-
-// isTodayAttendanceMarked(3).then((res) => console.log(res));
-
-// toggleOrMarkAttendance(";d46279c0?e");
-
-// createStudent("Bhavdeep Dhaduk", ";70a8d840?e");
-
-// createTeacher("20ce002", "Hetvi Soni", "Hetvi002");
-
-// getTeacher("20ce002", "Hetvi002");
-
 module.exports = {
   getTeacher,
   toggleOrMarkAttendance,
+  getAttendance,
 };
