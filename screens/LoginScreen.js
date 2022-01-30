@@ -12,6 +12,7 @@ import Global from "../components/utils/global";
 import color from "../Constants/Color";
 import CustomText from "../Constants/CustomText";
 import { API_URL } from "../keys";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = (props) => {
   const signInHandler = async () => {
@@ -37,6 +38,7 @@ const LoginScreen = (props) => {
       if (!data.isError && data.isCredMatch) {
         Global.user = data.user;
         Global.token = data.token;
+        AsyncStorage.setItem("token", data.token);
         return props.navigation.navigate("Home");
       }
       if (data.isError) {

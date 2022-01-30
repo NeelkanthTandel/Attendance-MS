@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { TouchableOpacity } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -9,10 +9,20 @@ import HomeScreen from "../screens/HomeScreen";
 import ModifyAttendScreen from "../screens/ModifyAttendScreen";
 import ViewAttendScreen from "../screens/ViewAttendScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Stack = createNativeStackNavigator();
 
 export default function MainNaviator(props) {
+  const isLoggedIn = async () => {
+    const token = await AsyncStorage.getItem("token");
+    console.log(token);
+  };
+
+  useEffect(() => {
+    isLoggedIn();
+  });
+
   return (
     <NavigationContainer>
       <Stack.Navigator>

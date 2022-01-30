@@ -208,7 +208,7 @@ const ModifyAttendScreen = (props) => {
             {updatedAttDet ? (
               updatedAttDet.map((item, index) => (
                 <TableRow
-                  id={item.id}
+                  id={item.stu_id.charAt(3) + item.stu_id.charAt(4)}
                   name={item.name}
                   isPresent={item.attendance[0].status}
                   key={index}
