@@ -150,9 +150,9 @@ const LoginScreen = (props) => {
           >
             <TouchableOpacity
               onPress={() => {
-                return props.navigation.navigate("Home");
+                // return props.navigation.navigate("Home");
 
-                // signInHandler();
+                signInHandler();
                 // props.navigation.navigate("Home");
               }}
             >

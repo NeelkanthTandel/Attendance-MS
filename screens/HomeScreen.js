@@ -1,5 +1,11 @@
-import React, { useEffect } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import { Feather } from "@expo/vector-icons";
 import color from "../Constants/Color";
 import { SimpleLineIcons, AntDesign } from "@expo/vector-icons";
@@ -9,6 +15,7 @@ import Global from "../components/utils/global";
 import { API_URL } from "../keys";
 
 const HomeScreen = (props) => {
+  const [h, setH] = useState();
   useEffect(() => {
     props.navigation.setOptions({
       headerRight: () => (
@@ -46,12 +53,10 @@ const HomeScreen = (props) => {
     <View style={styles.container}>
       <View
         style={{
-          // height: 258,
-          paddingBottom: 60,
+          // paddingBottom: 60,
           width: "100%",
           backgroundColor: color.primary,
-          borderBottomRightRadius: 30,
-          borderBottomLeftRadius: 30,
+
           paddingHorizontal: 30,
         }}
       >
@@ -81,63 +86,74 @@ const HomeScreen = (props) => {
         >
           Absent :{" "}
         </CustomText>
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          paddingHorizontal: 30,
+          // position: "absolute",
+          // marginHorizontal: 30,
+          // bottom: 0,
+          // left: 30,
+        }}
+      >
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
+            width: Dimensions.get("screen").width,
             position: "absolute",
-            // marginHorizontal: 30,
-            bottom: -60,
-            left: 30,
+            backgroundColor: color.primary,
+            height: "40%",
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
+          }}
+        />
+        <TouchableOpacity
+          style={{ ...styles.tabs, marginRight: 15 }}
+          activeOpacity={0.9}
+          onPress={() => {
+            props.navigation.navigate("ModifyAttend");
           }}
         >
-          <TouchableOpacity
-            style={{ ...styles.tabs, marginRight: 15 }}
-            activeOpacity={0.6}
-            onPress={() => {
-              props.navigation.navigate("ModifyAttend");
+          <Feather
+            name="edit"
+            size={28}
+            color={color.primary}
+            style={{ marginLeft: 4 }}
+          />
+          <Text
+            style={{
+              color: "#1c2a40",
+              fontSize: 13,
+              marginTop: 15,
             }}
           >
-            <Feather
-              name="edit"
-              size={28}
-              color={color.primary}
-              style={{ marginLeft: 4 }}
-            />
-            <Text
-              style={{
-                color: "#1c2a40",
-                fontSize: 13,
-                marginTop: 15,
-              }}
-            >
-              Modify Attendance
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.tabs}
-            onPress={() => {
-              props.navigation.navigate("ViewAttend");
+            Modify Attendance
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.tabs}
+          onPress={() => {
+            props.navigation.navigate("ViewAttend");
+          }}
+          activeOpacity={0.9}
+        >
+          <Feather
+            name="user-check"
+            size={29}
+            color={color.primary}
+            style={{ marginLeft: 5 }}
+          />
+          <Text
+            style={{
+              color: "#1c2a40",
+              fontSize: 13,
+              marginTop: 15,
             }}
-            activeOpacity={0.6}
           >
-            <Feather
-              name="user-check"
-              size={29}
-              color={color.primary}
-              style={{ marginLeft: 5 }}
-            />
-            <Text
-              style={{
-                color: "#1c2a40",
-                fontSize: 13,
-                marginTop: 15,
-              }}
-            >
-              View Attendance
-            </Text>
-          </TouchableOpacity>
-        </View>
+            View Attendance
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -159,7 +175,7 @@ const styles = StyleSheet.create({
   tabs: {
     elevation: 5,
     backgroundColor: "white",
-    shadowRadius: 10,
+    // shadowRadius: 10,
     // width: "40%",
     flex: 1,
     // height: 100,

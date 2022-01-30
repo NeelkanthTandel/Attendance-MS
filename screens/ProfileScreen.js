@@ -14,6 +14,7 @@ import {
 } from "@expo/vector-icons";
 import CustomText from "../Constants/CustomText";
 import color from "../Constants/Color";
+import Global from "../components/utils/global";
 
 const screenWidth = Dimensions.get("screen").width;
 
@@ -75,7 +76,7 @@ const ProfileScreen = (props) => {
         <CustomText
           style={{ fontWeight: "bold", fontSize: 60, color: color.primary }}
         >
-          N
+          {Global.user.name.charAt(0)}
         </CustomText>
       </View>
       <View style={{ marginTop: 30, width: "100%", paddingHorizontal: 30 }}>
@@ -92,7 +93,7 @@ const ProfileScreen = (props) => {
               Name
             </CustomText>
             <CustomText style={{ fontSize: 16, color: color.primary }}>
-              Neelkanth Tandel
+              {Global.user.name}
             </CustomText>
           </View>
           {/* <MaterialIcons name="edit" size={23} color={color.primary} /> */}
@@ -115,7 +116,7 @@ const ProfileScreen = (props) => {
               Address
             </CustomText>
             <CustomText style={{ fontSize: 16, color: color.primary }}>
-              34, Aksar residency, Udhna, Surat District, Gujarat-335009
+              {Global.user.address}
             </CustomText>
           </View>
           {/* <MaterialIcons name="edit" size={23} color={color.primary} /> */}
@@ -138,35 +139,34 @@ const ProfileScreen = (props) => {
               Phone
             </CustomText>
             <CustomText style={{ fontSize: 16, color: color.primary }}>
-              +91 12345 67890
+              {Global.user.phone_number}
             </CustomText>
           </View>
           {/* <MaterialIcons name="edit" size={23} color={color.primary} /> */}
         </View>
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          marginVertical: 15,
-          marginHorizontal: 30,
-        }}
-      >
-        <MaterialCommunityIcons
-          name="email"
-          size={18}
-          color="#646464"
-          // style={{marginLeft: -2}}
-        />
-        <View style={{ flex: 1, marginLeft: 33 }}>
-          <CustomText style={{ fontSize: 14, color: "#646464" }}>
-            Email
-          </CustomText>
-          <CustomText style={{ fontSize: 16, color: color.primary }}>
-            abc@gmail.com
-          </CustomText>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginVertical: 15,
+          }}
+        >
+          <MaterialCommunityIcons
+            name="email"
+            size={18}
+            color="#646464"
+            // style={{marginLeft: -2}}
+          />
+          <View style={{ flex: 1, marginLeft: 30 }}>
+            <CustomText style={{ fontSize: 14, color: "#646464" }}>
+              Email
+            </CustomText>
+            <CustomText style={{ fontSize: 16, color: color.primary }}>
+              {Global.user.mail_id}
+            </CustomText>
+          </View>
+          {/* <MaterialIcons name="edit" size={23} color={color.primary} /> */}
         </View>
-        {/* <MaterialIcons name="edit" size={23} color={color.primary} /> */}
       </View>
     </View>
   );
