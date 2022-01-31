@@ -8,11 +8,13 @@ import {
   KeyboardAvoidingView,
   Image,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StackActions } from "@react-navigation/native";
+
 import Global from "../components/utils/global";
 import color from "../Constants/Color";
 import CustomText from "../Constants/CustomText";
 import { API_URL } from "../keys";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = (props) => {
   const signInHandler = async () => {
@@ -34,12 +36,12 @@ const LoginScreen = (props) => {
         }),
       });
       const data = await response.json();
-      // console.log("Data: ", data);
+      console.log("Data: ", data);
       if (!data.isError && data.isCredMatch) {
-        Global.user = data.user;
-        Global.token = data.token;
+        Global.setUserInfo(data.user, data.token);
+        console.log("Global data: ", Global.user);
         AsyncStorage.setItem("token", data.token);
-        return props.navigation.navigate("Home");
+        return props.navigation.dispatch(StackActions.replace("Home"));
       }
       if (data.isError) {
         //alert

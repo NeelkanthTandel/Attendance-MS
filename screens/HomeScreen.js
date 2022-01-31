@@ -9,6 +9,7 @@ import {
 import { Feather } from "@expo/vector-icons";
 import color from "../Constants/Color";
 import { SimpleLineIcons, AntDesign } from "@expo/vector-icons";
+import { StackActions } from "@react-navigation/native";
 
 import CustomText from "../Constants/CustomText";
 import Global from "../components/utils/global";
@@ -16,16 +17,14 @@ import { API_URL } from "../keys";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomeScreen = (props) => {
-  const [h, setH] = useState();
   useEffect(() => {
     props.navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
           onPress={() => {
             AsyncStorage.removeItem("token");
-            Global.user = {};
-            Global.token = null;
-            props.navigation.navigate("Login");
+            Global.logOutHandler();
+            return props.navigation.dispatch(StackActions.replace("Login"));
           }}
         >
           <SimpleLineIcons

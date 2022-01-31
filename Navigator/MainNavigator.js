@@ -25,7 +25,6 @@ export default function MainNaviator(props) {
     console.log(token);
     if (token) {
       setIsLoading(true);
-      Global.token = token;
       try {
         const response = await fetch(`${API_URL}/auth/me`, {
           method: "GET",
@@ -38,7 +37,7 @@ export default function MainNaviator(props) {
         console.log(data);
         if (data.user) {
           setIsLoggedIn(true);
-          Global.user = data.user;
+          Global.setUserInfo(data.user, token);
         }
       } catch (err) {
         console.log("Get user error: ", err);
