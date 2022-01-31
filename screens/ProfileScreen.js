@@ -132,9 +132,9 @@ const ProfileScreen = (props) => {
             name="phone"
             size={18}
             color="#646464"
-            // style={{marginLeft: -2}}
+            style={{ marginLeft: 2 }}
           />
-          <View style={{ flex: 1, marginLeft: 33 }}>
+          <View style={{ flex: 1, marginLeft: 32 }}>
             <CustomText style={{ fontSize: 14, color: "#646464" }}>
               Phone
             </CustomText>
@@ -153,11 +153,11 @@ const ProfileScreen = (props) => {
         >
           <MaterialCommunityIcons
             name="email"
-            size={18}
+            size={20}
             color="#646464"
-            // style={{marginLeft: -2}}
+            style={{ marginLeft: 1 }}
           />
-          <View style={{ flex: 1, marginLeft: 30 }}>
+          <View style={{ flex: 1, marginLeft: 29 }}>
             <CustomText style={{ fontSize: 14, color: "#646464" }}>
               Email
             </CustomText>

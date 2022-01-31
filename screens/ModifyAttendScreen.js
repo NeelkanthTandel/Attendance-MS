@@ -9,10 +9,12 @@ import { API_URL } from "../keys";
 import Global from "../components/utils/global";
 
 const ModifyAttendScreen = (props) => {
-  const [attendanceDetail, setAttendanceDetail] = useState();
-  const [updatedAttDet, setUpdatedAttDet] = useState();
-
+  const [attendanceDetail, setAttendanceDetail] = useState(Global.stuTodayAtt);
+  const [filteredAttDet, setFilteredAttDet] = useState();
   const fetchStuAttendance = async () => {
+    // let prevDate = new Date();
+    // prevDate.setDate(prevDate.getDate() - 1);
+    let today = new Date();
     const response = await fetch(`${API_URL}/getAttendance`, {
       method: "POST",
       headers: {
@@ -20,19 +22,21 @@ const ModifyAttendScreen = (props) => {
         authorization: "Bearer " + Global.token,
       },
       body: JSON.stringify({
-        date: new Date(),
+        date: today,
       }),
     });
     const data = await response.json();
     console.log("att det: ", data);
     if (!data.isError) {
       setAttendanceDetail(data.stu_att);
-      setUpdatedAttDet(data.stu_att);
+      setFilteredAttDet(data.stu_att);
     }
   };
 
   useEffect(() => {
-    fetchStuAttendance();
+    if (!attendanceDetail) {
+      fetchStuAttendance();
+    }
   }, []);
 
   const [isPresentCheck, setIsPresentCheck] = useState(false);
@@ -44,7 +48,13 @@ const ModifyAttendScreen = (props) => {
     return (
       <View style={{ flexDirection: "row", width: "100%", marginBottom: 15 }}>
         <CustomText style={{ width: "12%" }}>{props.id}</CustomText>
-        <CustomText style={{ width: "78%" }} numberOfLines={1}>
+        <CustomText
+          style={{ width: "78%" }}
+          numberOfLines={1}
+          onPress={() => {
+            setIsPresentACheck(!isPresentACheck);
+          }}
+        >
           {props.name}
         </CustomText>
         <CustomText style={{ width: "10%" }}>
@@ -67,15 +77,15 @@ const ModifyAttendScreen = (props) => {
       (!isPresentCheck && !isAbsentCheck) ||
       (isPresentCheck && isAbsentCheck)
     ) {
-      setUpdatedAttDet(attendanceDetail);
+      setFilteredAttDet(attendanceDetail);
     } else if (isPresentCheck) {
       //keep stu with status true
-      setUpdatedAttDet(
+      setFilteredAttDet(
         attendanceDetail.filter((data) => data.attendance[0].status)
       );
     } else if (isAbsentCheck) {
       //keep stu with status false
-      setUpdatedAttDet(
+      setFilteredAttDet(
         attendanceDetail.filter((data) => !data.attendance[0].status)
       );
     }
@@ -147,6 +157,9 @@ const ModifyAttendScreen = (props) => {
                 paddingLeft: 10,
                 paddingTop: 1,
               }}
+              onPress={() => {
+                setIsPresentCheck(!isPresentCheck);
+              }}
             >
               Show Present
             </CustomText>
@@ -161,7 +174,7 @@ const ModifyAttendScreen = (props) => {
             <CheckBox
               // disabled={true }
               isChecked={isAbsentCheck}
-              onClick={(v) => {
+              onClick={() => {
                 setIsAbsentCheck(!isAbsentCheck);
               }}
               tintColors={{
@@ -174,6 +187,9 @@ const ModifyAttendScreen = (props) => {
                 fontSize: 16,
                 paddingLeft: 10,
                 paddingTop: 1,
+              }}
+              onPress={() => {
+                setIsAbsentCheck(!isAbsentCheck);
               }}
             >
               Show Absent
@@ -205,12 +221,14 @@ const ModifyAttendScreen = (props) => {
             </CustomText>
           </View>
           <View style={{ paddingHorizontal: 10 }}>
-            {updatedAttDet ? (
-              updatedAttDet.map((item, index) => (
+            {filteredAttDet ? (
+              filteredAttDet.map((item, index) => (
                 <TableRow
                   id={item.stu_id.charAt(3) + item.stu_id.charAt(4)}
                   name={item.name}
-                  isPresent={item.attendance[0].status}
+                  isPresent={
+                    item.attendance[0] ? item.attendance[0].status : false
+                  }
                   key={index}
                   isPresentCheck={isPresentCheck}
                   isAbsentCheck={isAbsentCheck}

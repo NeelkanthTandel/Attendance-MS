@@ -13,6 +13,7 @@ import { SimpleLineIcons, AntDesign } from "@expo/vector-icons";
 import CustomText from "../Constants/CustomText";
 import Global from "../components/utils/global";
 import { API_URL } from "../keys";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomeScreen = (props) => {
   const [h, setH] = useState();
@@ -21,6 +22,9 @@ const HomeScreen = (props) => {
       headerRight: () => (
         <TouchableOpacity
           onPress={() => {
+            AsyncStorage.removeItem("token");
+            Global.user = {};
+            Global.token = null;
             props.navigation.navigate("Login");
           }}
         >
@@ -47,7 +51,46 @@ const HomeScreen = (props) => {
         </TouchableOpacity>
       ),
     });
+    if (!Global.stuTodayAtt[0]) {
+      console.log("Fetchinf");
+      fetchStuAttendance();
+    }
   }, []);
+
+  const [noOfPresent, setNoOfPresent] = useState(0);
+  const [noOfAbsent, setNoOfAbsent] = useState(0);
+
+  const fetchStuAttendance = async () => {
+    // let prevDate = new Date();
+    // prevDate.setDate(prevDate.getDate() - 1);
+    let today = new Date();
+    const response = await fetch(`${API_URL}/getAttendance`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: "Bearer " + Global.token,
+      },
+      body: JSON.stringify({
+        date: today,
+      }),
+    });
+    const data = await response.json();
+    console.log("att det:  Fetch compelete");
+    if (!data.isError) {
+      Global.stuTodayAtt = data.stu_att;
+      let present = 0;
+      let absent = 0;
+      Global.stuTodayAtt.forEach((val) =>
+        val.attendance[0]
+          ? val.attendance[0].status
+            ? (present += 1)
+            : (absent += 1)
+          : null
+      );
+      setNoOfPresent(present);
+      setNoOfAbsent(absent);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -75,16 +118,26 @@ const HomeScreen = (props) => {
         </CustomText>
         <CustomText style={{ color: "white", marginTop: 5 }}>
           Present :{" "}
+          <CustomText
+            style={{ color: "#00B812", fontWeight: "bold", fontSize: 18 }}
+          >
+            {noOfPresent}
+          </CustomText>
         </CustomText>
         <CustomText
           style={{
             color: "white",
-            marginTop: 5,
+            // marginTop: 5,
             // marginLeft: 30,
             marginBottom: 30,
           }}
         >
           Absent :{" "}
+          <CustomText
+            style={{ color: "#FF5F5F", fontWeight: "bold", fontSize: 18 }}
+          >
+            {noOfAbsent}
+          </CustomText>
         </CustomText>
       </View>
       <View
