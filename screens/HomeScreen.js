@@ -9,7 +9,7 @@ import {
 import { Feather } from "@expo/vector-icons";
 import color from "../Constants/Color";
 import { SimpleLineIcons, AntDesign } from "@expo/vector-icons";
-import { StackActions } from "@react-navigation/native";
+import { StackActions, useIsFocused } from "@react-navigation/native";
 
 import CustomText from "../Constants/CustomText";
 import Global from "../components/utils/global";
@@ -50,11 +50,16 @@ const HomeScreen = (props) => {
         </TouchableOpacity>
       ),
     });
-    if (!Global.stuTodayAtt[0]) {
-      console.log("Fetchinf");
+  }, []);
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      console.log("fetching");
       fetchStuAttendance();
     }
-  }, []);
+  }, [isFocused]);
 
   const [noOfPresent, setNoOfPresent] = useState(0);
   const [noOfAbsent, setNoOfAbsent] = useState(0);

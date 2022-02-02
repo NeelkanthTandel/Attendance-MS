@@ -18,6 +18,8 @@ const ModifyAttendScreen = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [attendanceDetail, setAttendanceDetail] = useState(Global.stuTodayAtt);
   const [filteredAttDet, setFilteredAttDet] = useState();
+  // const [updatedAttIds, setUpdatedAttIds] = useState([]);
+  let updatedAttIds = [];
   const fetchStuAttendance = async () => {
     // let prevDate = new Date();
     // prevDate.setDate(prevDate.getDate() - 1);
@@ -33,15 +35,17 @@ const ModifyAttendScreen = (props) => {
       }),
     });
     const data = await response.json();
-    console.log("att det: ", data);
+    // console.log("att det: ", data);
     if (!data.isError) {
       setAttendanceDetail(data.stu_att);
       setFilteredAttDet(data.stu_att);
+      Global.stuTodayAtt = data.stu_att;
     }
   };
 
   useEffect(() => {
     if (!attendanceDetail) {
+      console.log("fetch");
       fetchStuAttendance();
     }
   }, []);
@@ -51,6 +55,39 @@ const ModifyAttendScreen = (props) => {
 
   const TableRow = (props) => {
     const [isPresentACheck, setIsPresentACheck] = useState(props.isPresent);
+    // const [isModified, setIsModified] = useState(false);
+
+    const toggleAttendance = () => {
+      let currentStatus = isPresentACheck;
+      console.log(currentStatus);
+      setIsPresentACheck((data) => !data);
+      const index = updatedAttIds.findIndex((d) => d.attId == props.attId);
+      console.log(index);
+
+      if (index >= 0) {
+        console.log("Removing");
+        updatedAttIds.splice(index, 1);
+      } else {
+        console.log("Inserting");
+        updatedAttIds.push({
+          stuId: props.stuId,
+          attId: props.attId,
+          status: !currentStatus,
+        });
+      }
+
+      console.log(updatedAttIds);
+    };
+
+    // useEffect(() => {
+    //   // const updData = attendanceDetail.find(
+    //   //   (data) => data.stu_id == props.stuId
+    //   // );
+    //   // setUpdatedAttDet((data) => );
+    //   if (isModified) {
+
+    //   }
+    // }, [isPresentACheck]);
 
     return (
       <View style={{ flexDirection: "row", width: "100%", marginBottom: 15 }}>
@@ -58,18 +95,14 @@ const ModifyAttendScreen = (props) => {
         <CustomText
           style={{ width: "78%" }}
           numberOfLines={1}
-          onPress={() => {
-            setIsPresentACheck(!isPresentACheck);
-          }}
+          onPress={toggleAttendance}
         >
           {props.name}
         </CustomText>
         <CustomText style={{ width: "10%" }}>
           <CheckBox
             isChecked={isPresentACheck}
-            onClick={() => {
-              setIsPresentACheck(!isPresentACheck);
-            }}
+            onClick={toggleAttendance}
             tintColors={{
               true: color.primary,
             }}
@@ -96,7 +129,30 @@ const ModifyAttendScreen = (props) => {
         attendanceDetail.filter((data) => !data.attendance[0].status)
       );
     }
+
+    // console.log(attendanceDetail);
+    // console.log(filteredAttDet);
   }, [attendanceDetail, isPresentCheck, isAbsentCheck]);
+
+  const onSaveHandler = async () => {
+    if (!updatedAttIds[0]) {
+      return console.log("Nothing to update");
+    }
+
+    const response = await fetch(`${API_URL}/modifyAttendance`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: "Bearer " + Global.token,
+      },
+      body: JSON.stringify({
+        updAttDet: updatedAttIds,
+      }),
+    });
+    const data = await response.json();
+    console.log(data);
+    // fetchStuAttendance();
+  };
 
   return (
     <View style={styles.container}>
@@ -264,9 +320,11 @@ const ModifyAttendScreen = (props) => {
                 <TableRow
                   id={item.stu_id.charAt(3) + item.stu_id.charAt(4)}
                   name={item.name}
+                  attId={item.attendance[0] ? item.attendance[0].id : null}
                   isPresent={
                     item.attendance[0] ? item.attendance[0].status : false
                   }
+                  stuId={item.stu_id}
                   key={index}
                   isPresentCheck={isPresentCheck}
                   isAbsentCheck={isAbsentCheck}
@@ -288,6 +346,7 @@ const ModifyAttendScreen = (props) => {
             backgroundColor: color.primary,
             marginBottom: 50,
           }}
+          onPress={onSaveHandler}
         >
           <CustomText
             style={{
