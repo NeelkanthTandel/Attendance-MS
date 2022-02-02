@@ -20,10 +20,11 @@ const ModifyAttendScreen = (props) => {
   const [filteredAttDet, setFilteredAttDet] = useState();
   // const [updatedAttIds, setUpdatedAttIds] = useState([]);
   let updatedAttIds = [];
+  const [date, setDate] = useState(new Date());
   const fetchStuAttendance = async () => {
     // let prevDate = new Date();
     // prevDate.setDate(prevDate.getDate() - 1);
-    let today = new Date();
+    // let today = new Date();
     const response = await fetch(`${API_URL}/getAttendance`, {
       method: "POST",
       headers: {
@@ -31,7 +32,7 @@ const ModifyAttendScreen = (props) => {
         authorization: "Bearer " + Global.token,
       },
       body: JSON.stringify({
-        date: today,
+        date: date,
       }),
     });
     const data = await response.json();
@@ -194,7 +195,7 @@ const ModifyAttendScreen = (props) => {
             >
               <FontAwesome5 name="calendar-alt" size={23} color="white" />
             </TouchableOpacity>
-            {/* <Modal
+            <Modal
               animationType={"fade"}
               transparent={true}
               visible={isModalVisible}
@@ -202,25 +203,59 @@ const ModifyAttendScreen = (props) => {
                 setIsModalVisible(!isModalVisible);
               }}
             >
-              <View style={{ backgroundColor: "white" }}>
-                <TouchableOpacity>
-                  <CustomText
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "rgba(0,0,0,0.5)",
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: "white",
+                    borderRadius: 10,
+                    width: "50%",
+                  }}
+                >
+                  <TouchableOpacity
                     style={{
-                      color: color.primary,
-                      fontSize: 14,
                       borderColor: color.primary,
+                      borderBottomWidth: 1,
+                      borderColor: color.primary,
+                      paddingVertical: 10,
+                      paddingHorizontal: 15,
+                    }}
+                    onPress={() => {
+                      setDate(new Date());
+                      setIsModalVisible(false);
                     }}
                   >
-                    Today
-                  </CustomText>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <CustomText style={{ color: color.primary, fontSize: 14 }}>
-                    Yesterday
-                  </CustomText>
-                </TouchableOpacity>
+                    <CustomText
+                      style={{
+                        color: color.primary,
+                        fontSize: 16,
+                      }}
+                    >
+                      Today
+                    </CustomText>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{ paddingVertical: 10, marginLeft: "8%" }}
+                    onPress={() => {
+                      let prevDate = new Date();
+                      prevDate.setDate(prevDate.getDate() - 1);
+                      setDate(prevDate);
+                      setIsModalVisible(false);
+                    }}
+                  >
+                    <CustomText style={{ color: color.primary, fontSize: 16 }}>
+                      Yesterday
+                    </CustomText>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </Modal> */}
+            </Modal>
           </View>
         </View>
       </View>
@@ -261,33 +296,50 @@ const ModifyAttendScreen = (props) => {
           <View
             style={{
               flexDirection: "row",
+              justifyContent: "space-between",
               paddingTop: 10,
               paddingBottom: 30,
             }}
           >
-            <CheckBox
-              // disabled={true }
-              isChecked={isAbsentCheck}
-              onClick={() => {
-                setIsAbsentCheck(!isAbsentCheck);
-              }}
-              tintColors={{
-                true: color.primary,
-              }}
-            />
-            <CustomText
-              style={{
-                color: color.primary,
-                fontSize: 16,
-                paddingLeft: 10,
-                paddingTop: 1,
-              }}
-              onPress={() => {
-                setIsAbsentCheck(!isAbsentCheck);
-              }}
-            >
-              Show Absent
-            </CustomText>
+            <View style={{ flexDirection: "row" }}>
+              <CheckBox
+                // disabled={true }
+                isChecked={isAbsentCheck}
+                onClick={() => {
+                  setIsAbsentCheck(!isAbsentCheck);
+                }}
+                tintColors={{
+                  true: color.primary,
+                }}
+              />
+              <CustomText
+                style={{
+                  color: color.primary,
+                  fontSize: 16,
+                  paddingLeft: 10,
+                  paddingTop: 1,
+                }}
+                onPress={() => {
+                  setIsAbsentCheck(!isAbsentCheck);
+                }}
+              >
+                Show Absent
+              </CustomText>
+            </View>
+            <View>
+              <CustomText
+                style={{
+                  color: color.primary,
+                  fontWeight: "bold",
+                }}
+              >
+                {date.getDate() +
+                  "/" +
+                  (date.getMonth() + 1) +
+                  "/" +
+                  date.getFullYear()}
+              </CustomText>
+            </View>
           </View>
         </View>
         <View style={{ borderWidth: 1, borderRadius: 10, marginBottom: 20 }}>

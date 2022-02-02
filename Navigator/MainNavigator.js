@@ -8,7 +8,6 @@ import color from "../Constants/Color";
 import LoginScreen from "../screens/LoginScreen";
 import HomeScreen from "../screens/HomeScreen";
 import ModifyAttendScreen from "../screens/ModifyAttendScreen";
-import ViewAttendScreen from "../screens/ViewAttendScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import OverallReportScreen from "../screens/OverallReportScreen";
 import Day2DayReportScreen from "../screens/Day2DayReportScreen";
@@ -132,6 +131,18 @@ export default function MainNaviator(props) {
                       fontSize: 18,
                     },
                     headerTitleAlign: "center",
+                    // headerRight: () => (
+                    //   <TouchableOpacity>
+                    //     <CustomText
+                    //       style={{
+                    //         color: color.secondary,
+                    //         fontSize: 14,
+                    //       }}
+                    //     >
+                    //       Save
+                    //     </CustomText>
+                    //   </TouchableOpacity>
+                    // ),
                   }}
                 />
                 <Stack.Screen
