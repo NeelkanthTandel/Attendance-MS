@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Modal,
+} from "react-native";
 import { SearchBar } from "react-native-elements";
 import { FontAwesome5 } from "@expo/vector-icons";
 import CheckBox from "react-native-check-box";
@@ -9,6 +15,7 @@ import { API_URL } from "../keys";
 import Global from "../components/utils/global";
 
 const ModifyAttendScreen = (props) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [attendanceDetail, setAttendanceDetail] = useState(Global.stuTodayAtt);
   const [filteredAttDet, setFilteredAttDet] = useState();
   const fetchStuAttendance = async () => {
@@ -125,9 +132,40 @@ const ModifyAttendScreen = (props) => {
               width: "90%",
             }}
           />
-          <TouchableOpacity>
-            <FontAwesome5 name="calendar-alt" size={23} color="white" />
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity
+              onPress={() => setIsModalVisible(!isModalVisible)}
+            >
+              <FontAwesome5 name="calendar-alt" size={23} color="white" />
+            </TouchableOpacity>
+            {/* <Modal
+              animationType={"fade"}
+              transparent={true}
+              visible={isModalVisible}
+              onRequestClose={() => {
+                setIsModalVisible(!isModalVisible);
+              }}
+            >
+              <View style={{ backgroundColor: "white" }}>
+                <TouchableOpacity>
+                  <CustomText
+                    style={{
+                      color: color.primary,
+                      fontSize: 14,
+                      borderColor: color.primary,
+                    }}
+                  >
+                    Today
+                  </CustomText>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <CustomText style={{ color: color.primary, fontSize: 14 }}>
+                    Yesterday
+                  </CustomText>
+                </TouchableOpacity>
+              </View>
+            </Modal> */}
+          </View>
         </View>
       </View>
       <ScrollView
@@ -196,7 +234,7 @@ const ModifyAttendScreen = (props) => {
             </CustomText>
           </View>
         </View>
-        <View style={{ borderWidth: 1, borderRadius: 10, marginBottom: 50 }}>
+        <View style={{ borderWidth: 1, borderRadius: 10, marginBottom: 20 }}>
           <View
             style={{
               flexDirection: "row",
@@ -241,6 +279,27 @@ const ModifyAttendScreen = (props) => {
             )}
           </View>
         </View>
+        <TouchableOpacity
+          style={{
+            marginHorizontal: "75%",
+            width: "25%",
+            padding: 10,
+            borderRadius: 10,
+            backgroundColor: color.primary,
+            marginBottom: 50,
+          }}
+        >
+          <CustomText
+            style={{
+              color: color.secondary,
+              fontWeight: "bold",
+              fontSize: 14,
+              textAlign: "center",
+            }}
+          >
+            Save
+          </CustomText>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );

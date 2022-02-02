@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { AntDesign } from "@expo/vector-icons";
 import color from "../Constants/Color";
 import LoginScreen from "../screens/LoginScreen";
@@ -9,16 +10,48 @@ import HomeScreen from "../screens/HomeScreen";
 import ModifyAttendScreen from "../screens/ModifyAttendScreen";
 import ViewAttendScreen from "../screens/ViewAttendScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import OverallReportScreen from "../screens/OverallReportScreen";
+import Day2DayReportScreen from "../screens/Day2DayReportScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_URL } from "../keys";
 import Global from "../components/utils/global";
 import CustomText from "../Constants/CustomText";
 
 const Stack = createNativeStackNavigator();
+const Tab = createMaterialTopTabNavigator();
 
 export default function MainNaviator(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const TabNavigator = () => {
+    return (
+      <Tab.Navigator
+        screenOptions={{
+          tabBarActiveTintColor: color.primary,
+          tabBarIndicatorStyle: { backgroundColor: color.primary },
+        }}
+      >
+        <Tab.Screen
+          component={OverallReportScreen}
+          name="Overall"
+          options={
+            {
+              // tabBarStyle: { fontSize: 14, color: "red" },
+            }
+          }
+        />
+        <Tab.Screen
+          component={Day2DayReportScreen}
+          name="Day2Day"
+          options={
+            {
+              // tabBarStyle: { fontSize: 14, color: color.primary },
+            }
+          }
+        />
+      </Tab.Navigator>
+    );
+  };
 
   const getUser = async () => {
     const token = await AsyncStorage.getItem("token");
@@ -102,7 +135,7 @@ export default function MainNaviator(props) {
                   }}
                 />
                 <Stack.Screen
-                  component={ViewAttendScreen}
+                  component={TabNavigator}
                   name="ViewAttend"
                   options={{
                     title: "View Attendance",
@@ -177,7 +210,7 @@ export default function MainNaviator(props) {
                   }}
                 />
                 <Stack.Screen
-                  component={ViewAttendScreen}
+                  component={TabNavigator}
                   name="ViewAttend"
                   options={{
                     title: "View Attendance",
