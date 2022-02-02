@@ -50,3 +50,5 @@ model class_detail{
   student_detail  student_detail[]
   teacher_detail  teacher_detail[]
 }
+
+HS/RG/16/0120/04/22/000010

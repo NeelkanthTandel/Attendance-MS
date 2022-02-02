@@ -101,9 +101,9 @@ async function isTodayAttendanceMarked(stu_id) {
   }
 }
 
-async function toggleTodayAttendance(attId, status) {
+async function modifyExistingAttendance(attId, status) {
   const todayAttendance = await prisma.attendance.update({
-    data: { status: !status },
+    data: { status },
     where: { id: attId },
   });
 
@@ -118,7 +118,7 @@ async function toggleOrMarkAttendance(rfid_id) {
     if (!todayAtt.isMarked) {
       return await markAttendance(user.stu_id);
     } else {
-      return await toggleTodayAttendance(todayAtt.id, todayAtt.status);
+      return await modifyExistingAttendance(todayAtt.id, !todayAtt.status);
     }
   } else {
     console.log("No user: ", user);
@@ -151,6 +151,7 @@ const getAttendance = async (teacher_id, date) => {
         },
         select: {
           status: true,
+          id: true,
         },
       },
     },
@@ -183,10 +184,16 @@ const updateAttendanceTable = async () => {
   console.log(count);
 };
 
-// updateAttendanceTable();
+const totalStudents = async () => {
+  const count = await prisma.student_detail.count();
+  return count;
+};
 
 module.exports = {
   getTeacher,
   toggleOrMarkAttendance,
   getAttendance,
+  updateAttendanceTable,
+  totalStudents,
+  modifyExistingAttendance,
 };

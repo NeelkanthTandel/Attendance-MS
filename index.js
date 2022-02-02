@@ -46,6 +46,9 @@ app.post("/attendance/mark", async (req, res) => {
 });
 
 //auth
+app.get("/auth/me", requireToken, async (req, res) => {
+  res.status(200).send({ user: req.user });
+});
 
 app.post("/auth/login", async (req, res) => {
   const { teacherId, password } = req.body;
@@ -99,6 +102,11 @@ app.post("/getAttendance", requireToken, async (req, res) => {
     const user = req.user;
     const { date } = req.body;
     console.log("/getAttendance");
+    if (!user || !date) {
+      return res
+        .status(422)
+        .send({ isError: true, message: "Details must be provided" });
+    }
     console.log(user.teacher_id, " ", date);
 
     const stuAtt = await dblib.getAttendance(user.teacher_id, date);
@@ -110,6 +118,88 @@ app.post("/getAttendance", requireToken, async (req, res) => {
   }
 });
 
+app.post("/modifyAttendance", requireToken, async (req, res) => {
+  const updAttDet = req.body.updAttDet;
+  if (!updAttDet) {
+    return res
+      .status(422)
+      .send({ isError: true, message: "Details must be provided" });
+  }
+
+  if (!updAttDet[0]) {
+    return res
+      .status(422)
+      .send({ isError: true, message: "Nothing to update" });
+  }
+
+  try {
+    for (var i = 0; i < updAttDet.length; i++) {
+      if (!updAttDet[i].attId) {
+        console.log("Handler null attendance Id");
+        continue;
+      }
+
+      const modifiedAtt = await dblib.modifyExistingAttendance(
+        updAttDet[i].attId,
+        updAttDet[i].status
+      );
+
+      console.log(modifiedAtt);
+    }
+  } catch (err) {
+    console.log("modify attendance error: ", err);
+    res.status(400).send({ isError: true, message: err.message });
+  }
+});
+
+const checkAndUpdateAttendanceDetail = async () => {
+  let remTimeForNextDay = new Date();
+  let nextMidNight = new Date();
+  nextMidNight.setUTCDate(nextMidNight.getUTCDate() + 1);
+  nextMidNight.setUTCHours(0, 0, 0);
+
+  remTimeForNextDay.setUTCHours(
+    nextMidNight.getUTCHours() - remTimeForNextDay.getUTCHours()
+  );
+  remTimeForNextDay.setUTCMinutes(
+    nextMidNight.getUTCMinutes() - remTimeForNextDay.getUTCMinutes()
+  );
+
+  console.log("Attendance Update time: ", nextMidNight);
+
+  let remHours = remTimeForNextDay.getUTCHours();
+  let remMin = remTimeForNextDay.getUTCMinutes();
+
+  // if (remMin >= 30) {
+  //   remHours -= 5;
+  //   remMin -= 30;
+  // } else {
+  //   remHours -= 6;
+  //   remMin += 30;
+  // }
+
+  console.log("remaining time: ", remHours, ":", remMin);
+
+  setTimeout(() => {
+    // setInterval(() => {
+    checkAndUpdateAttendanceDetail();
+    // }, 1000 * 60 * 60 * 24);
+  }, 1000 * 60 * 60 * remHours + 1000 * 60 * remMin);
+
+  const totalAttendance = await prisma.attendance.count({
+    where: {
+      date: new Date(),
+    },
+  });
+
+  console.log("Total attendance:", totalAttendance);
+  console.log("Total students:", await dblib.totalStudents());
+  if (totalAttendance == 0) {
+    dblib.updateAttendanceTable();
+  }
+};
+
 app.listen(parseInt(PORT), () => {
   console.log("Server is listening at port ", PORT);
+  checkAndUpdateAttendanceDetail();
 });
