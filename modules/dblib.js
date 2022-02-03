@@ -160,7 +160,42 @@ const getAttendance = async (teacher_id, date) => {
   return stuDet;
 };
 
-// getAttendance("SNT002", new Date());
+const getAllAttendance = async (class_id, onLyPresent) => {
+  let whereData = {};
+
+  if (onLyPresent) {
+    whereData = {
+      status: true,
+    };
+  }
+
+  const stuDet = await prisma.student_detail.findMany({
+    where: {
+      class_id: class_id,
+    },
+
+    select: {
+      id: true,
+      class_id: true,
+      name: true,
+      stu_id: true,
+
+      attendance: {
+        orderBy: { date: "asc" },
+        select: {
+          id: true,
+          date: true,
+          status: true,
+        },
+        where: whereData,
+      },
+    },
+  });
+  // console.log(JSON.stringify(stuDet));
+  return stuDet;
+};
+
+// getAllAttendance("class1A", true);
 
 const updateAttendanceTable = async () => {
   const stu_id = await prisma.student_detail.findMany({
@@ -189,6 +224,21 @@ const totalStudents = async () => {
   return count;
 };
 
+const totalDistinctDay = async () => {
+  const distinctDay = await prisma.attendance.groupBy({
+    by: ["date"],
+    orderBy: { date: "asc" },
+    _count: {
+      id: true,
+    },
+  });
+
+  // console.log(count.length);
+  return distinctDay;
+};
+
+// totalWorkingDays();
+
 module.exports = {
   getTeacher,
   toggleOrMarkAttendance,
@@ -196,4 +246,6 @@ module.exports = {
   updateAttendanceTable,
   totalStudents,
   modifyExistingAttendance,
+  totalDistinctDay,
+  getAllAttendance,
 };

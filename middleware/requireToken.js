@@ -25,7 +25,7 @@ module.exports = (req, res, next) => {
       },
     });
 
-    console.log(user);
+    // console.log(user);
 
     if (!user) {
       return res.status(401).send({ error: "Account must be deleted" });

@@ -110,7 +110,7 @@ app.post("/getAttendance", requireToken, async (req, res) => {
     console.log(user.teacher_id, " ", date);
 
     const stuAtt = await dblib.getAttendance(user.teacher_id, date);
-    console.log(stuAtt);
+    // console.log(stuAtt);
     return res.status(200).send({ isError: false, stu_att: stuAtt });
   } catch (err) {
     console.log("get attendance error: ", err);
@@ -120,6 +120,7 @@ app.post("/getAttendance", requireToken, async (req, res) => {
 
 app.post("/modifyAttendance", requireToken, async (req, res) => {
   const updAttDet = req.body.updAttDet;
+  console.log("/modifyAttendance");
   if (!updAttDet) {
     return res
       .status(422)
@@ -144,10 +145,55 @@ app.post("/modifyAttendance", requireToken, async (req, res) => {
         updAttDet[i].status
       );
 
-      console.log(modifiedAtt);
+      // console.log(modifiedAtt);
     }
+    return res.status(200).send({ isError: false, isUpdated: true });
   } catch (err) {
     console.log("modify attendance error: ", err);
+    res.status(400).send({ isError: true, message: err.message });
+  }
+});
+
+app.post("/getOverallAttendance", requireToken, async (req, res) => {
+  const classId = req.body.classId;
+  console.log("/getOverallAttendance");
+  if (!classId) {
+    return res
+      .status(422)
+      .send({ isError: true, message: "Details must be provided" });
+  }
+
+  try {
+    const totalStuAtt = await dblib.getAllAttendance(classId, true);
+    return res.status(200).send({
+      isError: false,
+      totalStuAtt,
+      totalWorkDays: (await dblib.totalDistinctDay()).length,
+    });
+  } catch (err) {
+    console.log("get overall attendance error: ", err);
+    res.status(400).send({ isError: true, message: err.message });
+  }
+});
+
+app.post("/getDayAttendance", requireToken, async (req, res) => {
+  const classId = req.body.classId;
+  console.log("/getDayAttendance");
+  if (!classId) {
+    return res
+      .status(422)
+      .send({ isError: true, message: "Details must be provided" });
+  }
+
+  try {
+    const totalStuAtt = await dblib.getAllAttendance(classId, false);
+    return res.status(200).send({
+      isError: false,
+      totalStuAtt,
+      workingDays: await dblib.totalDistinctDay(),
+    });
+  } catch (err) {
+    console.log("get overall attendance error: ", err);
     res.status(400).send({ isError: true, message: err.message });
   }
 });
@@ -165,7 +211,9 @@ const checkAndUpdateAttendanceDetail = async () => {
     nextMidNight.getUTCMinutes() - remTimeForNextDay.getUTCMinutes()
   );
 
-  console.log("Attendance Update time: ", nextMidNight);
+  console.log("Attendance Update time: ", new Date());
+  console.log("Next Midnight: ", nextMidNight);
+  console.log("sys time: ", new Date().toLocaleString());
 
   let remHours = remTimeForNextDay.getUTCHours();
   let remMin = remTimeForNextDay.getUTCMinutes();
