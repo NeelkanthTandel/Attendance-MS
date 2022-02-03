@@ -16,40 +16,29 @@ import Global from "../components/utils/global";
 
 const ModifyAttendScreen = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [attendanceDetail, setAttendanceDetail] = useState(Global.stuTodayAtt);
+  const [attendanceDetail, setAttendanceDetail] = useState();
   const [filteredAttDet, setFilteredAttDet] = useState();
   // const [updatedAttIds, setUpdatedAttIds] = useState([]);
   let updatedAttIds = [];
   const [date, setDate] = useState(new Date());
+
   const fetchStuAttendance = async () => {
-    // let prevDate = new Date();
-    // prevDate.setDate(prevDate.getDate() - 1);
-    // let today = new Date();
-    const response = await fetch(`${API_URL}/getAttendance`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: "Bearer " + Global.token,
-      },
-      body: JSON.stringify({
-        date: date,
-      }),
-    });
-    const data = await response.json();
-    // console.log("att det: ", data);
+    setAttendanceDetail();
+    const data = await Global.httpPOST("/getAttendance", { date });
+    console.log("att det:  Fetch compelete");
     if (!data.isError) {
+      // console.log("att det: ", data);
       setAttendanceDetail(data.stu_att);
       setFilteredAttDet(data.stu_att);
-      Global.stuTodayAtt = data.stu_att;
     }
   };
 
   useEffect(() => {
-    if (!attendanceDetail) {
-      console.log("fetch");
-      fetchStuAttendance();
-    }
-  }, []);
+    // if (!attendanceDetail) {
+    console.log("fetch");
+    fetchStuAttendance();
+    // }
+  }, [date]);
 
   const [isPresentCheck, setIsPresentCheck] = useState(false);
   const [isAbsentCheck, setIsAbsentCheck] = useState(false);
@@ -77,7 +66,7 @@ const ModifyAttendScreen = (props) => {
         });
       }
 
-      console.log(updatedAttIds);
+      // console.log(updatedAttIds);
     };
 
     // useEffect(() => {
@@ -114,21 +103,23 @@ const ModifyAttendScreen = (props) => {
   };
 
   useEffect(() => {
-    if (
-      (!isPresentCheck && !isAbsentCheck) ||
-      (isPresentCheck && isAbsentCheck)
-    ) {
-      setFilteredAttDet(attendanceDetail);
-    } else if (isPresentCheck) {
-      //keep stu with status true
-      setFilteredAttDet(
-        attendanceDetail.filter((data) => data.attendance[0].status)
-      );
-    } else if (isAbsentCheck) {
-      //keep stu with status false
-      setFilteredAttDet(
-        attendanceDetail.filter((data) => !data.attendance[0].status)
-      );
+    if (attendanceDetail && attendanceDetail[0]) {
+      if (
+        (!isPresentCheck && !isAbsentCheck) ||
+        (isPresentCheck && isAbsentCheck)
+      ) {
+        setFilteredAttDet(attendanceDetail);
+      } else if (isPresentCheck) {
+        //keep stu with status true
+        setFilteredAttDet(
+          attendanceDetail.filter((data) => data.attendance[0].status)
+        );
+      } else if (isAbsentCheck) {
+        //keep stu with status false
+        setFilteredAttDet(
+          attendanceDetail.filter((data) => !data.attendance[0].status)
+        );
+      }
     }
 
     // console.log(attendanceDetail);
@@ -152,31 +143,55 @@ const ModifyAttendScreen = (props) => {
     });
     const data = await response.json();
     console.log(data);
-    // fetchStuAttendance();
+    fetchStuAttendance();
+    if (date == new Date()) {
+      Global.fetchStuAttendance(new Date());
+    }
+  };
+
+  const [search, setSearch] = useState("");
+  const handleSearch = (text) => {
+    setIsAbsentCheck(false);
+    setIsPresentCheck(false);
+    const formatedText = text.toLowerCase();
+    if (attendanceDetail[0]) {
+      const filteredData = attendanceDetail.filter((stu) =>
+        stu.name.toLowerCase().includes(formatedText)
+      );
+      setFilteredAttDet(filteredData);
+    }
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} key={Global.token}>
       <View>
         <View
           style={{
             // height: 258,
-            paddingVertical: 25,
+            paddingVertical: 15,
             width: "100%",
             backgroundColor: color.primary,
-            borderBottomRightRadius: 20,
-            borderBottomLeftRadius: 20,
+            // borderBottomRightRadius: 20,
+            // borderBottomLeftRadius: 20,
             paddingHorizontal: 30,
             flexDirection: "row",
+            alignItems: "center",
           }}
         >
           <SearchBar
-            placeholder="Search"
+            placeholder="Search Id or Name"
+            onChangeText={(val) => {
+              console.log(val);
+              setSearch(val);
+              handleSearch(val);
+            }}
+            value={search}
             inputContainerStyle={{
               backgroundColor: "white",
               borderRadius: 8,
-              height: 0,
-              width: "90%",
+              // height: 0,
+              height: 35,
+              // width: "90%",
             }}
             lightTheme
             containerStyle={{
@@ -184,12 +199,13 @@ const ModifyAttendScreen = (props) => {
               borderTopWidth: 0,
               borderBottomWidth: 0,
               borderRadius: 8,
-              marginBottom: 30,
-              height: 0,
-              width: "90%",
+              // marginBottom: 30,
+              // height: 0,
+              // width: "90%",
+              flex: 1,
             }}
           />
-          <View>
+          <View style={{ marginLeft: 15 }}>
             <TouchableOpacity
               onPress={() => setIsModalVisible(!isModalVisible)}
             >
@@ -274,6 +290,7 @@ const ModifyAttendScreen = (props) => {
               isChecked={isPresentCheck}
               onClick={() => {
                 setIsPresentCheck(!isPresentCheck);
+                setSearch("");
               }}
               tintColors={{
                 true: color.primary,
@@ -288,6 +305,7 @@ const ModifyAttendScreen = (props) => {
               }}
               onPress={() => {
                 setIsPresentCheck(!isPresentCheck);
+                setSearch("");
               }}
             >
               Show Present
@@ -307,6 +325,7 @@ const ModifyAttendScreen = (props) => {
                 isChecked={isAbsentCheck}
                 onClick={() => {
                   setIsAbsentCheck(!isAbsentCheck);
+                  setSearch("");
                 }}
                 tintColors={{
                   true: color.primary,
@@ -321,6 +340,7 @@ const ModifyAttendScreen = (props) => {
                 }}
                 onPress={() => {
                   setIsAbsentCheck(!isAbsentCheck);
+                  setSearch("");
                 }}
               >
                 Show Absent

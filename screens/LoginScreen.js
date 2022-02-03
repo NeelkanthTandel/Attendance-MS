@@ -25,21 +25,14 @@ const LoginScreen = (props) => {
       ]);
     }
     try {
-      const response = await fetch(`${API_URL}/auth/login`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          teacherId: username,
-          password: password,
-        }),
+      const data = await Global.httpPOST("/auth/login", {
+        teacherId: username,
+        password: password,
       });
-      const data = await response.json();
       console.log("Data: ", data);
       if (!data.isError && data.isCredMatch) {
         Global.setUserInfo(data.user, data.token);
-        console.log("Global data: ", Global.user);
+        // console.log("Global data: ", Global.user);
         AsyncStorage.setItem("token", data.token);
         return props.navigation.dispatch(StackActions.replace("Home"));
       }

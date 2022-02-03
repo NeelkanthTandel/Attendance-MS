@@ -60,7 +60,7 @@ const ProfileScreen = (props) => {
   // };
 
   return (
-    <View style={styles.screen}>
+    <View key={Global.token} style={styles.screen}>
       <View
         style={{
           width: 0.4 * screenWidth,

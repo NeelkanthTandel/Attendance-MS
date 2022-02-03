@@ -50,38 +50,37 @@ const HomeScreen = (props) => {
         </TouchableOpacity>
       ),
     });
+    fetchStuAttendance();
   }, []);
 
   const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isFocused) {
-      console.log("fetching");
-      fetchStuAttendance();
+      console.log("updating");
+      // fetchStuAttendance();
+      if (Global.stuTodayAtt[0]) {
+        let present = 0;
+        let absent = 0;
+        Global.stuTodayAtt.forEach((val) =>
+          val.attendance[0]
+            ? val.attendance[0].status
+              ? (present += 1)
+              : (absent += 1)
+            : null
+        );
+        setNoOfPresent(present);
+        setNoOfAbsent(absent);
+      }
     }
-  }, [isFocused]);
+  }, [isFocused, Global.stuTodayAtt]);
 
   const [noOfPresent, setNoOfPresent] = useState(0);
   const [noOfAbsent, setNoOfAbsent] = useState(0);
 
   const fetchStuAttendance = async () => {
-    // let prevDate = new Date();
-    // prevDate.setDate(prevDate.getDate() - 1);
-    let today = new Date();
-    const response = await fetch(`${API_URL}/getAttendance`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: "Bearer " + Global.token,
-      },
-      body: JSON.stringify({
-        date: today,
-      }),
-    });
-    const data = await response.json();
-    console.log("att det:  Fetch compelete");
-    if (!data.isError) {
-      Global.stuTodayAtt = data.stu_att;
+    const stu_att = await Global.fetchStuAttendance(new Date());
+    if (stu_att[0]) {
       let present = 0;
       let absent = 0;
       Global.stuTodayAtt.forEach((val) =>
