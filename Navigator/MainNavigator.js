@@ -28,6 +28,7 @@ export default function MainNaviator(props) {
         screenOptions={{
           tabBarActiveTintColor: color.primary,
           tabBarIndicatorStyle: { backgroundColor: color.primary },
+          swipeEnabled: false,
         }}
       >
         <Tab.Screen

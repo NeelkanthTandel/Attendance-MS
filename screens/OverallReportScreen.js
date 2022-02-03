@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
+
 import color from "../Constants/Color";
 import CustomText from "../Constants/CustomText";
 import Global from "../components/utils/global";
@@ -7,14 +9,15 @@ import Global from "../components/utils/global";
 const OverallReportScreen = () => {
   const [overallAtt, setOverallAtt] = useState();
   const [totalWorkD, setTotalWorkD] = useState();
+  const isFocused = useIsFocused();
 
   const fetchAllAttendance = async () => {
     try {
       const data = await Global.httpPOST("/getOverallAttendance", {
         classId: Global.user.class_id,
       });
-      console.log(data);
       if (!data.isError) {
+        console.log("fetch overall att complete");
         setOverallAtt(data.totalStuAtt);
         setTotalWorkD(data.totalWorkDays);
       } else {
@@ -27,8 +30,10 @@ const OverallReportScreen = () => {
   };
 
   useEffect(() => {
-    fetchAllAttendance();
-  }, []);
+    if (!overallAtt) {
+      fetchAllAttendance();
+    }
+  }, [isFocused]);
 
   return (
     <View style={styles.container}>
@@ -96,7 +101,7 @@ const OverallReportScreen = () => {
                     <CustomText style={{ width: "12%", minWidth: 18 }}>
                       {item.stu_id.charAt(3) + item.stu_id.charAt(4)}
                     </CustomText>
-                    <CustomText style={{ width: "58%" }}>
+                    <CustomText style={{ width: "58%" }} numberOfLines={1}>
                       {item.name}
                     </CustomText>
                     <CustomText style={{ width: "18%", minWidth: 28 }}>

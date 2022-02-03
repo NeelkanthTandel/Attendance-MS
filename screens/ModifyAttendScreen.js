@@ -24,6 +24,7 @@ const ModifyAttendScreen = (props) => {
 
   const fetchStuAttendance = async () => {
     setAttendanceDetail();
+    setFilteredAttDet();
     const data = await Global.httpPOST("/getAttendance", { date });
     console.log("att det:  Fetch compelete");
     if (!data.isError) {
@@ -144,7 +145,7 @@ const ModifyAttendScreen = (props) => {
     const data = await response.json();
     console.log(data);
     fetchStuAttendance();
-    if (date == new Date()) {
+    if (date.getUTCDate() == new Date().getUTCDate()) {
       Global.fetchStuAttendance(new Date());
     }
   };
@@ -353,11 +354,11 @@ const ModifyAttendScreen = (props) => {
                   fontWeight: "bold",
                 }}
               >
-                {date.getDate() +
+                {date.getUTCDate() +
                   "/" +
-                  (date.getMonth() + 1) +
+                  (date.getUTCMonth() + 1) +
                   "/" +
-                  date.getFullYear()}
+                  date.getUTCFullYear()}
               </CustomText>
             </View>
           </View>
