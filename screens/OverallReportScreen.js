@@ -74,12 +74,12 @@ const OverallReportScreen = () => {
               Name
             </CustomText>
             <CustomText
-              style={{ width: "18%", minWidth: 28, fontWeight: "700" }}
+              style={{ width: "15%", minWidth: 28, fontWeight: "700" }}
             >
               P/D
             </CustomText>
             <CustomText
-              style={{ width: "12%", minWidth: 28, fontWeight: "700" }}
+              style={{ width: "15%", minWidth: 28, fontWeight: "700" }}
             >
               Perc
             </CustomText>
@@ -104,10 +104,10 @@ const OverallReportScreen = () => {
                     <CustomText style={{ width: "58%" }} numberOfLines={1}>
                       {item.name}
                     </CustomText>
-                    <CustomText style={{ width: "18%", minWidth: 28 }}>
+                    <CustomText style={{ width: "15%", minWidth: 28 }}>
                       {noOfPres}/{totalWorkD}
                     </CustomText>
-                    <CustomText style={{ width: "12%", minWidth: 28 }}>
+                    <CustomText style={{ width: "15%", minWidth: 28 }}>
                       {(noOfPres * 100) / totalWorkD}%
                     </CustomText>
                   </View>
