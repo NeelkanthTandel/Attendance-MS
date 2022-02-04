@@ -4,76 +4,76 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 const classDetails = [
-  // {
-  //   standard: 0,
-  //   div: "-",
-  //   class_id: "admin_class",
-  // },
-  // {
-  //   standard: 1,
-  //   div: "A",
-  //   class_id: "class1A",
-  // },
-  // {
-  //   standard: 2,
-  //   div: "A",
-  //   class_id: "class2A",
-  // },
-  // {
-  //   standard: 2,
-  //   div: "B",
-  //   class_id: "class2B",
-  // },
-  // {
-  //   standard: 3,
-  //   div: "A",
-  //   class_id: "class3A",
-  // },
-  // {
-  //   standard: 4,
-  //   div: "A",
-  //   class_id: "class4A",
-  // },
-  // {
-  //   standard: 5,
-  //   div: "A",
-  //   class_id: "class5A",
-  // },
-  // {
-  //   standard: 6,
-  //   div: "A",
-  //   class_id: "class6A",
-  // },
-  // {
-  //   standard: 7,
-  //   div: "A",
-  //   class_id: "class7A",
-  // },
-  // {
-  //   standard: 8,
-  //   div: "A",
-  //   class_id: "class8A",
-  // },
-  // {
-  //   standard: 9,
-  //   div: "A",
-  //   class_id: "class9A",
-  // },
-  // {
-  //   standard: 10,
-  //   div: "A",
-  //   class_id: "class10A",
-  // },
-  // {
-  //   standard: 11,
-  //   div: "A",
-  //   class_id: "class11A",
-  // },
-  // {
-  //   standard: 12,
-  //   div: "A",
-  //   class_id: "class12A",
-  // },
+  {
+    standard: 0,
+    div: "-",
+    class_id: "admin_class",
+  },
+  {
+    standard: 1,
+    div: "A",
+    class_id: "class1A",
+  },
+  {
+    standard: 2,
+    div: "A",
+    class_id: "class2A",
+  },
+  {
+    standard: 2,
+    div: "B",
+    class_id: "class2B",
+  },
+  {
+    standard: 3,
+    div: "A",
+    class_id: "class3A",
+  },
+  {
+    standard: 4,
+    div: "A",
+    class_id: "class4A",
+  },
+  {
+    standard: 5,
+    div: "A",
+    class_id: "class5A",
+  },
+  {
+    standard: 6,
+    div: "A",
+    class_id: "class6A",
+  },
+  {
+    standard: 7,
+    div: "A",
+    class_id: "class7A",
+  },
+  {
+    standard: 8,
+    div: "A",
+    class_id: "class8A",
+  },
+  {
+    standard: 9,
+    div: "A",
+    class_id: "class9A",
+  },
+  {
+    standard: 10,
+    div: "A",
+    class_id: "class10A",
+  },
+  {
+    standard: 11,
+    div: "A",
+    class_id: "class11A",
+  },
+  {
+    standard: 12,
+    div: "A",
+    class_id: "class12A",
+  },
   {
     standard: 1,
     div: "B",
@@ -132,53 +132,63 @@ const classDetails = [
 ];
 
 const teacherDetails = [
+  // {
+  //   name: "Dummy Administrator",
+  //   teacher_id: "SNT001", //SN = School Name Teacher
+  //   password: "Admin001",
+  //   mail_id: "dummyadmin@gmail.com",
+  //   phone_number: "1234567001",
+  //   address: "Nadiad - Petlad Rd, Highway, Changa, Gujarat 388421",
+  //   class_id: "admin_class",
+  //   isAdmin: true,
+  // },
+  // {
+  //   name: "Teacher Two",
+  //   teacher_id: "SNT002", //SN = School Name Teacher
+  //   password: "Teacher002",
+  //   mail_id: "teachertwo@gmail.com",
+  //   phone_number: "1234567002",
+  //   address: "Nadiad - Petlad Rd, Highway, Changa, Gujarat 388421",
+  //   class_id: "class1A",
+  //   isAdmin: false,
+  // },
+  // {
+  //   name: "Teacher Three",
+  //   teacher_id: "SNT003", //SN = School Name Teacher
+  //   password: "Teacher003",
+  //   mail_id: "teacherthree@gmail.com",
+  //   phone_number: "1234567003",
+  //   address: "Nadiad - Petlad Rd, Highway, Changa, Gujarat 388421",
+  //   class_id: "class2A",
+  //   isAdmin: false,
+  // },
   {
-    name: "Dummy Administrator",
-    teacher_id: "SNT001", //SN = School Name Teacher
-    password: "Admin001",
-    mail_id: "dummyadmin@gmail.com",
-    phone_number: "1234567001",
+    name: "Teacher Four",
+    teacher_id: "SNT004", //SN = School Name Teacher
+    password: "Teacher004",
+    mail_id: "teacherfour@gmail.com",
+    phone_number: "1234567004",
     address: "Nadiad - Petlad Rd, Highway, Changa, Gujarat 388421",
-    class_id: "admin_class",
-    isAdmin: true,
-  },
-  {
-    name: "Teacher Two",
-    teacher_id: "SNT002", //SN = School Name Teacher
-    password: "Teacher002",
-    mail_id: "teachertwo@gmail.com",
-    phone_number: "1234567002",
-    address: "Nadiad - Petlad Rd, Highway, Changa, Gujarat 388421",
-    class_id: "class1A",
-    isAdmin: false,
-  },
-  {
-    name: "Teacher Three",
-    teacher_id: "SNT003", //SN = School Name Teacher
-    password: "Teacher003",
-    mail_id: "teacherthree@gmail.com",
-    phone_number: "1234567003",
-    address: "Nadiad - Petlad Rd, Highway, Changa, Gujarat 388421",
-    class_id: "class2A",
+    class_id: "class3A",
     isAdmin: false,
   },
 ];
 
 const studentDetails = [
-  {
-    stu_id: "1A001",
-    name: "Student One",
-    rfid_id: ";d46279c0?e",
-    parents_number: "1234567001",
-    class_id: "class1A",
-  },
-  {
-    stu_id: "1A002",
-    name: "Student Two",
-    rfid_id: ";70a8d840?e",
-    parents_number: "1234567002",
-    class_id: "class1A",
-  },
+  // {
+  //   stu_id: "1A001",
+  //   name: "Student One",
+  //   rfid_id: ";d46279c0?e",
+  //   parents_number: "1234567001",
+  //   class_id: "class1A",
+  // },
+  // {
+  //   stu_id: "1A002",
+  //   name: "Student Two",
+  //   rfid_id: ";70a8d840?e",
+  //   parents_number: "1234567002",
+  //   class_id: "class1A",
+  // },
   {
     stu_id: "1A003",
     name: "Student Three",
@@ -303,77 +313,87 @@ const createTeacher = async (data) => {
 };
 
 const seedTeachers = () => {
-  for (var i = 14; i < 26; i++) {
-    let word;
+  // for (var i = 14; i < 26; i++) {
+  //   let word;
+  //   switch (i) {
+  //     case 10:
+  //       word = "ten";
+  //       break;
+  //     case 11:
+  //       word = "eleven";
+  //       break;
+  //     case 12:
+  //       word = "twelve";
+  //       break;
+  //     case 13:
+  //       word = "thirteen";
+  //       break;
+  //     case 14:
+  //       word = "fourteen";
+  //       break;
+  //     case 15:
+  //       word = "fifteen";
+  //       break;
+  //     case 16:
+  //       word = "sixteen";
+  //       break;
+  //     case 17:
+  //       word = "seventeen";
+  //       break;
+  //     case 18:
+  //       word = "eighteen";
+  //       break;
+  //     case 19:
+  //       word = "ninety";
+  //       break;
+  //     case 20:
+  //       word = "twenty";
+  //       break;
+  //     case 21:
+  //       word = "twentyOne";
+  //       break;
+  //     case 22:
+  //       word = "twentyTwo";
+  //       break;
+  //     case 23:
+  //       word = "twentyThree";
+  //       break;
+  //     case 24:
+  //       word = "twentyFour";
+  //       break;
+  //     case 25:
+  //       word = "twentyFive";
+  //       break;
+  //     case 26:
+  //       word = "twentySix";
+  //       break;
+  //   }
+  //   const data = {
+  //     name: "Teacher " + word.charAt(0).toUpperCase() + word.slice(1),
+  //     teacher_id: "SNT0" + i, //SN = School Name Teacher
+  //     password: "Teacher0" + i,
+  //     mail_id: "teacher" + word + "@gmail.com",
+  //     phone_number: "12345670" + i,
+  //     address: "Nadiad - Petlad Rd, Highway, Changa, Gujarat 388421",
+  //     class_id: "class" + (i - 13).toString() + "B",
+  //     isAdmin: false,
+  //   };
+  //   // console.log(data);
+  //   // createTeacher(data);
+  // }
 
-    switch (i) {
-      case 10:
-        word = "ten";
-        break;
-      case 11:
-        word = "eleven";
-        break;
-      case 12:
-        word = "twelve";
-        break;
-      case 13:
-        word = "thirteen";
-        break;
-      case 14:
-        word = "fourteen";
-        break;
-      case 15:
-        word = "fifteen";
-        break;
-      case 16:
-        word = "sixteen";
-        break;
-      case 17:
-        word = "seventeen";
-        break;
-      case 18:
-        word = "eighteen";
-        break;
-      case 19:
-        word = "ninety";
-        break;
-      case 20:
-        word = "twenty";
-        break;
-      case 21:
-        word = "twentyOne";
-        break;
-      case 22:
-        word = "twentyTwo";
-        break;
-      case 23:
-        word = "twentyThree";
-        break;
-      case 24:
-        word = "twentyFour";
-        break;
-      case 25:
-        word = "twentyFive";
-        break;
-      case 26:
-        word = "twentySix";
-        break;
-    }
-
+  for (var i = 0; i < teacherDetails.length; i++) {
     const data = {
-      name: "Teacher " + word.charAt(0).toUpperCase() + word.slice(1),
-      teacher_id: "SNT0" + i, //SN = School Name Teacher
-      password: "Teacher0" + i,
-      mail_id: "teacher" + word + "@gmail.com",
-      phone_number: "12345670" + i,
-      address: "Nadiad - Petlad Rd, Highway, Changa, Gujarat 388421",
-      class_id: "class" + (i - 13).toString() + "B",
+      name: teacherDetails[i].name,
+      teacher_id: teacherDetails[i].teacher_id, //SN = School Name Teacher
+      password: teacherDetails[i].password,
+      mail_id: teacherDetails[i].mail_id,
+      phone_number: teacherDetails[i].phone_number,
+      address: teacherDetails[i].address,
+      class_id: teacherDetails[i].class_id,
       isAdmin: false,
     };
-
-    // console.log(data);
-
-    // createTeacher(data);
+    createTeacher(data);
   }
 };
 
@@ -391,6 +411,6 @@ const seedStudents = async () => {
 // seedStudents();
 
 // seedClass().then(() => {
-//   seedTeachers();
-//   seedStudents();
+// seedTeachers();
+// seedStudents();
 // });

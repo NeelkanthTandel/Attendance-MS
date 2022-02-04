@@ -229,9 +229,19 @@ const checkAndUpdateAttendanceDetail = async () => {
   console.log("remaining time: ", remHours, ":", remMin);
 
   setTimeout(() => {
-    // setInterval(() => {
-    checkAndUpdateAttendanceDetail();
-    // }, 1000 * 60 * 60 * 24);
+    setInterval(async () => {
+      const totalAttendance = await prisma.attendance.count({
+        where: {
+          date: new Date(),
+        },
+      });
+
+      console.log("Total attendance:", totalAttendance);
+      console.log("Total students:", await dblib.totalStudents());
+      if (totalAttendance == 0) {
+        dblib.updateAttendanceTable();
+      }
+    }, 1000 * 60 * 60 * 24);
   }, 1000 * 60 * 60 * remHours + 1000 * 60 * remMin);
 
   const totalAttendance = await prisma.attendance.count({
