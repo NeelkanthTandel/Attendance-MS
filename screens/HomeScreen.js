@@ -117,7 +117,13 @@ const HomeScreen = (props) => {
             // marginLeft: 30,
           }}
         >
-          Today's attendance status:
+          Today's{" "}
+          <CustomText style={{ color: color.secondary }}>
+            {Global.user.class_id.charAt(0).toUpperCase() +
+              Global.user.class_id.slice(1) +
+              " "}
+          </CustomText>
+          attendance status:
         </CustomText>
         <CustomText style={{ color: "white", marginTop: 5 }}>
           Present :{" "}

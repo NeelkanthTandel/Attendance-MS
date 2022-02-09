@@ -40,12 +40,12 @@ const Day2DayReportScreen = () => {
       <ScrollView style={{ paddingHorizontal: 20 }}>
         <View style={{ paddingTop: 30, paddingBottom: 45 }}>
           <CustomText
-            style={{ color: color.primary, fontWeight: "bold", fontSize: 18 }}
+            style={{ color: color.primary, fontWeight: "bold", fontSize: 16 }}
           >
             Day-to-Day Report
           </CustomText>
           <CustomText
-            style={{ paddingTop: 10, fontSize: 14, color: color.primary }}
+            style={{ paddingTop: 10, fontSize: 12, color: color.primary }}
           >
             This report will show attendance of every single day.
           </CustomText>

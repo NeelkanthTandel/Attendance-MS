@@ -215,74 +215,6 @@ const ModifyAttendScreen = (props) => {
               flex: 1,
             }}
           />
-          <View style={{ marginLeft: 15 }}>
-            <TouchableOpacity
-              onPress={() => setIsModalVisible(!isModalVisible)}
-            >
-              <FontAwesome5 name="calendar-alt" size={23} color="white" />
-            </TouchableOpacity>
-            <Modal
-              animationType={"fade"}
-              transparent={true}
-              visible={isModalVisible}
-              onRequestClose={() => {
-                setIsModalVisible(!isModalVisible);
-              }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor: "rgba(0,0,0,0.5)",
-                }}
-              >
-                <View
-                  style={{
-                    backgroundColor: "white",
-                    borderRadius: 10,
-                    width: "50%",
-                  }}
-                >
-                  <TouchableOpacity
-                    style={{
-                      borderColor: color.primary,
-                      borderBottomWidth: 1,
-                      borderColor: color.primary,
-                      paddingVertical: 10,
-                      paddingHorizontal: 15,
-                    }}
-                    onPress={() => {
-                      setDate(new Date());
-                      setIsModalVisible(false);
-                    }}
-                  >
-                    <CustomText
-                      style={{
-                        color: color.primary,
-                        fontSize: 16,
-                      }}
-                    >
-                      Today
-                    </CustomText>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={{ paddingVertical: 10, marginLeft: "8%" }}
-                    onPress={() => {
-                      let prevDate = new Date();
-                      prevDate.setDate(prevDate.getDate() - 1);
-                      setDate(prevDate);
-                      setIsModalVisible(false);
-                    }}
-                  >
-                    <CustomText style={{ color: color.primary, fontSize: 16 }}>
-                      Yesterday
-                    </CustomText>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </Modal>
-          </View>
         </View>
       </View>
       <ScrollView
@@ -357,18 +289,98 @@ const ModifyAttendScreen = (props) => {
               </CustomText>
             </View>
             <View>
-              <CustomText
-                style={{
-                  color: color.primary,
-                  fontWeight: "bold",
+              <TouchableOpacity
+                onPress={() => setIsModalVisible(!isModalVisible)}
+              >
+                <CustomText
+                  style={{
+                    color: color.primary,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {date.getUTCDate() +
+                    "/" +
+                    (date.getUTCMonth() + 1) +
+                    "/" +
+                    date.getUTCFullYear()}
+                </CustomText>
+              </TouchableOpacity>
+              <Modal
+                animationType={"fade"}
+                transparent={true}
+                visible={isModalVisible}
+                onRequestClose={() => {
+                  setIsModalVisible(!isModalVisible);
                 }}
               >
-                {date.getUTCDate() +
-                  "/" +
-                  (date.getUTCMonth() + 1) +
-                  "/" +
-                  date.getUTCFullYear()}
-              </CustomText>
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                  }}
+                >
+                  <View
+                    style={{
+                      backgroundColor: "white",
+                      borderRadius: 10,
+                      width: "50%",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <TouchableOpacity
+                      style={{
+                        borderColor: color.primary,
+                        borderBottomWidth: 0.5,
+                        borderColor: color.primary,
+                        paddingVertical: 10,
+                        paddingHorizontal: 15,
+
+                        backgroundColor:
+                          date.getDate() == new Date().getDate()
+                            ? "#d3d3d3"
+                            : "white",
+                      }}
+                      onPress={() => {
+                        setDate(new Date());
+                        setIsModalVisible(false);
+                      }}
+                    >
+                      <CustomText
+                        style={{
+                          color: color.primary,
+                          fontSize: 16,
+                        }}
+                      >
+                        Today
+                      </CustomText>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{
+                        paddingVertical: 10,
+                        paddingHorizontal: 15,
+                        backgroundColor:
+                          date.getDate() != new Date().getDate()
+                            ? "#d3d3d3"
+                            : "white",
+                      }}
+                      onPress={() => {
+                        let prevDate = new Date();
+                        prevDate.setDate(prevDate.getDate() - 1);
+                        setDate(prevDate);
+                        setIsModalVisible(false);
+                      }}
+                    >
+                      <CustomText
+                        style={{ color: color.primary, fontSize: 16 }}
+                      >
+                        Yesterday
+                      </CustomText>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </Modal>
             </View>
           </View>
         </View>

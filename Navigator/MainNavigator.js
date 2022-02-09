@@ -42,7 +42,7 @@ export default function MainNaviator(props) {
         />
         <Tab.Screen
           component={Day2DayReportScreen}
-          name="Day2Day"
+          name="Day-Day"
           options={
             {
               // tabBarStyle: { fontSize: 14, color: color.primary },
@@ -122,7 +122,7 @@ export default function MainNaviator(props) {
                   component={ModifyAttendScreen}
                   name="ModifyAttend"
                   options={{
-                    title: "Modify Attendance",
+                    title: "Modify",
                     headerStyle: { backgroundColor: color.primary },
                     headerShadowVisible: false,
                     headerTintColor: color.secondary,
@@ -150,7 +150,7 @@ export default function MainNaviator(props) {
                   component={TabNavigator}
                   name="ViewAttend"
                   options={{
-                    title: "View Attendance",
+                    title: "View",
                     headerStyle: { backgroundColor: color.primary },
                     headerShadowVisible: false,
                     headerTintColor: color.secondary,
@@ -209,7 +209,7 @@ export default function MainNaviator(props) {
                   component={ModifyAttendScreen}
                   name="ModifyAttend"
                   options={{
-                    title: "Modify Attendance",
+                    title: "Modify",
                     headerStyle: { backgroundColor: color.primary },
                     headerShadowVisible: false,
                     headerTintColor: color.secondary,
@@ -225,7 +225,7 @@ export default function MainNaviator(props) {
                   component={TabNavigator}
                   name="ViewAttend"
                   options={{
-                    title: "View Attendance",
+                    title: "View",
                     headerStyle: { backgroundColor: color.primary },
                     headerShadowVisible: false,
                     headerTintColor: color.secondary,
