@@ -81,25 +81,34 @@ const ModifyAttendScreen = (props) => {
     // }, [isPresentACheck]);
 
     return (
-      <View style={{ flexDirection: "row", width: "100%", marginBottom: 15 }}>
-        <CustomText style={{ width: "12%" }}>{props.id}</CustomText>
-        <CustomText
-          style={{ width: "78%" }}
-          numberOfLines={1}
-          onPress={toggleAttendance}
-        >
-          {props.name}
-        </CustomText>
-        <CustomText style={{ width: "10%" }}>
-          <CheckBox
-            isChecked={isPresentACheck}
-            onClick={toggleAttendance}
-            tintColors={{
-              true: color.primary,
-            }}
-          />
-        </CustomText>
-      </View>
+      <TouchableOpacity
+        style={{
+          borderBottomWidth: filteredAttDet.length - 1 == props.index ? 0 : 1,
+          paddingHorizontal: 20,
+          paddingVertical: 15,
+        }}
+        onPress={toggleAttendance}
+      >
+        <View style={{ flexDirection: "row", width: "100%" }}>
+          <CustomText style={{ width: "12%" }}>{props.id}</CustomText>
+          <CustomText
+            style={{ width: "78%" }}
+            numberOfLines={1}
+            // onPress={toggleAttendance}
+          >
+            {props.name}
+          </CustomText>
+          <CustomText style={{ width: "10%" }}>
+            <CheckBox
+              isChecked={isPresentACheck}
+              onClick={toggleAttendance}
+              tintColors={{
+                true: color.primary,
+              }}
+            />
+          </CustomText>
+        </View>
+      </TouchableOpacity>
     );
   };
 
@@ -368,7 +377,6 @@ const ModifyAttendScreen = (props) => {
             style={{
               flexDirection: "row",
               width: "100%",
-              marginBottom: 15,
               borderBottomWidth: 1,
               padding: 10,
             }}
@@ -387,7 +395,7 @@ const ModifyAttendScreen = (props) => {
               P/A
             </CustomText>
           </View>
-          <View style={{ paddingHorizontal: 10 }}>
+          <View style={{}}>
             {filteredAttDet ? (
               filteredAttDet.map((item, index) => (
                 <TableRow
@@ -398,6 +406,7 @@ const ModifyAttendScreen = (props) => {
                     item.attendance[0] ? item.attendance[0].status : false
                   }
                   stuId={item.stu_id}
+                  index={index}
                   key={index}
                   isPresentCheck={isPresentCheck}
                   isAbsentCheck={isAbsentCheck}

@@ -108,7 +108,7 @@ const OverallReportScreen = () => {
                       {noOfPres}/{totalWorkD}
                     </CustomText>
                     <CustomText style={{ width: "15%", minWidth: 28 }}>
-                      {(noOfPres * 100) / totalWorkD}%
+                      {((noOfPres * 100) / totalWorkD).toFixed(0)}%
                     </CustomText>
                   </View>
                 );
