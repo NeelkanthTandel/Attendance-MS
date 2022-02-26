@@ -97,8 +97,8 @@
           input.charAt(input.length - 1) == "e" ||
           input.charAt(input.length - 1) == "E"
         ) {
-          console.log(input);
-          await markAttendance(input);
+          console.log(input.substring(0, input.length - 1));
+          await markAttendance(input.substring(0, input.length - 1));
           document.getElementById("floatingInput").value = "";
         }
       }
