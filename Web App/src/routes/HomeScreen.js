@@ -8,8 +8,9 @@ import {
   SidebarHeader,
   SidebarContent,
 } from "react-pro-sidebar";
+import "react-pro-sidebar/dist/css/styles.css";
 import logo from "../images/icon.png";
-import "../css/sideBar.scss";
+import "../css/sideBar.css";
 import { FaChalkboardTeacher, FaChevronRight } from "react-icons/fa";
 import { HiHome } from "react-icons/hi";
 import { MdSchool } from "react-icons/md";
@@ -49,17 +50,15 @@ export default function HomeScreen() {
       </SidebarHeader>
       <SidebarContent style={{ paddingLeft: "10px" }}>
         <Menu iconShape="circle">
-          <MenuItem icon={<HiHome color={"#1c2a40"} />}>Home</MenuItem>
-          <MenuItem icon={<MdSchool color={"#1c2a40"} />}>Students</MenuItem>
-          <MenuItem icon={<FaChalkboardTeacher color={"#1c2a40"} />}>
+          <MenuItem icon={<HiHome color={"white"} />}>Home</MenuItem>
+          <MenuItem icon={<MdSchool color={"white"} />}>Students</MenuItem>
+          <MenuItem icon={<FaChalkboardTeacher color={"white"} />}>
             Teachers
           </MenuItem>
-          <MenuItem icon={<SiGoogleclassroom color={"#1c2a40"} />}>
+          <MenuItem icon={<SiGoogleclassroom color={"white"} />}>
             Class
           </MenuItem>
-          <MenuItem icon={<BsUiChecks color={"#1c2a40"} />}>
-            Attendance
-          </MenuItem>
+          <MenuItem icon={<BsUiChecks color={"white"} />}>Attendance</MenuItem>
         </Menu>
       </SidebarContent>
       <SidebarFooter
