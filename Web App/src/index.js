@@ -6,12 +6,14 @@ import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.css";
 import HomeScreen from "./routes/HomeScreen";
 import LoginPage from "./routes/LoginPage";
+import ModifyAttend from "./routes/modifyAttend";
 
 ReactDOM.render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<LoginPage />} />
       <Route path="home" element={<HomeScreen />} />
+      <Route path="modifyAttend" element={<ModifyAttend />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")
