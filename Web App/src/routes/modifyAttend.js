@@ -16,18 +16,45 @@ import { MdSchool } from "react-icons/md";
 import { SiGoogleclassroom } from "react-icons/si";
 import { BsUiChecks } from "react-icons/bs";
 
+const Row = (props) => {
+  const [checked, setChecked] = React.useState(props.checked);
+
+  return (
+    <>
+      <hr style={{ width: "100%", backgroundColor: "black" }} />
+      <div
+        style={{
+          borderTop: "100%",
+          borderTopWidth: 1,
+          display: "flex",
+          flexDirection: "row",
+          width: "100%",
+          paddingTop: 10,
+          paddingLeft: "5%",
+        }}
+      >
+        <span style={{ width: "20%" }}>{props.id}</span>
+        <span style={{ width: "72%" }}>{props.name}</span>
+        <span>
+          <input
+            type="checkbox"
+            checked={checked}
+            onChange={() => {
+              setChecked(!checked);
+            }}
+          />
+        </span>
+      </div>
+    </>
+  );
+};
+
 export default function HomeScreen() {
   const [collapsed, setCollapsed] = useState(true);
 
   const toggleSidebar = () => {
     console.log("Toggle");
   };
-  const [checked, setChecked] = React.useState(false);
-
-  const CheckBoxHandler = () => {
-    setChecked(!checked);
-  };
-
   return (
     <div
       style={{
@@ -35,6 +62,7 @@ export default function HomeScreen() {
         height: "100%",
         flexDirection: "row",
         flex: 1,
+        overflow: "hidden",
       }}
     >
       <ProSidebar
@@ -99,9 +127,10 @@ export default function HomeScreen() {
           paddingLeft: 60,
           paddingRight: 60,
           display: "flex",
-          overflow: "hidden",
+          flex: 1,
           width: "100%",
           flexDirection: "column",
+          backgroundColor: "yellow",
         }}
       >
         <p style={{ fontSize: 25, paddingTop: 25 }}>Modify Attendance</p>
@@ -158,7 +187,8 @@ export default function HomeScreen() {
                 borderStyle: "solid",
                 borderRadius: 10,
                 flex: 1,
-                overflow: "scroll",
+                overflowY: "scroll",
+                maxHeight: "60vh",
               }}
             >
               <div
@@ -166,147 +196,42 @@ export default function HomeScreen() {
                   display: "flex",
                   flexDirection: "row",
                   width: "100%",
-                  paddingTop: 10,
+                  paddingTop: 12,
                   paddingLeft: "5%",
                 }}
               >
-                <span style={{ width: "20%", fontWeight: "bold" }}>Id</span>
-                <span style={{ width: "75%", fontWeight: "bold" }}>Name</span>
-                <span style={{ width: "10%", fontWeight: "bold" }}>Status</span>
-              </div>
-              <hr style={{ width: "100%", backgroundColor: "black" }} />
-
-              <div
-                style={{
-                  borderTop: "100%",
-                  borderTopWidth: 1,
-                  display: "flex",
-                  flexDirection: "row",
-                  width: "100%",
-                  paddingTop: 10,
-                  paddingLeft: "5%",
-                }}
-              >
-                <span style={{ width: "20%" }}>001</span>
-                <span style={{ width: "72%" }}>ABC</span>
-                <span>
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={CheckBoxHandler}
-                  />
+                <span
+                  style={{ width: "20%", fontWeight: "bold", fontSize: 18 }}
+                >
+                  Id
+                </span>
+                <span
+                  style={{ width: "75%", fontWeight: "bold", fontSize: 18 }}
+                >
+                  Name
+                </span>
+                <span
+                  style={{ width: "10%", fontWeight: "bold", fontSize: 18 }}
+                >
+                  Status
                 </span>
               </div>
-              <hr style={{ width: "100%", backgroundColor: "black" }} />
-              <div
-                style={{
-                  borderTop: "100%",
-                  borderTopWidth: 1,
-                  display: "flex",
-                  flexDirection: "row",
-                  width: "100%",
-                  paddingTop: 10,
-                  paddingLeft: "5%",
-                }}
-              >
-                <span style={{ width: "20%" }}>002</span>
-                <span style={{ width: "72%" }}>ABC</span>
-                <span>
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={CheckBoxHandler}
-                  />
-                </span>
-              </div>
-              <hr style={{ width: "100%", backgroundColor: "black" }} />
-              <div
-                style={{
-                  borderTop: "100%",
-                  borderTopWidth: 1,
-                  display: "flex",
-                  flexDirection: "row",
-                  width: "100%",
-                  paddingTop: 10,
-                  paddingLeft: "5%",
-                }}
-              >
-                <span style={{ width: "20%" }}>003</span>
-                <span style={{ width: "72%" }}>ABC</span>
-                <span>
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={CheckBoxHandler}
-                  />
-                </span>
-              </div>
-              <hr style={{ width: "100%", backgroundColor: "black" }} />
-              <div
-                style={{
-                  borderTop: "100%",
-                  borderTopWidth: 1,
-                  display: "flex",
-                  flexDirection: "row",
-                  width: "100%",
-                  paddingTop: 10,
-                  paddingLeft: "5%",
-                }}
-              >
-                <span style={{ width: "20%" }}>004</span>
-                <span style={{ width: "72%" }}>ABC</span>
-                <span>
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={CheckBoxHandler}
-                  />
-                </span>
-              </div>
-              <hr style={{ width: "100%", backgroundColor: "black" }} />
-              <div
-                style={{
-                  borderTop: "100%",
-                  borderTopWidth: 1,
-                  display: "flex",
-                  flexDirection: "row",
-                  width: "100%",
-                  paddingTop: 10,
-                  paddingLeft: "5%",
-                }}
-              >
-                <span style={{ width: "20%" }}>004</span>
-                <span style={{ width: "72%" }}>ABC</span>
-                <span>
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={CheckBoxHandler}
-                  />
-                </span>
-              </div>
-              <hr style={{ width: "100%", backgroundColor: "black" }} />
-              <div
-                style={{
-                  borderTop: "100%",
-                  borderTopWidth: 1,
-                  display: "flex",
-                  flexDirection: "row",
-                  width: "100%",
-                  paddingTop: 10,
-                  paddingLeft: "5%",
-                }}
-              >
-                <span style={{ width: "20%" }}>004</span>
-                <span style={{ width: "72%" }}>ABC</span>
-                <span>
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={CheckBoxHandler}
-                  />
-                </span>
-              </div>
+              <Row id={1} name={"Hetvi"} />
+              <Row id={2} name={"Neelkanth"} />
+              <Row id={2} name={"Neelkanth"} />
+              <Row id={2} name={"Neelkanth"} />
+              <Row id={2} name={"Neelkanth"} />
+              <Row id={2} name={"Neelkanth"} />
+              <Row id={2} name={"Neelkanth"} />
+              <Row id={2} name={"Neelkanth"} />
+              <Row id={2} name={"Neelkanth"} />
+              <Row id={2} name={"Neelkanth"} />
+              <Row id={2} name={"Neelkanth"} />
+              <Row id={2} name={"Neelkanth"} />
+              <Row id={2} name={"Neelkanth"} />
+              <Row id={2} name={"Neelkanth"} />
+              <Row id={2} name={"Neelkanth"} />
+              <Row id={2} name={"Neelkanth"} />
             </div>
             <div style={{ paddingTop: 30 }}>
               <button
