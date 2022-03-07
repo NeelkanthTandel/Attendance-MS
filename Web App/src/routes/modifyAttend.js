@@ -164,7 +164,7 @@ export default function HomeScreen() {
                 <Row
                   name={data.name}
                   id={data.stu_id.charAt(3) + data.stu_id.charAt(4)}
-                  islast={studentDetails.length - 1 == index ? true : false}
+                  islast={studentDetails.length - 1 === index ? true : false}
                 />
               );
             })}
