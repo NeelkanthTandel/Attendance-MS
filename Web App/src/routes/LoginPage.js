@@ -7,16 +7,19 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const handleLogin = async (event) => {
     event.preventDefault();
-    const response = await fetch("http://localhost:5000/auth/login", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        teacherId: event.target.userId.value,
-        password: event.target.password.value,
-      }),
-    });
+    const response = await fetch(
+      "http:///attendance-m-s.herokuapp.com/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          teacherId: event.target.userId.value,
+          password: event.target.password.value,
+        }),
+      }
+    );
     const data = await response.json();
     console.log("User: ", data);
     if (!data.isError && data.isCredMatch) {

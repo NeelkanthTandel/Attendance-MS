@@ -21,7 +21,6 @@ const Row = (props) => {
 
   return (
     <>
-      <hr style={{ width: "100%", backgroundColor: "black" }} />
       <div
         style={{
           borderTop: "100%",
@@ -29,18 +28,37 @@ const Row = (props) => {
           display: "flex",
           flexDirection: "row",
           width: "100%",
-          paddingTop: 10,
-          paddingLeft: "5%",
+          paddingTop: 15,
+          paddingBottom: 15,
+          borderTopWidth: 0,
+          borderLeftWidth: 0,
+          borderRightWidth: 0,
+          borderBottomWidth: props.islast ? 0 : 0.5,
+          borderColor: "black",
+          borderStyle: "solid",
+          paddingLeft: 30,
+          paddingRight: 30,
+          // paddingLeft: "5%",
         }}
+        onClick={() => setChecked(!checked)}
       >
-        <span style={{ width: "20%" }}>{props.id}</span>
-        <span style={{ width: "72%" }}>{props.name}</span>
-        <span>
+        <span style={{ width: "10%" }}>{props.id}</span>
+        <span style={{ width: "80%" }}>{props.name}</span>
+        <span
+          style={{
+            width: "10%",
+            textAlign: "center",
+          }}
+        >
           <input
             type="checkbox"
             checked={checked}
             onChange={() => {
               setChecked(!checked);
+            }}
+            style={{
+              width: 15,
+              height: 15,
             }}
           />
         </span>
@@ -63,6 +81,7 @@ export default function HomeScreen() {
         flexDirection: "row",
         flex: 1,
         overflow: "hidden",
+        backgroundColor: "#e3e3e3",
       }}
     >
       <ProSidebar
@@ -130,124 +149,158 @@ export default function HomeScreen() {
           flex: 1,
           width: "100%",
           flexDirection: "column",
-          backgroundColor: "yellow",
+          overflowY: "scroll",
         }}
       >
-        <p style={{ fontSize: 25, paddingTop: 25 }}>Modify Attendance</p>
-
-        <div style={{ paddingTop: 30 }}>
+        {/* <p style={{ fontSize: 25, paddingTop: 25 }}>Modify Attendance</p> */}
+        <div
+          style={{
+            marginTop: 30,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <div style={{ fontSize: 24, fontWeight: "bold" }}>
+            Modify Attendance
+          </div>
           <div
             style={{
-              paddingLeft: 3,
-              paddingRight: 3,
+              paddingTop: 5,
+              paddingBottom: 5,
+              paddingLeft: 24,
+              paddingRight: 24,
+              backgroundColor: "#1c2a40",
+              color: "white",
+              borderRadius: 5,
+              fontSize: 14,
+              alignSelf: "baseline",
             }}
           >
-            <select
-              style={{
-                width: "10%",
-                height: "25px",
-                marginRight: "10%",
-                backgroundColor: "#eeeeee",
-                borderRadius: 5,
-                placeholder: "Class",
-              }}
-            >
-              <option>Class 1</option>
-              <option>Class 2</option>
-              <option>Class 3</option>
-              <option>Class 4</option>
-              <option>Class 5</option>
-              <option>Class 6</option>
-              <option>Class 7</option>
-              <option>Class 8</option>
-              <option>Class 9</option>
-              <option>Class 10</option>
-              <option>Class 11</option>
-              <option>Class 12</option>
-            </select>
-            <select
-              style={{
-                width: "10%",
-                height: "25px",
-                backgroundColor: "#eeeeee",
-                borderRadius: 5,
-                placeholder: "Div",
-              }}
-            >
-              <option>A</option>
-              <option>B</option>
-            </select>
+            SAVE
+          </div>
+        </div>
+
+        <div
+          style={{
+            marginTop: 40,
+            marginBottom: 60,
+          }}
+        >
+          <select
+            style={{
+              // width: "10%",
+              // height: "25px",
+              marginRight: 30,
+              backgroundColor: "#eeeeee",
+              borderRadius: 5,
+              paddingTop: 5,
+              paddingBottom: 5,
+              minWidth: 100,
+              paddingLeft: 5,
+              paddingRight: 5,
+              borderWidth: 1,
+              borderColor: "#bcbcbc",
+            }}
+            placeholder="Class"
+          >
+            <option>Class 1</option>
+            <option>Class 2</option>
+            <option>Class 3</option>
+            <option>Class 4</option>
+            <option>Class 5</option>
+            <option>Class 6</option>
+            <option>Class 7</option>
+            <option>Class 8</option>
+            <option>Class 9</option>
+            <option>Class 10</option>
+            <option>Class 11</option>
+            <option>Class 12</option>
+          </select>
+          <select
+            style={{
+              marginRight: 30,
+              backgroundColor: "#eeeeee",
+              borderRadius: 5,
+              paddingTop: 5,
+              paddingBottom: 5,
+              minWidth: 100,
+              paddingLeft: 5,
+              paddingRight: 5,
+              borderWidth: 1,
+              borderColor: "#bcbcbc",
+            }}
+          >
+            <option>A</option>
+            <option>B</option>
+          </select>
+          <div
+            style={{
+              marginTop: 30,
+              display: "flex",
+              flexDirection: "column",
+              borderWidth: 1,
+              borderColor: "black",
+              borderStyle: "solid",
+              borderRadius: 10,
+              flex: 1,
+            }}
+          >
             <div
               style={{
-                marginTop: 30,
                 display: "flex",
-                flexDirection: "column",
-                borderWidth: 1,
-                borderColor: "black",
-                borderStyle: "solid",
-                borderRadius: 10,
+                flexDirection: "row",
+                width: "100%",
+                paddingTop: 10,
+                paddingBottom: 10,
                 flex: 1,
-                overflowY: "scroll",
-                maxHeight: "60vh",
+                // paddingLeft: "5%",
+                paddingLeft: 30,
+                paddingRight: 30,
+                borderTopWidth: 0,
+                borderLeftWidth: 0,
+                borderRightWidth: 0,
+                borderBottomWidth: 2,
+                borderColor: "#1c2a40",
+                borderStyle: "solid",
+                // position: "sticky",
+                // top: 0,
               }}
             >
-              <div
+              <span style={{ width: "10%", fontWeight: "bold", fontSize: 18 }}>
+                Id
+              </span>
+              <span style={{ width: "80%", fontWeight: "bold", fontSize: 18 }}>
+                Name
+              </span>
+              <span
                 style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  width: "100%",
-                  paddingTop: 12,
-                  paddingLeft: "5%",
-                }}
-              >
-                <span
-                  style={{ width: "20%", fontWeight: "bold", fontSize: 18 }}
-                >
-                  Id
-                </span>
-                <span
-                  style={{ width: "75%", fontWeight: "bold", fontSize: 18 }}
-                >
-                  Name
-                </span>
-                <span
-                  style={{ width: "10%", fontWeight: "bold", fontSize: 18 }}
-                >
-                  Status
-                </span>
-              </div>
-              <Row id={1} name={"Hetvi"} />
-              <Row id={2} name={"Neelkanth"} />
-              <Row id={2} name={"Neelkanth"} />
-              <Row id={2} name={"Neelkanth"} />
-              <Row id={2} name={"Neelkanth"} />
-              <Row id={2} name={"Neelkanth"} />
-              <Row id={2} name={"Neelkanth"} />
-              <Row id={2} name={"Neelkanth"} />
-              <Row id={2} name={"Neelkanth"} />
-              <Row id={2} name={"Neelkanth"} />
-              <Row id={2} name={"Neelkanth"} />
-              <Row id={2} name={"Neelkanth"} />
-              <Row id={2} name={"Neelkanth"} />
-              <Row id={2} name={"Neelkanth"} />
-              <Row id={2} name={"Neelkanth"} />
-              <Row id={2} name={"Neelkanth"} />
-            </div>
-            <div style={{ paddingTop: 30 }}>
-              <button
-                style={{
-                  backgroundColor: "#1c2a40",
-                  color: "white",
+                  width: "10%",
+                  fontWeight: "bold",
+                  fontSize: 18,
                   textAlign: "center",
-                  borderRadius: 5,
-                  display: "flex",
-                  marginLeft: "90%",
-                  padding: 7,
                 }}
               >
-                Save
-              </button>
+                Status
+              </span>
             </div>
+            <Row id={1} name={"Hetvi"} />
+            <Row id={2} name={"Neelkanth"} />
+            <Row id={2} name={"Neelkanth"} />
+            <Row id={2} name={"Neelkanth"} />
+            <Row id={2} name={"Neelkanth"} />
+            <Row id={2} name={"Neelkanth"} />
+            <Row id={2} name={"Neelkanth"} />
+            <Row id={2} name={"Neelkanth"} />
+            <Row id={2} name={"Neelkanth"} />
+            <Row id={2} name={"Neelkanth"} />
+            <Row id={2} name={"Neelkanth"} />
+            <Row id={2} name={"Neelkanth"} />
+            <Row id={2} name={"Neelkanth"} />
+            <Row id={2} name={"Neelkanth"} />
+            <Row id={2} name={"Neelkanth"} />
+            <Row id={2} name={"Neelkanth"} islast />
           </div>
         </div>
       </div>
