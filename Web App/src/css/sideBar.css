@@ -4,6 +4,17 @@ $icon-bg-color: #bcbcbc;
 
 @import "~react-pro-sidebar/dist/scss/styles.scss"; */
 
+.s-logo-container {
+  padding: 24px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 14;
+  letter-spacing: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .s-logo {
   width: 50px;
   height: 50px;
@@ -22,4 +33,137 @@ $icon-bg-color: #bcbcbc;
 
 .s-footer .s-icon:hover {
   color: white;
+}
+
+.main-container {
+  display: flex;
+  height: 100%;
+  flex-direction: row;
+  flex: 1;
+  overflow: hidden;
+  background-color: #e3e3e3;
+}
+
+.modify-container {
+  margin-left: 98px;
+  padding-left: 60px;
+  padding-right: 60px;
+  display: flex;
+  flex: 1;
+  width: 100%;
+  flex-direction: column;
+  overflow-y: scroll;
+}
+
+.modify-container .header {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modify-container .header .title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1c2a40;
+}
+
+.modify-container .header .save-btn {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 24px;
+  padding-right: 24px;
+  color: white;
+  border-radius: 5px;
+  border: 1.5px solid #1c2a40;
+  font-size: 14px;
+  align-self: baseline;
+  cursor: pointer;
+  color: #1c2a40;
+  font-weight: 500;
+  transition-duration: 0.3s;
+}
+
+.modify-container .header .save-btn:hover {
+  background-color: #1c2a40;
+  color: white;
+}
+
+.modify-container .body {
+  margin-top: 40px;
+  margin-bottom: 60px;
+}
+
+.modify-container .filter-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.modify-container .body .filter-container .filter {
+  margin-right: 30px;
+  background-color: #eeeeee;
+  border-radius: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  min-width: 100px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-width: 1px;
+  border-color: #bcbcbc;
+  cursor: pointer;
+}
+
+.modify-container .body .table {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
+  border-radius: 10px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.modify-container .body .table .table-header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  flex: 1px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-top-width: 0px;
+  border-left-width: 0px;
+  border-right-width: 0px;
+  border-bottom-width: 1.5px;
+  border-color: #1c2a40;
+  border-style: solid;
+}
+
+.modify-container .body .table .row-t {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-top-width: 0;
+  border-left-width: 0;
+  border-right-width: 0;
+  border-color: black;
+  border-style: solid;
+  padding-left: 30px;
+  padding-right: 30px;
+  cursor: pointer;
+}
+
+.modify-container .body .table .row-t:hover {
+  background-color: #eeeeee;
+}
+
+.modify-container .body .table .row-t .status {
+  accent-color: #1c2a40;
 }
