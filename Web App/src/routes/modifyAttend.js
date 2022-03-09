@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ProSidebar,
   Menu,
@@ -8,14 +8,25 @@ import {
   SidebarContent,
 } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
+import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
+
 import logo from "../images/icon.png";
 import "../css/sideBar.css";
-import { FaChalkboardTeacher, FaChevronRight } from "react-icons/fa";
+import {
+  FaChalkboardTeacher,
+  FaChevronRight,
+  FaChevronLeft,
+} from "react-icons/fa";
 import { HiHome } from "react-icons/hi";
 import { MdSchool } from "react-icons/md";
 import { SiGoogleclassroom } from "react-icons/si";
 import { BsUiChecks } from "react-icons/bs";
 import studentDetails from "../constants/dummy-data";
+import Global from "../components/utils/global";
+import { com_name } from "../keys";
+
+const cookies = new Cookies();
 
 const Row = (props) => {
   const [checked, setChecked] = React.useState(props.checked);
@@ -55,6 +66,39 @@ const Row = (props) => {
 
 export default function HomeScreen() {
   const [collapsed, setCollapsed] = useState(true);
+  const [attendanceDetail, setAttendanceDetail] = useState();
+  // const [filteredAttDet, setFilteredAttDet] = useState();
+  const navigate = useNavigate();
+
+  const fetchStuAttendance = async () => {
+    const date = new Date();
+    setAttendanceDetail();
+    // setFilteredAttDet();
+    const data = await Global.httpPOST("/getAttendance", { date });
+    console.log("att det:  Fetch compelete");
+    if (!data.isError) {
+      // console.log("att det: ", data);
+      if (data.stu_att[0].attendance[0]) {
+        setAttendanceDetail(data.stu_att);
+        // setFilteredAttDet(data.stu_att);
+      } else {
+        setAttendanceDetail(null);
+        // setFilteredAttDet(null);
+      }
+    }
+  };
+
+  useEffect(() => {
+    console.log("modify: ", Global.token);
+    // cookies.set('token', '', { path: '/' });
+    if (!Global.isLoggedIn()) {
+      return navigate("/");
+    }
+    if (!attendanceDetail) {
+      console.log("fetch");
+      fetchStuAttendance();
+    }
+  }, []);
 
   return (
     <div className="main-container">
@@ -64,27 +108,61 @@ export default function HomeScreen() {
         style={{ position: "absolute", left: 0, top: 0 }}
       >
         <SidebarHeader>
-          <div className="s-logo-container">
+          <div
+            className="s-logo-container"
+            onClick={() => {
+              navigate("/home");
+            }}
+          >
             <img
               src={logo}
               alt="logo"
               className="s-logo"
-              style={{ marginRight: collapsed ? 0 : 10 }}
+              style={{ marginRight: collapsed ? 0 : 20 }}
             />
-            {collapsed ? "" : "Attendance-MS"}
+            {collapsed ? "" : com_name}
           </div>
         </SidebarHeader>
         <SidebarContent style={{ paddingLeft: "10px" }}>
           <Menu iconShape="circle">
-            <MenuItem icon={<HiHome color={"white"} />}>Home</MenuItem>
-            <MenuItem icon={<MdSchool color={"white"} />}>Students</MenuItem>
-            <MenuItem icon={<FaChalkboardTeacher color={"white"} />}>
+            <MenuItem
+              icon={<HiHome color={"white"} />}
+              onClick={() => {
+                navigate("/home");
+              }}
+            >
+              Home
+            </MenuItem>
+            <MenuItem
+              icon={<MdSchool color={"white"} />}
+              onClick={() => {
+                navigate("/modify-attend");
+              }}
+            >
+              Students
+            </MenuItem>
+            <MenuItem
+              icon={<FaChalkboardTeacher color={"white"} />}
+              onClick={() => {
+                navigate("/modify-attend");
+              }}
+            >
               Teachers
             </MenuItem>
-            <MenuItem icon={<SiGoogleclassroom color={"white"} />}>
+            <MenuItem
+              icon={<SiGoogleclassroom color={"white"} />}
+              onClick={() => {
+                navigate("/modify-attend");
+              }}
+            >
               Class
             </MenuItem>
-            <MenuItem icon={<BsUiChecks color={"white"} />}>
+            <MenuItem
+              icon={<BsUiChecks color={"white"} />}
+              onClick={() => {
+                navigate("/modify-attend");
+              }}
+            >
               Attendance
             </MenuItem>
           </Menu>
@@ -95,14 +173,26 @@ export default function HomeScreen() {
           }}
         >
           <div className="s-footer">
-            <FaChevronRight
-              className="s-icon"
-              onClick={() => setCollapsed(!collapsed)}
-            />
+            {collapsed ? (
+              <FaChevronRight
+                className="s-icon"
+                onClick={() => setCollapsed(!collapsed)}
+              />
+            ) : (
+              <FaChevronLeft
+                className="s-icon"
+                onClick={() => setCollapsed(!collapsed)}
+              />
+            )}
           </div>
         </SidebarFooter>
       </ProSidebar>
-      <div className="modify-container">
+      <div
+        className="modify-container"
+        onClick={() => {
+          setCollapsed(true);
+        }}
+      >
         <div className="header">
           <div className="title">Modify Attendance</div>
           <div className="save-btn">SAVE</div>
@@ -159,15 +249,24 @@ export default function HomeScreen() {
                 Status
               </span>
             </div>
-            {studentDetails.map((data, index) => {
-              return (
-                <Row
-                  name={data.name}
-                  id={data.stu_id.charAt(3) + data.stu_id.charAt(4)}
-                  islast={studentDetails.length - 1 === index ? true : false}
-                />
-              );
-            })}
+            {attendanceDetail ? (
+              attendanceDetail.map((data, index) => {
+                return (
+                  <Row
+                    name={data.name}
+                    id={data.stu_id.charAt(3) + data.stu_id.charAt(4)}
+                    islast={
+                      attendanceDetail.length - 1 === index ? true : false
+                    }
+                    key={index}
+                  />
+                );
+              })
+            ) : (
+              <div style={{ width: "100%", textAlign: "center", border: 0 }}>
+                No data found.
+              </div>
+            )}
           </div>
         </div>
       </div>

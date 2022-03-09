@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ProSidebar,
   Menu,
@@ -9,10 +9,13 @@ import {
   SidebarContent,
 } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
+import { useNavigate } from "react-router-dom";
+
 import logo from "../images/icon.png";
 import "../css/sideBar.css";
 import {
   FaChalkboardTeacher,
+  FaChevronLeft,
   FaChevronRight,
   FaUserCheck,
 } from "react-icons/fa";
@@ -26,89 +29,115 @@ import {
 } from "react-icons/bs";
 import { AiFillSetting, AiOutlineCaretDown } from "react-icons/ai";
 import { IoIosPersonAdd, IoMdSchool } from "react-icons/io";
+import { FiLogOut } from "react-icons/fi";
+
 import color from "../constants/color";
+import { com_name } from "../keys";
+import Global from "../components/utils/global";
 
 export default function HomeScreen() {
   const [collapsed, setCollapsed] = useState(true);
+  const navigate = useNavigate();
 
-  const toggleSidebar = () => {
-    console.log("Toggle");
-  };
+  useEffect(() => {
+    // console.log(Global.user.name);
+    if (!Global.isLoggedIn()) {
+      return navigate("/");
+    }
+  }, []);
 
   return (
     <>
-      <div
-        style={{
-          height: "100%",
-          display: "flex",
-          flexDirection: "row",
-          flex: 1,
-          width: "100%",
-        }}
-      >
+      <div className="main-container">
         <ProSidebar
           collapsed={collapsed}
           collapsedWidth={98}
-          style={{ position: "fixed" }}
+          style={{ position: "absolute", left: 0, top: 0 }}
         >
           <SidebarHeader>
             <div
-              style={{
-                padding: "24px",
-                textTransform: "uppercase",
-                fontWeight: "bold",
-                fontSize: 14,
-                letterSpacing: "1px",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
+              className="s-logo-container"
+              onClick={() => {
+                navigate("/home");
               }}
             >
               <img
                 src={logo}
                 alt="logo"
                 className="s-logo"
-                style={{ marginRight: collapsed ? 0 : 10 }}
+                style={{ marginRight: collapsed ? 0 : 20 }}
               />
-              {collapsed ? "" : "Attendance-MS"}
+              {collapsed ? "" : com_name}
             </div>
           </SidebarHeader>
           <SidebarContent style={{ paddingLeft: "10px" }}>
             <Menu iconShape="circle">
-              <MenuItem icon={<HiHome color={"white"} />}>Home</MenuItem>
-              <MenuItem icon={<MdSchool color={"white"} />}>Students</MenuItem>
-              <MenuItem icon={<FaChalkboardTeacher color={"white"} />}>
+              <MenuItem
+                icon={<HiHome color={"white"} />}
+                onClick={() => {
+                  navigate("/home");
+                }}
+              >
+                Home
+              </MenuItem>
+              <MenuItem
+                icon={<MdSchool color={"white"} />}
+                onClick={() => {
+                  navigate("/modify-attend");
+                }}
+              >
+                Students
+              </MenuItem>
+              <MenuItem
+                icon={<FaChalkboardTeacher color={"white"} />}
+                onClick={() => {
+                  navigate("/modify-attend");
+                }}
+              >
                 Teachers
               </MenuItem>
-              <MenuItem icon={<SiGoogleclassroom color={"white"} />}>
+              <MenuItem
+                icon={<SiGoogleclassroom color={"white"} />}
+                onClick={() => {
+                  navigate("/modify-attend");
+                }}
+              >
                 Class
               </MenuItem>
-              <MenuItem icon={<BsUiChecks color={"white"} />}>
+              <MenuItem
+                icon={<BsUiChecks color={"white"} />}
+                onClick={() => {
+                  navigate("/modify-attend");
+                }}
+              >
                 Attendance
               </MenuItem>
             </Menu>
           </SidebarContent>
           <SidebarFooter
             style={{
-              // textAlign: "center" : "",
               paddingLeft: 40,
             }}
           >
             <div className="s-footer">
-              <FaChevronRight
-                className="s-icon"
-                onClick={() => setCollapsed(!collapsed)}
-              />
+              {collapsed ? (
+                <FaChevronRight
+                  className="s-icon"
+                  onClick={() => setCollapsed(!collapsed)}
+                />
+              ) : (
+                <FaChevronLeft
+                  className="s-icon"
+                  onClick={() => setCollapsed(!collapsed)}
+                />
+              )}
             </div>
-            {/* <MenuItem icon={<FaChevronRight />}>Attendance</MenuItem> */}
           </SidebarFooter>
         </ProSidebar>
         <div
-          style={{
-            marginLeft: 98,
-            flex: 1,
-            paddingRight: "60px",
-            backgroundColor: "#e3e3e3",
+          className="home-container"
+          onClick={() => {
+            setCollapsed(true);
           }}
         >
           <div
@@ -122,15 +151,24 @@ export default function HomeScreen() {
           >
             <AiFillSetting
               color={color.primary}
-              size={20}
-              style={{ marginRight: 15 }}
+              size={24}
+              style={{ marginRight: 20 }}
             />
             <MdAccountCircle
               color={color.primary}
-              size={20}
-              style={{ marginRight: 15 }}
+              size={24}
+              style={{ marginRight: 20 }}
             />
-            <div
+            <FiLogOut
+              color={color.primary}
+              size={24}
+              onClick={() => {
+                Global.logOutHandler();
+                navigate("/");
+              }}
+              // style={{ marginRight: 15 }}
+            />
+            {/* <div
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -143,7 +181,7 @@ export default function HomeScreen() {
                 size={12}
                 style={{ marginTop: 3.5 }}
               />
-            </div>
+            </div> */}
           </div>
 
           <div
@@ -174,6 +212,8 @@ export default function HomeScreen() {
                   alignItems: "center",
                   justifyContent: "center",
                   height: "150px",
+                  paddingRight: 30,
+                  paddingLeft: 30,
                 }}
               >
                 <IoMdSchool size={60} color={color.primary} />
@@ -216,6 +256,8 @@ export default function HomeScreen() {
                   alignItems: "center",
                   justifyContent: "center",
                   height: "150px",
+                  paddingRight: 30,
+                  paddingLeft: 30,
                 }}
               >
                 <FaChalkboardTeacher size={60} color={color.primary} />
@@ -252,16 +294,12 @@ export default function HomeScreen() {
                   backgroundColor: "#e3e3e3",
                   borderRadius: 10,
                   flex: 1,
+                  paddingRight: 30,
+                  paddingLeft: 30,
                 }}
               ></div>
             </div>
-            <div
-              style={{
-                marginTop: 60,
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
+            <div className="quick-tools-container">
               <div
                 style={{
                   fontSize: 30,
@@ -280,18 +318,8 @@ export default function HomeScreen() {
                 }}
               >
                 <div
-                  style={{
-                    // padding: 20,
-                    backgroundColor: "white",
-                    marginRight: 60,
-                    borderRadius: 10,
-                    display: "flex",
-                    flex: 1,
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "150px",
-                  }}
+                  className="quick-tools"
+                  onClick={() => navigate("/modify-attend")}
                 >
                   <div
                     style={{
@@ -308,6 +336,7 @@ export default function HomeScreen() {
                       fontSize: 18,
                       fontWeight: "bold",
                       marginBottom: 20,
+                      textAlign: "center",
                     }}
                   >
                     Modify Attendance
@@ -315,18 +344,8 @@ export default function HomeScreen() {
                 </div>
 
                 <div
-                  style={{
-                    // padding: 20,
-                    backgroundColor: "white",
-                    marginRight: 60,
-                    borderRadius: 10,
-                    display: "flex",
-                    flex: 1,
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "150px",
-                  }}
+                  className="quick-tools"
+                  onClick={() => navigate("/modify-attend")}
                 >
                   <div
                     style={{
@@ -343,6 +362,7 @@ export default function HomeScreen() {
                       fontSize: 18,
                       fontWeight: "bold",
                       marginBottom: 20,
+                      textAlign: "center",
                     }}
                   >
                     Add Students
@@ -350,17 +370,9 @@ export default function HomeScreen() {
                 </div>
 
                 <div
-                  style={{
-                    // padding: 20,
-                    backgroundColor: "white",
-                    borderRadius: 10,
-                    display: "flex",
-                    flex: 1,
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "150px",
-                  }}
+                  className="quick-tools"
+                  style={{ marginRight: 0 }}
+                  onClick={() => navigate("/modify-attend")}
                 >
                   <div
                     style={{
@@ -377,6 +389,7 @@ export default function HomeScreen() {
                       fontSize: 18,
                       fontWeight: "bold",
                       marginBottom: 20,
+                      textAlign: "center",
                     }}
                   >
                     Add Teachers
