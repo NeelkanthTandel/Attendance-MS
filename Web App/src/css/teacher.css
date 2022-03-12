@@ -1,0 +1,266 @@
+.modify-container {
+    margin-left: 98px;
+    padding-left: 60px;
+    padding-right: 60px;
+    display: flex;
+    flex: 1;
+    width: 100%;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+
+.modify-container .header {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modify-container .header .title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1c2a40;
+}
+
+.modify-container .header .save-btn {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 24px;
+    padding-right: 24px;
+    color: white;
+    border-radius: 5px;
+    border: 1.5px solid #1c2a40;
+    font-size: 14px;
+    align-self: baseline;
+    cursor: pointer;
+    color: #1c2a40;
+    font-weight: 500;
+    transition-duration: 0.3s;
+}
+
+.modify-container .header .save-btn:hover {
+    background-color: #1c2a40;
+    color: white;
+}
+
+.modify-container .body .table {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    border-width: 1px;
+    border-color: black;
+    border-style: solid;
+    border-radius: 10px;
+    flex: 1;
+    overflow: hidden;
+}
+
+.modify-container .body .table .table-header {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    flex: 1px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 1.5px;
+    border-color: #1c2a40;
+    border-style: solid;
+}
+
+.modify-container .body .table .row-t {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-top-width: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-color: black;
+    border-style: solid;
+    padding-left: 30px;
+    padding-right: 30px;
+    cursor: pointer;
+}
+
+.modify-container .body .table .row-t:hover {
+    background-color: #eeeeee;
+}
+
+.modify-container .body .table .row-t .status {
+    accent-color: #1c2a40;
+}
+
+.popup {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    top: 50%;
+    left: 1110px;
+    transform: translate(-50%, -50%);
+    line-height: 1.4;
+    background-color: white;
+    padding: 14px 28px;
+    border: #1C2A40 solid 1px;
+    border-radius: 9px;
+    max-width: 73%;
+    height: 80%;
+    padding-top: 35px;
+    z-index: 10;
+}
+
+.btn {
+    position: absolute;
+    right: 12px;
+    background-color: #1C2A40;
+    color: #fff;
+    border: 0;
+    width: 7%;
+    height: 5%;
+    border-radius: 4px;
+    padding: 10px 20px;
+    display: block;
+    right: 80px;
+    font-size: 15px;
+
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.one, .two {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+}
+
+.two {
+    background: rgba(49, 49, 49, 0.8);
+}
+
+.Div {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 4fr 4fr;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.DivS {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 3fr 3fr 3fr;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.class {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 85%;
+    /* margin: 10px; */
+}
+
+.fname-input, .lname-input, .phone-input, .email-input, .dob-input, .pob-input, .Uni-input, .degree-input, .add-input, .add2-input, .field-input, .fieldc-input, .fieldd-input {
+    display: flex;
+    width: 80%;
+    background-color: rgb(238, 238, 238);
+    border: #999 solid 1px;
+    color: #1C2A40;
+    border-radius: 5px;
+    padding: 12px;
+    margin-top: 5px;
+}
+
+.fname, .lname, .phone, .email, .dob, .pob, .Uni, .degree, .address, .address2, .image, .mname, .pemail, .pphone, .class {
+    margin-left: 24px;
+    padding-bottom: 40px;
+    padding-left: 18px;
+    color: #1C2A40;
+}
+
+.submit1 {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background-color: #1C2A40;
+    color: #fff;
+    border: #fff solid 1px;
+    border-radius: 5px;
+    width: 10%;
+    height: 7%;
+    margin-left: 10%;
+}
+
+.Content {
+    position: relative;
+    background-color: aqua;
+    top: 15vh;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    border: #1C2A40 solid 1px;
+    width: 100%;
+    /* width: fit-content; */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.Table {
+    align-self: flex-start;
+    background-color: transparent;
+    width: fit-content;
+
+}
+
+/*
+.Table thead {
+    border: #1C2A40 solid 1px;
+    padding: 0;
+    margin: 0;
+}
+
+.Table th {
+    border: #1C2A40 solid 1px;
+    margin: 0px;
+    padding: 12px;
+    background-color: azure;
+}
+
+.Table td {
+    position: relative;
+    border-bottom: #1C2A40 solid 1px;
+    margin: 12px;
+    padding: 12px;
+    width: 200px;
+    text-align: left;
+}
+
+.Table tr {
+    margin: 0;
+    padding: 0;
+}
+*/

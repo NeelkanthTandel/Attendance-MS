@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import HomeScreen from "./routes/HomeScreen";
 import LoginPage from "./routes/LoginPage";
 import ModifyAttend from "./routes/modifyAttend";
-
+import Teacher from "./routes/Teacher"
 // import { useNavigate } from "react-router-dom";
 // import Cookies from "universal-cookie";
 // const cookies = new Cookies();
@@ -27,6 +27,7 @@ ReactDOM.render(
       <Route path="/" element={<LoginPage />} />
       <Route path="home" element={<HomeScreen />} />
       <Route path="modify-attend" element={<ModifyAttend />} />
+      <Route path="teacher" element={<Teacher/ >} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")

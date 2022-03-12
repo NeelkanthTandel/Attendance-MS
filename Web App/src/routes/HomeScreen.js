@@ -91,7 +91,7 @@ export default function HomeScreen() {
               <MenuItem
                 icon={<FaChalkboardTeacher color={"white"} />}
                 onClick={() => {
-                  navigate("/modify-attend");
+                  navigate("/teacher");
                 }}
               >
                 Teachers
