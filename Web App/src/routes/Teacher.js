@@ -30,6 +30,18 @@ import { com_name } from "../keys";
 
 const cookies = new Cookies();
 
+const Row = (props) => {
+  return (
+    <div className="row-tT">
+      <span style={{ width: "10%" }}>{props.id}</span>
+      <span style={{ width: "60%" }}>{props.name}</span>
+      <span style={{ width: "20%" }}>{props.mail_id}</span>
+      <span style={{ width: "20%" }}>{props.phone_number}</span>
+      <span style={{ width: "20%" }}>{props.class_id}</span>
+    </div>
+  );
+};
+
 export default function Teacher() {
   const [collapsed, setCollapsed] = useState(true);
   const [Popup, setPopup] = useState(false);
@@ -127,71 +139,76 @@ export default function Teacher() {
         </SidebarFooter>
       </ProSidebar>
       <div
-        className="modify-container"
+        className="modify-containerT"
         onClick={() => {
           setCollapsed(true);
         }}
       >
-        <div className="header">
-          <div className="title">Teachers</div>
+        <div className="headerT">
+          <div className="titleT">Teachers</div>
           <div className="Add">
             <div className="save-btn" onClick={toggle}>
               Add Teacher
             </div>
-            <PopupT Popup={Popup} toggle={toggle} />
           </div>
         </div>
-        <div className="Content">
-          <div className="table">
-            <div className="table-header">
-              <span
-                style={{
-                  width: "10%",
-                  fontWeight: "bold",
-                  fontSize: 18
-                }}
-              >
+        <div className="bodyT">
+          <div className="tableT">
+            <div className="table-headerT">
+              <span style={{ width: "10%", fontWeight: "bold", fontSize: 18 }}>
+                Id
+              </span>
+              <span style={{ width: "60%", fontWeight: "bold", fontSize: 18 }}>
                 Name
               </span>
-              <span
-                style={{
-                  width: "10%",
-                  fontWeight: "bold",
-                  fontSize: 18
-                }}
-              >
-                Teacher ID
+              <span style={{ width: "20%", fontWeight: "bold", fontSize: 18 }}>
+                Mail Id
               </span>
-              <span
-                style={{
-                  width: "10%",
-                  fontWeight: "bold",
-                  fontSize: 18
-                }}
-              >
-                Email
-              </span>
-              <span
-                style={{
-                  width: "10%",
-                  fontWeight: "bold",
-                  fontSize: 18
-                }}
-              >
+              <span style={{ width: "20%", fontWeight: "bold", fontSize: 18 }}>
                 Phone Number
               </span>
-              <span
-                style={{
-                  width: "10%",
-                  fontWeight: "bold",
-                  fontSize: 18
-                }}
-              >
-                Class
+              <span style={{ width: "20%", fontWeight: "bold", fontSize: 18 }}>
+                Class ID
               </span>
+              {/* <table>
+              <thead className="table-headerT">
+                <div className="table-headerT">
+                  <tr>
+                    <th>Name</th>
+                    <th>Teacher ID</th>
+                    <th>Email</th>
+                    <th>Phone number</th>
+                    <th>Class</th>
+                  </tr>
+                </div>
+              </thead>
+              <tbody>
+                {teacher.map((teacher) => (
+                  <tr>
+                    <td>{teacher.name}</td>
+                    <td>{teacher.teacher_id}</td>
+                    <td>{teacher.mail_id}</td>
+                    <td>{teacher.phone_number}</td>
+                    <td>{teacher.class_id}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table> */}
             </div>
+            {teacher.map((data) => {
+              return (
+                <Row
+                  id={data.teacher_id}
+                  name={data.name}
+                  mail_id={data.mail_id}
+                  phone_number={data.phone_number}
+                  class_id={data.class_id}
+                />
+              );
+            })}
           </div>
         </div>
+        <PopupT Popup={Popup} toggle={toggle} />
       </div>
     </div>
   );

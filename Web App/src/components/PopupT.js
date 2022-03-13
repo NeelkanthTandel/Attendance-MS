@@ -1,6 +1,6 @@
 import React from "react";
 import "../css/teacher.css";
-// import Drop from "./Drop";
+import Drop from "./Drop";
 // import "bootstrap/dist/css/bootstrap.min.css";
 
 function PopupT(props) {
@@ -12,7 +12,7 @@ function PopupT(props) {
           <div className="popup">
             <form className="Div">
               <div className="Image">
-                {/* <Drop /> */}
+                <Drop />
               </div>
 
               <div className="input1">
