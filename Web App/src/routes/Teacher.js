@@ -7,7 +7,7 @@ import {
   MenuItem,
   SidebarFooter,
   SidebarHeader,
-  SidebarContent
+  SidebarContent,
 } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,7 @@ import "../css/sideBar.css";
 import {
   FaChalkboardTeacher,
   FaChevronRight,
-  FaChevronLeft
+  FaChevronLeft,
 } from "react-icons/fa";
 import { HiHome } from "react-icons/hi";
 import { MdSchool } from "react-icons/md";
@@ -32,12 +32,17 @@ const cookies = new Cookies();
 
 const Row = (props) => {
   return (
-    <div className="row-tT">
+    <div
+      style={{
+        borderBottomWidth: props.islast ? 0 : 0.5,
+      }}
+      className="row-tT"
+    >
       <span style={{ width: "10%" }}>{props.id}</span>
-      <span style={{ width: "60%" }}>{props.name}</span>
-      <span style={{ width: "20%" }}>{props.mail_id}</span>
+      <span style={{ width: "30%" }}>{props.name}</span>
+      <span style={{ width: "30%" }}>{props.mail_id}</span>
       <span style={{ width: "20%" }}>{props.phone_number}</span>
-      <span style={{ width: "20%" }}>{props.class_id}</span>
+      <span style={{ width: "10%" }}>{props.class_id}</span>
     </div>
   );
 };
@@ -49,8 +54,18 @@ export default function Teacher() {
     setPopup(!Popup);
   };
   const navigate = useNavigate();
-
   const [teacher, setTeacher] = useState(data);
+  const [filteredDet, setFilteredDet] = useState(teacher);
+
+  const searchHandler = (event) => {
+    const searchText = event.target.value;
+    console.log(parseInt(searchText));
+    setFilteredDet(
+      teacher.filter((data) =>
+        data.name.toLowerCase().includes(searchText.toLowerCase())
+      )
+    );
+  };
   return (
     <div className="main-container">
       <ProSidebar
@@ -120,7 +135,7 @@ export default function Teacher() {
         </SidebarContent>
         <SidebarFooter
           style={{
-            paddingLeft: 40
+            paddingLeft: 0,
           }}
         >
           <div className="s-footer">
@@ -153,21 +168,26 @@ export default function Teacher() {
           </div>
         </div>
         <div className="bodyT">
+          <input
+            className="searchBar"
+            placeholder="Search"
+            onChange={searchHandler}
+          />
           <div className="tableT">
             <div className="table-headerT">
               <span style={{ width: "10%", fontWeight: "bold", fontSize: 18 }}>
                 Id
               </span>
-              <span style={{ width: "60%", fontWeight: "bold", fontSize: 18 }}>
+              <span style={{ width: "30%", fontWeight: "bold", fontSize: 18 }}>
                 Name
               </span>
-              <span style={{ width: "20%", fontWeight: "bold", fontSize: 18 }}>
+              <span style={{ width: "30%", fontWeight: "bold", fontSize: 18 }}>
                 Mail Id
               </span>
               <span style={{ width: "20%", fontWeight: "bold", fontSize: 18 }}>
                 Phone Number
               </span>
-              <span style={{ width: "20%", fontWeight: "bold", fontSize: 18 }}>
+              <span style={{ width: "10%", fontWeight: "bold", fontSize: 18 }}>
                 Class ID
               </span>
               {/* <table>
@@ -195,7 +215,7 @@ export default function Teacher() {
               </tbody>
             </table> */}
             </div>
-            {teacher.map((data) => {
+            {filteredDet.map((data, index) => {
               return (
                 <Row
                   id={data.teacher_id}
@@ -203,6 +223,8 @@ export default function Teacher() {
                   mail_id={data.mail_id}
                   phone_number={data.phone_number}
                   class_id={data.class_id}
+                  key={index}
+                  islast={index == filteredDet.length - 1 ? true : false}
                 />
               );
             })}

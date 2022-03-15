@@ -7,7 +7,9 @@ import "bootstrap/dist/css/bootstrap.css";
 import HomeScreen from "./routes/HomeScreen";
 import LoginPage from "./routes/LoginPage";
 import ModifyAttend from "./routes/modifyAttend";
-import Teacher from "./routes/Teacher"
+import Teacher from "./routes/Teacher";
+import AssignTeacher from "./routes/AssignTeacher";
+
 // import { useNavigate } from "react-router-dom";
 // import Cookies from "universal-cookie";
 // const cookies = new Cookies();
@@ -27,7 +29,8 @@ ReactDOM.render(
       <Route path="/" element={<LoginPage />} />
       <Route path="home" element={<HomeScreen />} />
       <Route path="modify-attend" element={<ModifyAttend />} />
-      <Route path="teacher" element={<Teacher/ >} />
+      <Route path="teacher" element={<Teacher />} />
+      <Route path="assign-teacher" element={<AssignTeacher />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")

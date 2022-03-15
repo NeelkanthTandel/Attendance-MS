@@ -113,4 +113,32 @@ const studentDetails = [
   },
 ];
 
+export const classAllotment = [
+  {
+    class: 1,
+    div: "A",
+    teacherName: "Hetvi Pori",
+  },
+  {
+    class: 1,
+    div: "B",
+    teacherName: "Hetvi",
+  },
+  {
+    class: 2,
+    div: "A",
+    teacherName: "Soni",
+  },
+  {
+    class: 3,
+    div: "A",
+    teacherName: "Sonii",
+  },
+  {
+    class: 4,
+    div: "A",
+    teacherName: "Pori",
+  },
+];
+
 export default studentDetails;

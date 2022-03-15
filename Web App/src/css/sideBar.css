@@ -4,6 +4,10 @@ $icon-bg-color: #bcbcbc;
 
 @import "~react-pro-sidebar/dist/scss/styles.scss"; */
 
+input:focus-visible {
+  outline-width: 0px;
+}
+
 .s-logo-container {
   padding: 24px;
   text-transform: uppercase;
@@ -202,4 +206,181 @@ $icon-bg-color: #bcbcbc;
 
 .modify-container .body .table .row-t .status {
   accent-color: #1c2a40;
+}
+
+/*  Assign Teacher screen css */
+.assign-container {
+  margin-left: 98px;
+  padding-left: 60px;
+  padding-right: 60px;
+  display: flex;
+  flex: 1;
+  width: 100%;
+  flex-direction: column;
+  overflow-y: scroll;
+}
+
+.assign-container .header {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.assign-container .header .title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1c2a40;
+}
+
+.assign-container .body {
+  margin-top: 40px;
+  margin-bottom: 60px;
+}
+
+.assign-container .body .searchBar {
+  border: 1.5px solid #1c2a40;
+  border-radius: 5px;
+  width: 30%;
+  padding: 6px;
+  padding-left: 8px;
+  background-color: #e3e3e3;
+}
+
+.assign-container .body .table {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
+  border-radius: 10px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.assign-container .body .table .table-header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  flex: 1px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-top-width: 0px;
+  border-left-width: 0px;
+  border-right-width: 0px;
+  border-bottom-width: 1.5px;
+  border-color: #1c2a40;
+  border-style: solid;
+}
+.assign-container .body .table .edit-button {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 15px;
+  padding-right: 15px;
+  color: white;
+  border-radius: 5px;
+  border: 1.5px solid #1c2a40;
+  font-size: 14px;
+  align-self: baseline;
+  cursor: pointer;
+  color: #1c2a40;
+  font-weight: 500;
+  transition-duration: 0.3s;
+  text-align: center;
+}
+
+.assign-container .body .table .row-t {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-top-width: 0;
+  border-left-width: 0;
+  border-right-width: 0;
+  border-color: black;
+  border-style: solid;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+/* .assign-container .body .table .row-t:hover {
+  background-color: #eeeeee;
+}
+
+.assign-container .body .table .row-t .status {
+  accent-color: #1c2a40;
+} */
+
+/* Assign-Teacher edit-button Modal css */
+.modal,
+.overlay {
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  position: fixed;
+}
+
+.overlay {
+  background: rgba(49, 49, 49, 0.8);
+}
+.modal-content {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1.4;
+  background: #f1f1f1;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 600px;
+  min-width: 300px;
+}
+.inputBox1 {
+  color: black;
+  border: 1px solid;
+  border-radius: 5px;
+  border-color: black;
+  width: 100%;
+  padding: 8px;
+  padding-left: 8px;
+}
+.inputBox2 {
+  margin-top: 20px;
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 100%;
+  padding: 8px;
+  padding-left: 8px;
+  background-color: #eeeeee;
+}
+
+.saveModal-button {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 24px;
+  padding-right: 24px;
+  color: white;
+  border-radius: 5px;
+  border: 1.5px solid #1c2a40;
+  font-size: 14px;
+  align-self: center;
+  cursor: pointer;
+  color: #1c2a40;
+  font-weight: 500;
+  transition-duration: 0.3s;
+  margin-top: 30px;
+}
+
+.saveModal-button:hover {
+  background-color: #1c2a40;
+  color: white;
 }
