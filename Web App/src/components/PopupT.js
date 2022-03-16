@@ -11,9 +11,9 @@ function PopupT(props) {
           <div className="two" onClick={props.toggle} />
           <div className="popup">
             <form className="Div">
-              <div className="Image">
+              {/* <div className="Image">
                 <Drop />
-              </div>
+              </div> */}
 
               <div className="input1">
                 <div className="fname">
@@ -34,7 +34,7 @@ function PopupT(props) {
                     placeholder="Email"
                   />
                 </div>
-                <div className="dob">
+                {/* <div className="dob">
                   <label className="">Date of Birth</label>
                   <input
                     className="dob-input"
@@ -60,7 +60,7 @@ function PopupT(props) {
                     required="required"
                     placeholder="Address"
                   />
-                </div>
+                </div> */}
               </div>
 
               <div className="input2">
@@ -82,7 +82,7 @@ function PopupT(props) {
                     placeholder="Phone"
                   />
                 </div>
-                <div className="pob">
+                {/* <div className="pob">
                   <label className="">Place of birth</label>
                   <input
                     className="pob-input"
@@ -99,7 +99,7 @@ function PopupT(props) {
                     required="required"
                     placeholder="Degree"
                   />
-                </div>
+                </div> */}
               </div>
 
               <input className="submit1" type="submit"></input>
@@ -110,6 +110,5 @@ function PopupT(props) {
     </>
   );
 }
-
 
 export default PopupT;
