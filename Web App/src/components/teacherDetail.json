@@ -2,15 +2,19 @@
   {
     "name": "neel  Administrator",
     "teacher_id": "SNT001",
+    "className": "Class 1",
+    "div": "A",
     "mail_id": "dummyadmin@gmail.com",
     "phone_number": "1234567001",
-    "address": "Nadiad - Petlad Rd, Highway, Changa, Gujarat 388421",
+    "address": "Nadiad - Petlad Rd, Highway, Changa, Gujarat 388421 jfwjegfwurytkewurgjbdkjdhkwjehwiueyluwej",
     "class_id": "admin_class",
     "isAdmin": true
   },
   {
     "name": "Dummy Administratordgsd",
     "teacher_id": "SNT001",
+    "className": "Class 1",
+    "div": "B",
     "mail_id": "dummyadmin@gmail.com",
     "phone_number": "1234567001",
     "address": "Nadiad - Petlad Rd, Highway, Changa, Gujarat 388421",
@@ -20,6 +24,8 @@
   {
     "name": "Dummy Administrator",
     "teacher_id": "SNT001",
+    "className": "Class 2",
+    "div": "A",
     "mail_id": "dummyadmin@gmail.com",
     "phone_number": "1234567001",
     "address": "Nadiad - Petlad Rd, Highway, Changa, Gujarat 388421",
@@ -29,6 +35,8 @@
   {
     "name": "Dummy Administrator",
     "teacher_id": "SNT001",
+    "className": "Class 2",
+    "div": "B",
     "mail_id": "dummyadmin@gmail.com",
     "phone_number": "1234567001",
     "address": "Nadiad - Petlad Rd, Highway, Changa, Gujarat 388421",
@@ -38,6 +46,8 @@
   {
     "name": "Dummy Administrator",
     "teacher_id": "SNT001",
+    "className": "Class 3",
+    "div": "A",
     "mail_id": "dummyadmin@gmail.com",
     "phone_number": "1234567001",
     "address": "Nadiad - Petlad Rd, Highway, Changa, Gujarat 388421",
@@ -47,6 +57,8 @@
   {
     "name": "Dummy Administrator",
     "teacher_id": "SNT001",
+    "className": "Class 3",
+    "div": "B",
     "mail_id": "dummyadmin@gmail.com",
     "phone_number": "1234567001",
     "address": "Nadiad - Petlad Rd, Highway, Changa, Gujarat 388421",
@@ -56,6 +68,8 @@
   {
     "name": "Dummy Administrator",
     "teacher_id": "SNT001",
+    "className": "Class 4",
+    "div": "A",
     "mail_id": "dummyadmin@gmail.com",
     "phone_number": "1234567001",
     "address": "Nadiad - Petlad Rd, Highway, Changa, Gujarat 388421",

@@ -64,7 +64,7 @@
   border-radius: 10px;
   flex: 1;
   /* background-color: azure; */
-  overflow: hidden;
+  overflow-y: hidden;
   /* border-bottom-width: 0px; */
 }
 
@@ -84,6 +84,23 @@
   border-style: solid;
 }
 
+.modify-containerT .bodyT .tableT .remove-button {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 15px;
+  padding-right: 15px;
+  color: white;
+  border-radius: 5px;
+  border: 1.5px solid #1c2a40;
+  font-size: 14px;
+  align-self: baseline;
+  cursor: pointer;
+  color: #1c2a40;
+  font-weight: 500;
+  transition-duration: 0.3s;
+  text-align: center;
+}
+
 .modify-containerT .bodyT .tableT .row-tT {
   display: flex;
   flex-direction: row;
@@ -98,6 +115,7 @@
   border-style: solid;
   padding-left: 30px;
   padding-right: 30px;
+  align-items: center;
 }
 
 .modify-containerT .bodyT .tableT .row-tT:hover {
@@ -177,8 +195,6 @@
 .email-input,
 .dob-input,
 .pob-input,
-.Uni-input,
-.degree-input,
 .add-input,
 .add2-input,
 .field-input,
@@ -227,4 +243,86 @@
   padding-bottom: 5px;
   padding-left: 24px;
   padding-right: 24px;
+}
+
+.modal,
+.overlay {
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  position: fixed;
+}
+
+.overlay {
+  background: rgba(49, 49, 49, 0.8);
+}
+.modal-content {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1.4;
+  background: #f1f1f1;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 600px;
+  min-width: 300px;
+}
+
+.detail {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+.detail-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.detail-container .detail {
+  width: 50%;
+}
+
+.Id-input {
+  font-size: 18;
+  color: black;
+  font-size: 16;
+}
+
+.ClassDiv-input {
+  color: black;
+  width: 50%;
+  padding: 8px;
+  padding-left: 8px;
+}
+
+.Name-input {
+  color: black;
+  width: 50%;
+  padding: 8px;
+  padding-left: 8px;
+}
+
+.Email-input {
+  color: black;
+  width: 50%;
+  padding: 8px;
+  padding-left: 8px;
+}
+
+.Phone-input {
+  color: black;
+  width: 50%;
+  padding: 8px;
+  padding-left: 8px;
+}
+
+.Address-input {
+  color: black;
+  width: 50%;
+  padding: 8px;
+  padding-left: 8px;
 }
