@@ -163,12 +163,13 @@
 .Div {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 4fr 4fr;
+  grid-template-columns: 4fr 4fr;
   background-color: white;
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
+  margin-top: 15px;
 }
 
 .DivS {
@@ -234,7 +235,8 @@
 .submit1 {
   position: absolute;
   bottom: 12px;
-  right: 12px;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: #1c2a40;
   color: white;
   border-radius: 5px;

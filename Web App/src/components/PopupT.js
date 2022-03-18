@@ -51,16 +51,16 @@ function PopupT(props) {
                     required="required"
                     placeholder="University"
                   />
-                </div>
+                </div> */}
                 <div className="address">
                   <label className="">Address</label>
-                  <input
+                  <textarea
                     className="add-input"
                     type="text"
                     required="required"
                     placeholder="Address"
                   />
-                </div> */}
+                </div>
               </div>
 
               <div className="input2">

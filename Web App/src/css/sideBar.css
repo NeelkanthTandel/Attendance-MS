@@ -4,7 +4,8 @@ $icon-bg-color: #bcbcbc;
 
 @import "~react-pro-sidebar/dist/scss/styles.scss"; */
 
-input:focus-visible {
+input:focus-visible,
+textarea:focus-visible {
   outline-width: 0px;
 }
 
