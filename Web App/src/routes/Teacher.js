@@ -20,6 +20,7 @@ import {
   FaChevronRight,
   FaChevronLeft,
 } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
 import { HiHome } from "react-icons/hi";
 import { MdSchool } from "react-icons/md";
 import { SiGoogleclassroom } from "react-icons/si";
@@ -58,78 +59,82 @@ const Row = (props) => {
           Remove
         </span>
         {modal ? (
-          <div className="modal">
+          <div className="remove-modal">
             <div onClick={toggleModal} className="overlay"></div>
-            <div className="modal-content">
-              {/* <div className="Name-input">
-                <b>Name</b>: {props.name}
+            <div className="remove-modal-content">
+              <div className="remove-modal-header">
+                <div className="remove-modal-header-title">
+                  Delete Teacher Detail
+                </div>
+                <IoMdClose
+                  className="icon-close"
+                  color="black"
+                  size={"22px"}
+                  onClick={() => {
+                    setModal(!modal);
+                  }}
+                />
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  flex: "row",
-                  marginTop: "5px",
-                  justifyContent: "space-between",
-                }}
-              >
-                <div className="Id-input">ID : {props.id}</div>
-                <div className="ClassDiv-input">
-                  ClassID : {props.className + props.div}
+              <div style={{ padding: "30px", paddingTop: "15px" }}>
+                <div className="confirmation-text">
+                  Are you sure you want to delete teacher details? You won't be
+                  able to see details once you delete
+                </div>
+                <div className="detail">
+                  <b>Name: </b>
+                  {props.name}
+                </div>
+                {/* <div className="detail-container"> */}
+                <div className="detail">
+                  <b>Id: </b>
+                  {props.id}
+                </div>
+                <div className="detail">
+                  <b>Class: </b>
+                  {props.className + props.div}
+                </div>
+                {/* </div> */}
+                <div className="detail">
+                  <b>Mail: </b>
+                  {props.mail_id}
+                </div>
+                <div className="detail">
+                  <b>Phone no.: </b>
+                  {props.phone_number}
+                </div>
+                <div className="detail">
+                  <b>Address: </b>
+                  {props.address}
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-evenly",
+                  }}
+                >
+                  <span
+                    className="remove-modal-button"
+                    // value={newTeacher}
+                    // onChange={setNewTeacher(newTeacher)}
+                    onClick={() => {
+                      setModal(!modal);
+                    }}
+                  >
+                    Cancel
+                  </span>
+                  <span
+                    className="remove-modal-button"
+                    // value={newTeacher}
+                    // onChange={setNewTeacher(newTeacher)}
+                    onClick={() => {
+                      setModal(!modal);
+                    }}
+                  >
+                    Confirm
+                  </span>
                 </div>
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  flex: "row",
-                  marginTop: "5px",
-                  justifyContent: "space-between",
-                }}
-              >
-                <div className="Email-input">Mail ID : {props.mail_id}</div>
-                <div className="Phone-input">
-                  Phone Number : {props.phone_number}
-                </div>
-              </div>
-              <div className="Address-input" style={{ marginTop: "5px" }}>
-                Address : {props.address}
-              </div> */}
-
-              <div className="detail">
-                <b>Name: </b>
-                {props.name}
-              </div>
-              {/* <div className="detail-container"> */}
-              <div className="detail">
-                <b>Id: </b>
-                {props.id}
-              </div>
-              <div className="detail">
-                <b>Class: </b>
-                {props.className + props.div}
-              </div>
-              {/* </div> */}
-              <div className="detail">
-                <b>Mail: </b>
-                {props.mail_id}
-              </div>
-              <div className="detail">
-                <b>Phone no.: </b>
-                {props.phone_number}
-              </div>
-              <div className="detail">
-                <b>Address: </b>
-                {props.address}
-              </div>
-              <span
-                className="saveModal-button"
-                // value={newTeacher}
-                // onChange={setNewTeacher(newTeacher)}
-                onClick={() => {
-                  setModal(!modal);
-                }}
-              >
-                Remove
-              </span>
             </div>
           </div>
         ) : null}
@@ -226,7 +231,7 @@ export default function Teacher() {
         </SidebarContent>
         <SidebarFooter
           style={{
-            paddingLeft: 0,
+            paddingLeft: 40,
           }}
         >
           <div className="s-footer">
