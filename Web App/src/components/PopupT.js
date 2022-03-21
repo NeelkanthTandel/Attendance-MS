@@ -25,8 +25,12 @@ function PopupT(props) {
                     placeholder="First Name"
                   />
                 </div>
+                <div className="TeacherId">
+                  <label>Id</label>
+                  <div className="Id-input">SNT000</div>
+                </div>
                 <div className="email">
-                  <label className="">Email</label>
+                  <label>Email</label>
                   <input
                     className="email-input"
                     type="text"
@@ -62,9 +66,8 @@ function PopupT(props) {
                   />
                 </div>
               </div>
-
               <div className="input2">
-                <div className="lname">
+                {/* <div className="lname">
                   <label className="">Last Name</label>
                   <input
                     className="lname-input"
@@ -72,7 +75,7 @@ function PopupT(props) {
                     required="required"
                     placeholder="Last Name"
                   />
-                </div>
+                </div> */}
                 <div className="phone">
                   <label className="">Phone</label>
                   <input
@@ -81,6 +84,28 @@ function PopupT(props) {
                     required="required"
                     placeholder="Phone"
                   />
+                </div>
+                <div className="ClassDiv">
+                  <div style={{ display: "flex", flexDirection: "row" }}>
+                    <select className="Class" placeholder="Class">
+                      <option>Class 1</option>
+                      <option>Class 2</option>
+                      <option>Class 3</option>
+                      <option>Class 4</option>
+                      <option>Class 5</option>
+                      <option>Class 6</option>
+                      <option>Class 7</option>
+                      <option>Class 8</option>
+                      <option>Class 9</option>
+                      <option>Class 10</option>
+                      <option>Class 11</option>
+                      <option>Class 12</option>
+                    </select>
+                    <select className="Div">
+                      <option>A</option>
+                      <option>B</option>
+                    </select>
+                  </div>
                 </div>
                 {/* <div className="pob">
                   <label className="">Place of birth</label>
@@ -99,7 +124,7 @@ function PopupT(props) {
                     required="required"
                     placeholder="Degree"
                   />
-                </div> */}
+              //   </div> */}
               </div>
 
               <input className="submit1" type="submit"></input>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../css/teacher.css";
-import PopupT from "../components/PopupT";
+// import PopupT from "../components/PopupT";
 import {
   ProSidebar,
   Menu,
@@ -106,34 +106,30 @@ const Row = (props) => {
                   <b>Address: </b>
                   {props.address}
                 </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-evenly",
+              </div>
+              <div className="modal-button">
+                <span
+                  className="remove-modal-button"
+                  // value={newTeacher}
+                  // onChange={setNewTeacher(newTeacher)}
+                  style={{ borderRightWidth: "0.5px" }}
+                  onClick={() => {
+                    setModal(!modal);
                   }}
                 >
-                  <span
-                    className="remove-modal-button"
-                    // value={newTeacher}
-                    // onChange={setNewTeacher(newTeacher)}
-                    onClick={() => {
-                      setModal(!modal);
-                    }}
-                  >
-                    Cancel
-                  </span>
-                  <span
-                    className="remove-modal-button"
-                    // value={newTeacher}
-                    // onChange={setNewTeacher(newTeacher)}
-                    onClick={() => {
-                      setModal(!modal);
-                    }}
-                  >
-                    Confirm
-                  </span>
-                </div>
+                  Cancel
+                </span>
+                <span
+                  className="remove-modal-button"
+                  // value={newTeacher}
+                  // onChange={setNewTeacher(newTeacher)}
+                  style={{ borderLeftWidth: "0.5px" }}
+                  onClick={() => {
+                    setModal(!modal);
+                  }}
+                >
+                  Confirm
+                </span>
               </div>
             </div>
           </div>
@@ -152,7 +148,10 @@ export default function Teacher() {
   const navigate = useNavigate();
   const [teacher, setTeacher] = useState(data);
   const [filteredDet, setFilteredDet] = useState(teacher);
-
+  const [addModal, setAddModal] = React.useState(false);
+  const toggleAddModal = () => {
+    setAddModal(!addModal);
+  };
   const searchHandler = (event) => {
     const searchText = event.target.value;
     console.log(parseInt(searchText));
@@ -258,9 +257,115 @@ export default function Teacher() {
         <div className="headerT">
           <div className="titleT">Teachers</div>
           <div className="Add">
-            <div className="save-btn" onClick={toggle}>
+            <div className="save-btn" onClick={toggleAddModal}>
               Add Teacher
             </div>
+            {addModal ? (
+              <div className="add-modal">
+                <div onClick={toggleAddModal} className="overlay"></div>
+                <div className="add-modal-content">
+                  <div className="add-modal-header">
+                    <div className="add-modal-header-title">
+                      Add Teacher Detail
+                    </div>
+                    <IoMdClose
+                      className="icon-close"
+                      color="black"
+                      size={"22px"}
+                      onClick={() => {
+                        setAddModal(!addModal);
+                      }}
+                    />
+                  </div>
+                  <div className="add-modal-innerContent">
+                    <div className="row1">
+                      <div className="Name" style={{ width: "100%" }}>
+                        <label>Name</label>
+                        <input
+                          className="Name-input"
+                          type="text"
+                          required="required"
+                          placeholder="Name"
+                        />
+                      </div>
+                    </div>
+                    <div className="row2">
+                      <div className="Teacher-id">
+                        <label>Teacher Id</label>
+                        <div
+                          className="Teacher-id-input"
+                          style={{ fontWeight: "bold" }}
+                        >
+                          Teacher002
+                        </div>
+                      </div>
+                      <div className="Phone-no">
+                        <label>Phone No.</label>
+                        <input
+                          className="Phone-no-input"
+                          type="text"
+                          required="required"
+                          placeholder="Phone Number"
+                        />
+                      </div>
+                    </div>
+                    <div className="row3">
+                      <div className="Email">
+                        <label>Email</label>
+                        <input
+                          className="Email-input"
+                          type="text"
+                          required="required"
+                          placeholder="Email"
+                        />
+                      </div>
+                      <div className="ClassDiv">
+                        <div className="ClassHeading">
+                          <label>Class</label>
+                          <select
+                            className="classDD"
+                            placeholder="Class"
+                            style={{ padding: "2px" }}
+                          >
+                            <option>Class 1</option>
+                            <option>Class 2</option>
+                            <option>Class 3</option>
+                            <option>Class 4</option>
+                            <option>Class 5</option>
+                            <option>Class 6</option>
+                            <option>Class 7</option>
+                            <option>Class 8</option>
+                            <option>Class 9</option>
+                            <option>Class 10</option>
+                            <option>Class 11</option>
+                            <option>Class 12</option>
+                          </select>
+                        </div>
+                        <div className="DivHeading">
+                          <label>Div</label>
+                          <select className="divDD" style={{ padding: "2px" }}>
+                            <option>A</option>
+                            <option>B</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row4">
+                      <div className="Address" style={{ width: "100%" }}>
+                        <label>Address</label>
+                        <textarea
+                          className="address-input"
+                          type="text"
+                          required="required"
+                          placeholder="Address"
+                        />
+                      </div>
+                    </div>
+                    <span className="submit-button">Submit</span>
+                  </div>
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
         <div className="bodyT">
@@ -342,7 +447,8 @@ export default function Teacher() {
             })}
           </div>
         </div>
-        <PopupT Popup={Popup} toggle={toggle} />
+
+        {/* <PopupT Popup={Popup} toggle={toggle} /> */}
       </div>
     </div>
   );
