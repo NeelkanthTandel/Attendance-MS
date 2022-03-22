@@ -325,7 +325,7 @@ export default function Teacher() {
                           <select
                             className="classDD"
                             placeholder="Class"
-                            style={{ padding: "2px" }}
+                            style={{ padding: "3px" }}
                           >
                             <option>Class 1</option>
                             <option>Class 2</option>
@@ -343,7 +343,7 @@ export default function Teacher() {
                         </div>
                         <div className="DivHeading">
                           <label>Div</label>
-                          <select className="divDD" style={{ padding: "2px" }}>
+                          <select className="divDD" style={{ padding: "3px" }}>
                             <option>A</option>
                             <option>B</option>
                           </select>
@@ -361,8 +361,15 @@ export default function Teacher() {
                         />
                       </div>
                     </div>
-                    <span className="submit-button">Submit</span>
                   </div>
+                  <span
+                    className="submit-button"
+                    onClick={() => {
+                      setAddModal(!addModal);
+                    }}
+                  >
+                    Submit
+                  </span>
                 </div>
               </div>
             ) : null}
