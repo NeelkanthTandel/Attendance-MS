@@ -45,9 +45,72 @@ app.post("/attendance/mark", async (req, res) => {
   }
 });
 
+app.post("/getAttendance", requireToken, async (req, res) => {
+  try {
+    const user = req.user;
+    const { date, classId } = req.body;
+    console.log("\n/getAttendance");
+    if (!user || !date) {
+      console.log("Details not found");
+      return res
+        .status(422)
+        .send({ isError: true, message: "Details must be provided" });
+    }
+    console.log(user.teacher_id, " ", date, " ", classId);
+
+    const stuAtt = await dblib.getAttendance(user.teacher_id, date, classId);
+    // console.log(stuAtt);
+    return res.status(200).send({ isError: false, stu_att: stuAtt });
+  } catch (err) {
+    console.log("get attendance error: ", err);
+    res.status(400).send({ isError: true, message: err.message });
+  }
+});
+
+app.get("/getTeacherList", requireToken, async (req, res) => {
+  try {
+    console.log("/getTeacherList");
+    const teacherList = await prisma.teacher_detail.findMany({
+      orderBy: { teacher_id: "asc" },
+      include: {
+        class_detail: {
+          select: {
+            standard: true,
+            div: true,
+          },
+        },
+      },
+    });
+    return res.status(200).send({ isError: false, teacherList });
+  } catch (err) {
+    console.log("getTeacherList: ", err);
+    return res.status(400).send({ isError: true, message: err.message });
+  }
+});
+
+// app.get("/getClass", requireToken, async (req, res) => {
+//   // const user = req.user;
+
+//   try {
+//     console.log("/getClass");
+//     const classDet = await prisma.class_detail.findMany();
+//     console.log(classDet);
+//     return res.status(200).send({ isError: false, classDet });
+//   } catch (err) {
+//     console.log("Get Class error: ", err);
+//     return res.status(400).send({ isError: true, message: err.message });
+//   }
+// });
+
 //auth
 app.get("/auth/me", requireToken, async (req, res) => {
-  res.status(200).send({ user: req.user });
+  try {
+    const classDet = await prisma.class_detail.findMany();
+    return res.status(200).send({ isError: false, user: req.user, classDet });
+  } catch (err) {
+    console.log("me: ", err);
+    return res.status(400).send({ isError: true, message: err.message });
+  }
 });
 
 app.post("/auth/login", async (req, res) => {
@@ -96,27 +159,6 @@ app.post("/auth/login", async (req, res) => {
 });
 
 //teacher module
-
-app.post("/getAttendance", requireToken, async (req, res) => {
-  try {
-    const user = req.user;
-    const { date } = req.body;
-    console.log("/getAttendance");
-    if (!user || !date) {
-      return res
-        .status(422)
-        .send({ isError: true, message: "Details must be provided" });
-    }
-    console.log(user.teacher_id, " ", date);
-
-    const stuAtt = await dblib.getAttendance(user.teacher_id, date);
-    // console.log(stuAtt);
-    return res.status(200).send({ isError: false, stu_att: stuAtt });
-  } catch (err) {
-    console.log("get attendance error: ", err);
-    res.status(400).send({ isError: true, message: err.message });
-  }
-});
 
 app.post("/modifyAttendance", requireToken, async (req, res) => {
   const updAttDet = req.body.updAttDet;

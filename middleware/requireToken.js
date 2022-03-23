@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const jwtkey = process.env.JWTKEY;
 
 module.exports = (req, res, next) => {
-  console.log("in require token");
+  console.log("\n\nin require token");
   const { authorization } = req.headers;
   //authorization === Bearer sfafsafa
   if (!authorization) {

@@ -126,18 +126,22 @@ async function toggleOrMarkAttendance(rfid_id) {
   }
 }
 
-const getAttendance = async (teacher_id, date) => {
-  const teachDet = await prisma.teacher_detail.findUnique({
-    select: {
-      class_id: true,
-    },
-    where: {
-      teacher_id,
-    },
-  });
+const getAttendance = async (teacher_id, date, class_id) => {
+  if (!class_id) {
+    const teachDet = await prisma.teacher_detail.findUnique({
+      select: {
+        class_id: true,
+      },
+      where: {
+        teacher_id,
+      },
+    });
+    class_id = teachDet.class_id;
+  }
+  console.log("class_id in func: ", class_id);
   const stuDet = await prisma.student_detail.findMany({
     where: {
-      class_id: teachDet.class_id,
+      class_id: class_id,
     },
 
     select: {
