@@ -387,7 +387,7 @@ export default function Teacher() {
             ) : null}
           </div>
         </div>
-        <div className="bodyT">
+        <div className="bodyT" style={{ marginBottom: "60px" }}>
           <input
             className="searchBar"
             placeholder="Search"
@@ -461,7 +461,7 @@ export default function Teacher() {
                       phone_number={data.phone_number}
                       address={data.address}
                       key={index}
-                      islast={index == filteredDet.length - 1 ? true : false}
+                      islast={index === filteredDet.length - 1 ? true : false}
                     />
                   );
                 })

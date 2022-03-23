@@ -87,7 +87,7 @@ export default function HomeScreen() {
             type="checkbox"
             checked={checked}
             className="status"
-            onChange={toggleAttendance}
+            // onChange={toggleAttendance}
             style={{
               width: 15,
               height: 15,
@@ -339,18 +339,31 @@ export default function HomeScreen() {
                 )}
               </select>
             </div>
-            <input
-              onChange={(e) => setDate(e.target.value)}
-              value={date}
-              type="date"
-              placeholder="Date"
-              className="filter"
-              style={{
-                alignSelf: "baseline",
-                marginRight: 0,
-              }}
-            />
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <input
+                onChange={(e) => setDate(e.target.value)}
+                value={date}
+                type="date"
+                placeholder="Date"
+                className="filter"
+                style={{
+                  alignSelf: "baseline",
+                }}
+              />
+              <div
+                style={{
+                  color: "#1c2a40",
+                  fontWeight: "bold",
+                  fontSize: "16px",
+                  cursor: "pointer",
+                }}
+                onClick={() => {}}
+              >
+                Apply
+              </div>
+            </div>
           </div>
+
           <div className="table">
             <div className="table-header">
               <span style={{ width: "10%", fontWeight: "bold", fontSize: 18 }}>
