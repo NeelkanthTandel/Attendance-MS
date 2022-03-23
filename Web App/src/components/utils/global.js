@@ -7,6 +7,7 @@ export default class Global {
   static user = {};
   static token = null;
   static stuTodayAtt = [];
+  static classDetail = [];
 
   // constructor() {
   //   console.log("Global");
@@ -39,6 +40,18 @@ export default class Global {
     return data;
   };
 
+  static httpGET = async (endpoint) => {
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+        authorization: "Bearer " + cookies.get("token"),
+      },
+    });
+    const data = await response.json();
+    return data;
+  };
+
   static fetchStuAttendance = async (date) => {
     // let prevDate = new Date();
     // prevDate.setDate(prevDate.getDate() - 1);
@@ -64,6 +77,27 @@ export default class Global {
   static logOutHandler = () => {
     cookies.remove("token");
   };
+
+  static fetchUser = async () => {
+    if (cookies.get("token")) {
+      console.log("Fetch user");
+      try {
+        const response = await fetch(`${API_URL}/auth/me`, {
+          method: "GET",
+          headers: {
+            "content-type": "application/json",
+            authorization: "Bearer " + cookies.get("token"),
+          },
+        });
+        const data = await response.json();
+        // console.log(data);
+        Global.user = data.user;
+        Global.classDetail = data.classDet;
+      } catch (err) {
+        console.log("Error fetching user: ", err);
+      }
+    }
+  };
 }
 
 const fetchUser = async () => {
@@ -80,6 +114,7 @@ const fetchUser = async () => {
       const data = await response.json();
       // console.log(data);
       Global.user = data.user;
+      Global.classDetail = data.classDet;
     } catch (err) {
       console.log("Error fetching user: ", err);
     }

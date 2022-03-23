@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../css/teacher.css";
 // import PopupT from "../components/PopupT";
 import {
@@ -28,6 +28,7 @@ import { BsUiChecks } from "react-icons/bs";
 import data from "../components/teacherDetail.json";
 // import Global from "../components/utils/global";
 import { com_name } from "../keys";
+import Global from "../components/utils/global";
 
 const cookies = new Cookies();
 
@@ -142,12 +143,9 @@ const Row = (props) => {
 export default function Teacher() {
   const [collapsed, setCollapsed] = useState(true);
   const [Popup, setPopup] = useState(false);
-  const toggle = () => {
-    setPopup(!Popup);
-  };
   const navigate = useNavigate();
-  const [teacher, setTeacher] = useState(data);
-  const [filteredDet, setFilteredDet] = useState(teacher);
+  const [teacher, setTeacher] = useState();
+  const [filteredDet, setFilteredDet] = useState();
   const [addModal, setAddModal] = React.useState(false);
   const toggleAddModal = () => {
     setAddModal(!addModal);
@@ -161,6 +159,20 @@ export default function Teacher() {
       )
     );
   };
+
+  const fetchTeacherList = async () => {
+    const data = await Global.httpGET("/getTeacherList");
+    console.log("teacher: ", data);
+    if (!data.isError) {
+      setTeacher(data.teacherList);
+      setFilteredDet(data.teacherList);
+    }
+  };
+
+  useEffect(() => {
+    fetchTeacherList();
+  }, []);
+
   return (
     <div className="main-container">
       <ProSidebar
@@ -437,21 +449,23 @@ export default function Teacher() {
               </tbody>
             </table> */}
             </div>
-            {filteredDet.map((data, index) => {
-              return (
-                <Row
-                  id={data.teacher_id}
-                  name={data.name}
-                  className={data.className}
-                  div={data.div}
-                  mail_id={data.mail_id}
-                  phone_number={data.phone_number}
-                  address={data.address}
-                  key={index}
-                  islast={index == filteredDet.length - 1 ? true : false}
-                />
-              );
-            })}
+            {filteredDet
+              ? filteredDet.map((data, index) => {
+                  return (
+                    <Row
+                      id={data.teacher_id}
+                      name={data.name}
+                      className={data.class_detail.standard}
+                      div={data.class_detail.div}
+                      mail_id={data.mail_id}
+                      phone_number={data.phone_number}
+                      address={data.address}
+                      key={index}
+                      islast={index == filteredDet.length - 1 ? true : false}
+                    />
+                  );
+                })
+              : null}
           </div>
         </div>
 

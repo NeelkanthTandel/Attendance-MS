@@ -24,61 +24,95 @@ import { SiGoogleclassroom } from "react-icons/si";
 import { BsUiChecks } from "react-icons/bs";
 import studentDetails from "../constants/dummy-data";
 import Global from "../components/utils/global";
-import { com_name } from "../keys";
+import { API_URL, com_name } from "../keys";
 
 const cookies = new Cookies();
-
-const Row = (props) => {
-  const [checked, setChecked] = React.useState(props.checked);
-
-  return (
-    <div
-      style={{
-        borderBottomWidth: props.islast ? 0 : 0.5,
-      }}
-      className="row-t"
-      onClick={() => setChecked(!checked)}
-    >
-      <span style={{ width: "10%" }}>{props.id}</span>
-      <span style={{ width: "80%" }}>{props.name}</span>
-      <span
-        style={{
-          width: "10%",
-          textAlign: "center",
-        }}
-      >
-        <input
-          type="checkbox"
-          checked={checked}
-          className="status"
-          onChange={() => {
-            setChecked(!checked);
-          }}
-          style={{
-            width: 15,
-            height: 15,
-          }}
-        />
-      </span>
-    </div>
-  );
-};
 
 export default function HomeScreen() {
   const [collapsed, setCollapsed] = useState(true);
   const [attendanceDetail, setAttendanceDetail] = useState();
+  let updatedAttIds = [];
+
+  const [std, setStd] = useState("1");
+  const [selClass, setSelClass] = useState([]);
+  const [div, setDiv] = useState("0");
+
+  const [date, setDate] = useState("");
+  const [oldDate, setOldDate] = useState();
   // const [filteredAttDet, setFilteredAttDet] = useState();
   const navigate = useNavigate();
 
+  const Row = (props) => {
+    const [checked, setChecked] = React.useState(props.isPresent);
+
+    const toggleAttendance = () => {
+      let currentStatus = checked;
+      // console.log(currentStatus);
+      setChecked((data) => !data);
+      const index = updatedAttIds.findIndex((d) => d.attId == props.attId);
+      // console.log(index);
+
+      if (index >= 0) {
+        console.log("Removing");
+        updatedAttIds.splice(index, 1);
+      } else {
+        console.log("Inserting");
+        updatedAttIds.push({
+          stuId: props.stuId,
+          attId: props.attId,
+          status: !currentStatus,
+        });
+      }
+
+      // console.log(updatedAttIds);
+    };
+
+    return (
+      <div
+        style={{
+          borderBottomWidth: props.islast ? 0 : 0.5,
+        }}
+        className="row-t"
+        onClick={toggleAttendance}
+      >
+        <span style={{ width: "10%" }}>{props.id}</span>
+        <span style={{ width: "80%" }}>{props.name}</span>
+        <span
+          style={{
+            width: "10%",
+            textAlign: "center",
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={checked}
+            className="status"
+            onChange={toggleAttendance}
+            style={{
+              width: 15,
+              height: 15,
+            }}
+          />
+        </span>
+      </div>
+    );
+  };
+
   const fetchStuAttendance = async () => {
-    const date = new Date();
+    if (!date) {
+      return console.log("select date");
+    }
+    setOldDate(date);
     setAttendanceDetail();
     // setFilteredAttDet();
-    const data = await Global.httpPOST("/getAttendance", { date });
+    const data = await Global.httpPOST("/getAttendance", {
+      date: new Date(date),
+      classId: Global.classDetail[0] ? div : null,
+    });
     console.log("att det:  Fetch compelete");
     if (!data.isError) {
-      // console.log("att det: ", data);
-      if (data.stu_att[0].attendance[0]) {
+      console.log("att det: ", data);
+      if (data.stu_att[0] && data.stu_att[0].attendance[0]) {
         setAttendanceDetail(data.stu_att);
         // setFilteredAttDet(data.stu_att);
       } else {
@@ -88,16 +122,77 @@ export default function HomeScreen() {
     }
   };
 
+  const onSaveHandler = async () => {
+    if (!updatedAttIds[0]) {
+      return console.log("Nothing to update");
+    }
+
+    // const response = await fetch(`${API_URL}/modifyAttendance`, {
+    //   method: "POST",
+    //   headers: {
+    //     "content-type": "application/json",
+    //     authorization: "Bearer " + Global.token,
+    //   },
+    //   body: JSON.stringify({
+    //     updAttDet: updatedAttIds,
+    //   }),
+    // });
+    // const data = await response.json();
+    const data = await Global.httpPOST("/modifyAttendance", {
+      updAttDet: updatedAttIds,
+    });
+
+    console.log(data);
+    fetchStuAttendance();
+    // if (date.getUTCDate() == new Date().getUTCDate()) {
+    //   Global.fetchStuAttendance(new Date());
+    // }
+  };
+
   useEffect(() => {
-    console.log("modify: ", Global.token);
+    console.log("modify: ", Global.classDetail);
     // cookies.set('token', '', { path: '/' });
     if (!Global.isLoggedIn()) {
       return navigate("/");
     }
+    if (!Global.user) {
+      console.log("Fetching user");
+      Global.fetchUser().then(console.log(Global.classDetail));
+    }
     if (!attendanceDetail) {
       console.log("fetch");
       fetchStuAttendance();
+    } else if (attendanceDetail[0].class_id !== div) {
+      console.log("Div changed");
+      fetchStuAttendance();
+    } else if (date !== oldDate) {
+      console.log("date changed: ", date, " | ", oldDate);
+      fetchStuAttendance();
     }
+  }, [div, date]);
+
+  useEffect(() => {
+    const tempClass = Global.classDetail.filter(
+      (data) => data.standard === parseInt(std)
+    );
+    setSelClass(
+      Global.classDetail.filter((data) => data.standard === parseInt(std))
+    );
+    setDiv(tempClass[0] ? tempClass[0].class_id : "0");
+
+    // console.log(div);
+  }, [std, Global.classDetail]);
+
+  useEffect(() => {
+    const tempDate = new Date().toLocaleDateString().split("/");
+    setDate(
+      tempDate[2] +
+        "-" +
+        (tempDate[0] < 10 ? "0" + tempDate[0] : tempDate[0]) +
+        "-" +
+        tempDate[1]
+    );
+    // fetchStuAttendance();
   }, []);
 
   return (
@@ -195,32 +290,58 @@ export default function HomeScreen() {
       >
         <div className="header">
           <div className="title">Modify Attendance</div>
-          <div className="save-btn">SAVE</div>
+          <div className="save-btn" onClick={onSaveHandler}>
+            SAVE
+          </div>
         </div>
 
         <div className="body">
           <div className="filter-container">
             <div>
-              <select className="filter" placeholder="Class">
-                <option>Class 1</option>
-                <option>Class 2</option>
-                <option>Class 3</option>
-                <option>Class 4</option>
-                <option>Class 5</option>
-                <option>Class 6</option>
-                <option>Class 7</option>
-                <option>Class 8</option>
-                <option>Class 9</option>
-                <option>Class 10</option>
-                <option>Class 11</option>
-                <option>Class 12</option>
+              <select
+                className="filter"
+                placeholder="Class"
+                onChange={(event) => setStd(event.target.value)}
+                value={std}
+              >
+                {Global.classDetail[0] ? (
+                  <>
+                    <option value="1">Class 1</option>
+                    <option value="2">Class 2</option>
+                    <option value="3">Class 3</option>
+                    <option value="4">Class 4</option>
+                    <option value="5">Class 5</option>
+                    <option value="6">Class 6</option>
+                    <option value="7">Class 7</option>
+                    <option value="8">Class 8</option>
+                    <option value="9">Class 9</option>
+                    <option value="10">Class 10</option>
+                    <option value="11">Class 11</option>
+                    <option value="12">Class 12</option>
+                  </>
+                ) : (
+                  <option value="0">Class</option>
+                )}
               </select>
-              <select className="filter">
-                <option>A</option>
-                <option>B</option>
+              <select
+                className="filter"
+                onChange={(e) => setDiv(e.target.value)}
+                value={div}
+              >
+                {Global.classDetail[0] ? (
+                  selClass.map((data, index) => (
+                    <option key={index} value={data.class_id}>
+                      {data.div}
+                    </option>
+                  ))
+                ) : (
+                  <option value="0">-</option>
+                )}
               </select>
             </div>
             <input
+              onChange={(e) => setDate(e.target.value)}
+              value={date}
               type="date"
               placeholder="Date"
               className="filter"
@@ -258,7 +379,12 @@ export default function HomeScreen() {
                     islast={
                       attendanceDetail.length - 1 === index ? true : false
                     }
+                    attId={data.attendance[0] ? data.attendance[0].id : null}
+                    stuId={data.stu_id}
                     key={index}
+                    isPresent={
+                      data.attendance[0] ? data.attendance[0].status : false
+                    }
                   />
                 );
               })

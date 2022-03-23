@@ -375,7 +375,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: fixed;
 }
 
