@@ -426,11 +426,16 @@
 
 .row1,
 .row2,
-.row3,
-.row4 {
+.row3 {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+.row4 {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
 }
 
 .Name,
@@ -439,11 +444,20 @@
 .Email,
 .ClassHeading,
 .DivHeading,
-.Address {
+.Address,
+.confirm-password,
+.password {
   font-size: 18px;
   margin-top: 15px;
   display: flex;
   flex-direction: column;
+}
+
+.password,
+.confirm-password {
+  display: flex;
+  flex: 1;
+  /* width: 100%; */
 }
 .Teacher-id,
 .Phone-no,
@@ -462,7 +476,8 @@
 .Email-input,
 .classDD,
 .divDD,
-.address-input {
+.address-input,
+.confirm-password-input {
   border: 1px solid black;
   background-color: #eeeeee;
   /* margin-left: 10px; */
@@ -497,9 +512,10 @@
   flex-direction: row;
   flex: 1;
   justify-content: center;
+  width: 100%;
   font-weight: bold;
   padding: 15px 0;
-  /* border: 0 solid #1c2a40; */
+  border: 0 solid #1c2a40;
   cursor: pointer;
   border-top: 2px solid #1c2a40;
   transition-duration: 0.3s;

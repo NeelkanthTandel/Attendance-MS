@@ -26,6 +26,7 @@ import { HiHome } from "react-icons/hi";
 import { MdSchool } from "react-icons/md";
 import { SiGoogleclassroom } from "react-icons/si";
 import { BsUiChecks } from "react-icons/bs";
+import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 // import data from "../components/teacherDetail.json";
 // import Global from "../components/utils/global";
 import { com_name } from "../keys";
@@ -143,7 +144,6 @@ const Row = (props) => {
 
 export default function Teacher() {
   const [collapsed, setCollapsed] = useState(true);
-  const [Popup, setPopup] = useState(false);
   const navigate = useNavigate();
   const [teacher, setTeacher] = useState();
   const [filteredDet, setFilteredDet] = useState();
@@ -198,64 +198,69 @@ export default function Teacher() {
     // console.log(div);
   }, [std, Global.classDetail]);
 
+  const submitHandler = (event) => {
+    event.preventDefault();
+    console.log(event.target.name.value);
+  };
+
   return (
     <div className="main-container">
-       <ProSidebar
-          collapsed={collapsed}
-          collapsedWidth={98}
-          style={{ position: "absolute", left: 0, top: 0 }}
-        >
-          <SidebarHeader>
-            <div
-              className="s-logo-container"
+      <ProSidebar
+        collapsed={collapsed}
+        collapsedWidth={98}
+        style={{ position: "absolute", left: 0, top: 0 }}
+      >
+        <SidebarHeader>
+          <div
+            className="s-logo-container"
+            onClick={() => {
+              navigate("/home");
+            }}
+          >
+            <img
+              src={logo}
+              alt="logo"
+              className="s-logo"
+              style={{ marginRight: collapsed ? 0 : 20 }}
+            />
+            {collapsed ? "" : com_name}
+          </div>
+        </SidebarHeader>
+        <SidebarContent>
+          <Menu iconShape="circle">
+            <MenuItem
+              icon={<HiHome color={"white"} />}
               onClick={() => {
                 navigate("/home");
               }}
             >
-              <img
-                src={logo}
-                alt="logo"
-                className="s-logo"
-                style={{ marginRight: collapsed ? 0 : 20 }}
-              />
-              {collapsed ? "" : com_name}
-            </div>
-          </SidebarHeader>
-          <SidebarContent>
-            <Menu iconShape="circle">
-              <MenuItem
-                icon={<HiHome color={"white"} />}
-                onClick={() => {
-                  navigate("/home");
-                }}
-              >
-                Home
-              </MenuItem>
-              <MenuItem
-                icon={<MdSchool color={"white"} />}
-                onClick={() => {
-                  navigate("/student");
-                }}
-              >
-                Students
-              </MenuItem>
-              <MenuItem
-                icon={<FaChalkboardTeacher color={"white"} />}
-                onClick={() => {
-                  navigate("/teacher");
-                }}
-              >
-                Teachers
-              </MenuItem>
-              <MenuItem
-                icon={<SiGoogleclassroom color={"white"} />}
-                onClick={() => {
-                  navigate("/modify-attend");
-                }}
-              >
-                Class
-              </MenuItem>
-              {/* <MenuItem
+              Home
+            </MenuItem>
+            <MenuItem
+              icon={<MdSchool color={"white"} />}
+              onClick={() => {
+                navigate("/student");
+              }}
+            >
+              Students
+            </MenuItem>
+            <MenuItem
+              icon={<FaChalkboardTeacher color={"white"} />}
+              onClick={() => {
+                navigate("/teacher");
+              }}
+            >
+              Teachers
+            </MenuItem>
+            <MenuItem
+              icon={<SiGoogleclassroom color={"white"} />}
+              onClick={() => {
+                navigate("/modify-attend");
+              }}
+            >
+              Class
+            </MenuItem>
+            {/* <MenuItem
                 icon={<BsUiChecks color={"white"} />}
                 onClick={() => {
                   navigate("/modify-attend");
@@ -263,44 +268,44 @@ export default function Teacher() {
               >
                 Attendance
               </MenuItem> */}
-              <SubMenu title="Attendance" icon={<BsUiChecks color={"white"} />}>
-                <MenuItem
-                  onClick={() => {
-                    navigate("/view-attend/overall");
-                  }}
-                >
-                  Overall
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    navigate("/view-attend/day-day");
-                  }}
-                >
-                  Day To Day
-                </MenuItem>
-              </SubMenu>
-            </Menu>
-          </SidebarContent>
-          <SidebarFooter
-            style={{
-              paddingLeft: 40,
-            }}
-          >
-            <div className="s-footer">
-              {collapsed ? (
-                <FaChevronRight
-                  className="s-icon"
-                  onClick={() => setCollapsed(!collapsed)}
-                />
-              ) : (
-                <FaChevronLeft
-                  className="s-icon"
-                  onClick={() => setCollapsed(!collapsed)}
-                />
-              )}
-            </div>
-          </SidebarFooter>
-        </ProSidebar>
+            <SubMenu title="Attendance" icon={<BsUiChecks color={"white"} />}>
+              <MenuItem
+                onClick={() => {
+                  navigate("/view-attend/overall");
+                }}
+              >
+                Overall
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate("/view-attend/day-day");
+                }}
+              >
+                Day To Day
+              </MenuItem>
+            </SubMenu>
+          </Menu>
+        </SidebarContent>
+        <SidebarFooter
+          style={{
+            paddingLeft: 40,
+          }}
+        >
+          <div className="s-footer">
+            {collapsed ? (
+              <FaChevronRight
+                className="s-icon"
+                onClick={() => setCollapsed(!collapsed)}
+              />
+            ) : (
+              <FaChevronLeft
+                className="s-icon"
+                onClick={() => setCollapsed(!collapsed)}
+              />
+            )}
+          </div>
+        </SidebarFooter>
+      </ProSidebar>
       <div
         className="modify-containerT"
         onClick={() => {
@@ -317,132 +322,141 @@ export default function Teacher() {
               <div className="add-modal">
                 <div onClick={toggleAddModal} className="overlay"></div>
                 <div className="add-modal-content">
-                  <div className="add-modal-header">
-                    <div className="add-modal-header-title">
-                      Add Teacher Detail
+                  <form onSubmit={submitHandler}>
+                    <div className="add-modal-header">
+                      <div className="add-modal-header-title">
+                        Add Teacher Detail
+                      </div>
+                      <IoMdClose
+                        className="icon-close"
+                        color="black"
+                        size={"22px"}
+                        onClick={() => {
+                          setAddModal(!addModal);
+                        }}
+                      />
                     </div>
-                    <IoMdClose
-                      className="icon-close"
-                      color="black"
-                      size={"22px"}
-                      onClick={() => {
-                        setAddModal(!addModal);
-                      }}
+                    <div className="add-modal-innerContent">
+                      <div className="row1">
+                        <div className="Name" style={{ width: "100%" }}>
+                          <label>Name</label>
+                          <input
+                            className="Name-input"
+                            type="text"
+                            required="required"
+                            placeholder="Name"
+                            name="name"
+                          />
+                        </div>
+                      </div>
+                      <div className="row2">
+                        <div className="Teacher-id">
+                          <label>Teacher Id</label>
+                          <div
+                            className="Teacher-id-input"
+                            style={{ fontWeight: "bold" }}
+                          >
+                            SNT001
+                          </div>
+                        </div>
+                        <div className="Phone-no">
+                          <label>Phone No.</label>
+                          <input
+                            className="Phone-no-input"
+                            type="text"
+                            required="required"
+                            placeholder="Phone Number"
+                          />
+                        </div>
+                      </div>
+                      <div className="row3">
+                        <div className="Email">
+                          <label>Email</label>
+                          <input
+                            className="Email-input"
+                            type="text"
+                            required="required"
+                            placeholder="Email"
+                          />
+                        </div>
+                        <div className="ClassDiv">
+                          <div className="ClassHeading">
+                            <label>Class</label>
+                            <select
+                              className="classDD"
+                              placeholder="Class"
+                              style={{ padding: "3px" }}
+                              onChange={(event) => setStd(event.target.value)}
+                              value={std}
+                            >
+                              {Global.classDetail[0] ? (
+                                <>
+                                  <option value="1">Class 1</option>
+                                  <option value="2">Class 2</option>
+                                  <option value="3">Class 3</option>
+                                  <option value="4">Class 4</option>
+                                  <option value="5">Class 5</option>
+                                  <option value="6">Class 6</option>
+                                  <option value="7">Class 7</option>
+                                  <option value="8">Class 8</option>
+                                  <option value="9">Class 9</option>
+                                  <option value="10">Class 10</option>
+                                  <option value="11">Class 11</option>
+                                  <option value="12">Class 12</option>
+                                </>
+                              ) : (
+                                <option value="0">Class</option>
+                              )}
+                            </select>
+                          </div>
+                          <div className="DivHeading">
+                            <label>Div</label>
+                            <select
+                              className="divDD"
+                              style={{ padding: "3px" }}
+                              onChange={(e) => setDiv(e.target.value)}
+                              value={div}
+                            >
+                              {Global.classDetail[0] ? (
+                                selClass.map((data, index) => (
+                                  <option key={index} value={data.class_id}>
+                                    {data.div}
+                                  </option>
+                                ))
+                              ) : (
+                                <option value="0">-</option>
+                              )}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row4">
+                        <div className="password">
+                          <label>Password</label>
+                          <input
+                            placeholder="Password"
+                            className="confirm-password-input"
+                          />
+                        </div>
+                        <div className="password">
+                          <label>Confirm Password</label>
+                          <input
+                            type="password"
+                            placeholder="Confirm Password"
+                            className="confirm-password-input"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <input
+                      className="submit-button"
+                      // onClick={() => {
+                      //   console.log();
+                      //   setAddModal(!addModal);
+                      // }}
+                      type="submit"
                     />
-                  </div>
-                  <div className="add-modal-innerContent">
-                    <div className="row1">
-                      <div className="Name" style={{ width: "100%" }}>
-                        <label>Name</label>
-                        <input
-                          className="Name-input"
-                          type="text"
-                          required="required"
-                          placeholder="Name"
-                        />
-                      </div>
-                    </div>
-                    <div className="row2">
-                      <div className="Teacher-id">
-                        <label>Teacher Id</label>
-                        <div
-                          className="Teacher-id-input"
-                          style={{ fontWeight: "bold" }}
-                        >
-                          Teacher002
-                        </div>
-                      </div>
-                      <div className="Phone-no">
-                        <label>Phone No.</label>
-                        <input
-                          className="Phone-no-input"
-                          type="text"
-                          required="required"
-                          placeholder="Phone Number"
-                        />
-                      </div>
-                    </div>
-                    <div className="row3">
-                      <div className="Email">
-                        <label>Email</label>
-                        <input
-                          className="Email-input"
-                          type="text"
-                          required="required"
-                          placeholder="Email"
-                        />
-                      </div>
-                      <div className="ClassDiv">
-                        <div className="ClassHeading">
-                          <label>Class</label>
-                          <select
-                            className="classDD"
-                            placeholder="Class"
-                            style={{ padding: "3px" }}
-                            onChange={(event) => setStd(event.target.value)}
-                            value={std}
-                          >
-                            {Global.classDetail[0] ? (
-                              <>
-                                <option value="1">Class 1</option>
-                                <option value="2">Class 2</option>
-                                <option value="3">Class 3</option>
-                                <option value="4">Class 4</option>
-                                <option value="5">Class 5</option>
-                                <option value="6">Class 6</option>
-                                <option value="7">Class 7</option>
-                                <option value="8">Class 8</option>
-                                <option value="9">Class 9</option>
-                                <option value="10">Class 10</option>
-                                <option value="11">Class 11</option>
-                                <option value="12">Class 12</option>
-                              </>
-                            ) : (
-                              <option value="0">Class</option>
-                            )}
-                          </select>
-                        </div>
-                        <div className="DivHeading">
-                          <label>Div</label>
-                          <select
-                            className="divDD"
-                            style={{ padding: "3px" }}
-                            onChange={(e) => setDiv(e.target.value)}
-                            value={div}
-                          >
-                            {Global.classDetail[0] ? (
-                              selClass.map((data, index) => (
-                                <option key={index} value={data.class_id}>
-                                  {data.div}
-                                </option>
-                              ))
-                            ) : (
-                              <option value="0">-</option>
-                            )}
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <div className="row4">
-                      <div className="Address" style={{ width: "100%" }}>
-                        <label>Address</label>
-                        <textarea
-                          className="address-input"
-                          type="text"
-                          required="required"
-                          placeholder="Address"
-                        />
-                      </div>
-                    </div> */}
-                  </div>
-                  <span
-                    className="submit-button"
-                    onClick={() => {
-                      setAddModal(!addModal);
-                    }}
-                  >
-                    Submit
-                  </span>
+                  </form>
                 </div>
               </div>
             ) : null}
