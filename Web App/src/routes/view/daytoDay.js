@@ -4,13 +4,18 @@ import {
   Menu,
   MenuItem,
   SidebarFooter,
+  SubMenu,
   SidebarHeader,
   SidebarContent,
 } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
 import logo from "../../images/icon.png";
 import "../../css/sideBar.css";
-import { FaChalkboardTeacher, FaChevronRight } from "react-icons/fa";
+import {
+  FaChalkboardTeacher,
+  FaChevronRight,
+  FaChevronLeft,
+} from "react-icons/fa";
 import { HiHome } from "react-icons/hi";
 import { MdSchool } from "react-icons/md";
 import { SiGoogleclassroom } from "react-icons/si";
@@ -18,6 +23,7 @@ import { BsUiChecks } from "react-icons/bs";
 import studentDetails from "../../constants/dummy-data";
 import Global from "../../components/utils/global";
 import { useNavigate } from "react-router-dom";
+import { com_name } from "../../keys";
 
 const Row = (props) => {
   const [checked, setChecked] = React.useState(props.checked);
@@ -31,13 +37,7 @@ const Row = (props) => {
       onClick={() => setChecked(!checked)}
     >
       <span style={{ width: "10%" }}>{props.id}</span>
-      <span style={{ width: "80%" }}>{props.name}</span>
-      <span
-        style={{
-          width: "40%",
-          textAlign: "center",
-        }}
-      ></span>
+      <span style={{ width: "90%" }}>{props.name}</span>
     </div>
   );
 };
@@ -89,29 +89,79 @@ export default function DaytoDay() {
         style={{ position: "absolute", left: 0, top: 0 }}
       >
         <SidebarHeader>
-          <div className="s-logo-container">
+          <div
+            className="s-logo-container"
+            onClick={() => {
+              navigate("/home");
+            }}
+          >
             <img
               src={logo}
               alt="logo"
               className="s-logo"
-              style={{ marginRight: collapsed ? 0 : 10 }}
+              style={{ marginRight: collapsed ? 0 : 20 }}
             />
-            {collapsed ? "" : "Attendance-MS"}
+            {collapsed ? "" : com_name}
           </div>
         </SidebarHeader>
-        <SidebarContent style={{ paddingLeft: "10px" }}>
+        <SidebarContent>
           <Menu iconShape="circle">
-            <MenuItem icon={<HiHome color={"white"} />}>Home</MenuItem>
-            <MenuItem icon={<MdSchool color={"white"} />}>Students</MenuItem>
-            <MenuItem icon={<FaChalkboardTeacher color={"white"} />}>
+            <MenuItem
+              icon={<HiHome color={"white"} />}
+              onClick={() => {
+                navigate("/home");
+              }}
+            >
+              Home
+            </MenuItem>
+            <MenuItem
+              icon={<MdSchool color={"white"} />}
+              onClick={() => {
+                navigate("/student");
+              }}
+            >
+              Students
+            </MenuItem>
+            <MenuItem
+              icon={<FaChalkboardTeacher color={"white"} />}
+              onClick={() => {
+                navigate("/teacher");
+              }}
+            >
               Teachers
             </MenuItem>
-            <MenuItem icon={<SiGoogleclassroom color={"white"} />}>
+            <MenuItem
+              icon={<SiGoogleclassroom color={"white"} />}
+              onClick={() => {
+                navigate("/modify-attend");
+              }}
+            >
               Class
             </MenuItem>
-            <MenuItem icon={<BsUiChecks color={"white"} />}>
-              Attendance
-            </MenuItem>
+            {/* <MenuItem
+                icon={<BsUiChecks color={"white"} />}
+                onClick={() => {
+                  navigate("/modify-attend");
+                }}
+              >
+                Attendance
+              </MenuItem> */}
+            <SubMenu title="Attendance" icon={<BsUiChecks color={"white"} />}>
+              <MenuItem
+                onClick={() => {
+                  navigate("/view-attend/overall");
+                }}
+              >
+                Overall
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate("/view-attend/day-day");
+                }}
+              >
+                Day To Day
+              </MenuItem>
+            </SubMenu>
           </Menu>
         </SidebarContent>
         <SidebarFooter
@@ -120,10 +170,17 @@ export default function DaytoDay() {
           }}
         >
           <div className="s-footer">
-            <FaChevronRight
-              className="s-icon"
-              onClick={() => setCollapsed(!collapsed)}
-            />
+            {collapsed ? (
+              <FaChevronRight
+                className="s-icon"
+                onClick={() => setCollapsed(!collapsed)}
+              />
+            ) : (
+              <FaChevronLeft
+                className="s-icon"
+                onClick={() => setCollapsed(!collapsed)}
+              />
+            )}
           </div>
         </SidebarFooter>
       </ProSidebar>
@@ -180,19 +237,19 @@ export default function DaytoDay() {
           </div>
           <div className="table">
             <div className="table-header">
-              <span style={{ width: "17%", fontWeight: "bold", fontSize: 18 }}>
+              <span style={{ width: "10%", fontWeight: "bold", fontSize: 18 }}>
                 Id
               </span>
-              <span style={{ width: "40%", fontWeight: "bold", fontSize: 18 }}>
+              <span style={{ width: "50%", fontWeight: "bold", fontSize: 18 }}>
                 Name
               </span>
-              <span style={{ width: "40%", fontWeight: "bold", fontSize: 18 }}>
+              <span style={{ width: "10%", fontWeight: "bold", fontSize: 18 }}>
                 Day/Days
               </span>
-              <span style={{ width: "40%", fontWeight: "bold", fontSize: 18 }}>
+              <span style={{ width: "10%", fontWeight: "bold", fontSize: 18 }}>
                 Day/Days
               </span>
-              <span style={{ width: "40%", fontWeight: "bold", fontSize: 18 }}>
+              <span style={{ width: "10%", fontWeight: "bold", fontSize: 18 }}>
                 Day/Days
               </span>
               <span style={{ width: "10%", fontWeight: "bold", fontSize: 18 }}>

@@ -5,6 +5,7 @@ import {
   MenuItem,
   SidebarFooter,
   SidebarHeader,
+  SubMenu,
   SidebarContent,
 } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
@@ -12,12 +13,17 @@ import { useNavigate } from "react-router-dom";
 
 import logo from "../../images/icon.png";
 import "../../css/sideBar.css";
-import { FaChalkboardTeacher, FaChevronRight } from "react-icons/fa";
+import {
+  FaChalkboardTeacher,
+  FaChevronRight,
+  FaChevronLeft,
+} from "react-icons/fa";
 import { HiHome } from "react-icons/hi";
 import { MdSchool } from "react-icons/md";
 import { SiGoogleclassroom } from "react-icons/si";
 import { BsUiChecks } from "react-icons/bs";
 import Global from "../../components/utils/global";
+import { com_name } from "../../keys";
 
 const Row = (props) => {
   const [checked, setChecked] = React.useState(props.checked);
@@ -128,29 +134,79 @@ export default function OverallPage() {
         style={{ position: "absolute", left: 0, top: 0 }}
       >
         <SidebarHeader>
-          <div className="s-logo-container">
+          <div
+            className="s-logo-container"
+            onClick={() => {
+              navigate("/home");
+            }}
+          >
             <img
               src={logo}
               alt="logo"
               className="s-logo"
-              style={{ marginRight: collapsed ? 0 : 10 }}
+              style={{ marginRight: collapsed ? 0 : 20 }}
             />
-            {collapsed ? "" : "Attendance-MS"}
+            {collapsed ? "" : com_name}
           </div>
         </SidebarHeader>
-        <SidebarContent style={{ paddingLeft: "10px" }}>
+        <SidebarContent>
           <Menu iconShape="circle">
-            <MenuItem icon={<HiHome color={"white"} />}>Home</MenuItem>
-            <MenuItem icon={<MdSchool color={"white"} />}>Students</MenuItem>
-            <MenuItem icon={<FaChalkboardTeacher color={"white"} />}>
+            <MenuItem
+              icon={<HiHome color={"white"} />}
+              onClick={() => {
+                navigate("/home");
+              }}
+            >
+              Home
+            </MenuItem>
+            <MenuItem
+              icon={<MdSchool color={"white"} />}
+              onClick={() => {
+                navigate("/student");
+              }}
+            >
+              Students
+            </MenuItem>
+            <MenuItem
+              icon={<FaChalkboardTeacher color={"white"} />}
+              onClick={() => {
+                navigate("/teacher");
+              }}
+            >
               Teachers
             </MenuItem>
-            <MenuItem icon={<SiGoogleclassroom color={"white"} />}>
+            <MenuItem
+              icon={<SiGoogleclassroom color={"white"} />}
+              onClick={() => {
+                navigate("/modify-attend");
+              }}
+            >
               Class
             </MenuItem>
-            <MenuItem icon={<BsUiChecks color={"white"} />}>
-              Attendance
-            </MenuItem>
+            {/* <MenuItem
+                icon={<BsUiChecks color={"white"} />}
+                onClick={() => {
+                  navigate("/modify-attend");
+                }}
+              >
+                Attendance
+              </MenuItem> */}
+            <SubMenu title="Attendance" icon={<BsUiChecks color={"white"} />}>
+              <MenuItem
+                onClick={() => {
+                  navigate("/view-attend/overall");
+                }}
+              >
+                Overall
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate("/view-attend/day-day");
+                }}
+              >
+                Day To Day
+              </MenuItem>
+            </SubMenu>
           </Menu>
         </SidebarContent>
         <SidebarFooter
@@ -159,10 +215,17 @@ export default function OverallPage() {
           }}
         >
           <div className="s-footer">
-            <FaChevronRight
-              className="s-icon"
-              onClick={() => setCollapsed(!collapsed)}
-            />
+            {collapsed ? (
+              <FaChevronRight
+                className="s-icon"
+                onClick={() => setCollapsed(!collapsed)}
+              />
+            ) : (
+              <FaChevronLeft
+                className="s-icon"
+                onClick={() => setCollapsed(!collapsed)}
+              />
+            )}
           </div>
         </SidebarFooter>
       </ProSidebar>
