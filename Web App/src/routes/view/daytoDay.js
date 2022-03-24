@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ProSidebar,
   Menu,
@@ -16,6 +16,8 @@ import { MdSchool } from "react-icons/md";
 import { SiGoogleclassroom } from "react-icons/si";
 import { BsUiChecks } from "react-icons/bs";
 import studentDetails from "../../constants/dummy-data";
+import Global from "../../components/utils/global";
+import { useNavigate } from "react-router-dom";
 
 const Row = (props) => {
   const [checked, setChecked] = React.useState(props.checked);
@@ -42,6 +44,42 @@ const Row = (props) => {
 
 export default function DaytoDay() {
   const [collapsed, setCollapsed] = useState(true);
+  const [std, setStd] = useState("1");
+  const [selClass, setSelClass] = useState([]);
+  const [div, setDiv] = useState("0");
+
+  const [date, setDate] = useState("");
+  const [oldDate, setOldDate] = useState();
+  // const [filteredAttDet, setFilteredAttDet] = useState();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("modify: ", Global.classDetail);
+    // cookies.set('token', '', { path: '/' });
+    if (!Global.isLoggedIn()) {
+      return navigate("/");
+    }
+    if (!Global.classDetail[0]) {
+      console.log("Fetching user");
+      Global.fetchUser().then(filterDiv());
+    }
+  }, [div, date]);
+
+  const filterDiv = () => {
+    const tempClass = Global.classDetail.filter(
+      (data) => data.standard === parseInt(std)
+    );
+    setSelClass(
+      Global.classDetail.filter((data) => data.standard === parseInt(std))
+    );
+    setDiv(tempClass[0] ? tempClass[0].class_id : "0");
+  };
+
+  useEffect(() => {
+    filterDiv();
+
+    // console.log(div);
+  }, [std, Global.classDetail]);
 
   return (
     <div className="main-container">
@@ -98,23 +136,45 @@ export default function DaytoDay() {
         <div className="body">
           <div className="filter-container">
             <div>
-              <select className="filter" placeholder="Class">
-                <option>Class 1</option>
-                <option>Class 2</option>
-                <option>Class 3</option>
-                <option>Class 4</option>
-                <option>Class 5</option>
-                <option>Class 6</option>
-                <option>Class 7</option>
-                <option>Class 8</option>
-                <option>Class 9</option>
-                <option>Class 10</option>
-                <option>Class 11</option>
-                <option>Class 12</option>
+              <select
+                className="filter"
+                placeholder="Class"
+                onChange={(event) => setStd(event.target.value)}
+                value={std}
+              >
+                {Global.classDetail[0] ? (
+                  <>
+                    <option value="1">Class 1</option>
+                    <option value="2">Class 2</option>
+                    <option value="3">Class 3</option>
+                    <option value="4">Class 4</option>
+                    <option value="5">Class 5</option>
+                    <option value="6">Class 6</option>
+                    <option value="7">Class 7</option>
+                    <option value="8">Class 8</option>
+                    <option value="9">Class 9</option>
+                    <option value="10">Class 10</option>
+                    <option value="11">Class 11</option>
+                    <option value="12">Class 12</option>
+                  </>
+                ) : (
+                  <option value="0">Class</option>
+                )}
               </select>
-              <select className="filter">
-                <option>A</option>
-                <option>B</option>
+              <select
+                className="filter"
+                onChange={(e) => setDiv(e.target.value)}
+                value={div}
+              >
+                {Global.classDetail[0] ? (
+                  selClass.map((data, index) => (
+                    <option key={index} value={data.class_id}>
+                      {data.div}
+                    </option>
+                  ))
+                ) : (
+                  <option value="0">-</option>
+                )}
               </select>
             </div>
           </div>
