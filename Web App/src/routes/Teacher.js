@@ -13,7 +13,7 @@ import {
 import "react-pro-sidebar/dist/css/styles.css";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
-
+import AddTeacherModal from "../components/AddTeacherModal";
 import logo from "../images/icon.png";
 import "../css/sideBar.css";
 import {
@@ -142,12 +142,12 @@ const Row = (props) => {
   );
 };
 
-export default function Teacher() {
+export default function Teacher(props) {
   const [collapsed, setCollapsed] = useState(true);
   const navigate = useNavigate();
   const [teacher, setTeacher] = useState();
   const [filteredDet, setFilteredDet] = useState();
-  const [addModal, setAddModal] = React.useState(false);
+  const [addModal, setAddModal] = React.useState();
 
   const [std, setStd] = useState("1");
   const [selClass, setSelClass] = useState([]);
@@ -156,6 +156,7 @@ export default function Teacher() {
   const toggleAddModal = () => {
     setAddModal(!addModal);
   };
+
   const searchHandler = (event) => {
     const searchText = event.target.value;
     console.log(parseInt(searchText));
@@ -197,11 +198,6 @@ export default function Teacher() {
 
     // console.log(div);
   }, [std, Global.classDetail]);
-
-  const submitHandler = (event) => {
-    event.preventDefault();
-    console.log(event.target.name.value);
-  };
 
   return (
     <div className="main-container">
@@ -318,148 +314,7 @@ export default function Teacher() {
             <div className="save-btn" onClick={toggleAddModal}>
               Add Teacher
             </div>
-            {addModal ? (
-              <div className="add-modal">
-                <div onClick={toggleAddModal} className="overlay"></div>
-                <div className="add-modal-content">
-                  <form onSubmit={submitHandler}>
-                    <div className="add-modal-header">
-                      <div className="add-modal-header-title">
-                        Add Teacher Detail
-                      </div>
-                      <IoMdClose
-                        className="icon-close"
-                        color="black"
-                        size={"22px"}
-                        onClick={() => {
-                          setAddModal(!addModal);
-                        }}
-                      />
-                    </div>
-                    <div className="add-modal-innerContent">
-                      <div className="row1">
-                        <div className="Name" style={{ width: "100%" }}>
-                          <label>Name</label>
-                          <input
-                            className="Name-input"
-                            type="text"
-                            required="required"
-                            placeholder="Name"
-                            name="name"
-                          />
-                        </div>
-                      </div>
-                      <div className="row2">
-                        <div className="Teacher-id">
-                          <label>Teacher Id</label>
-                          <div
-                            className="Teacher-id-input"
-                            style={{ fontWeight: "bold" }}
-                          >
-                            SNT001
-                          </div>
-                        </div>
-                        <div className="Phone-no">
-                          <label>Phone No.</label>
-                          <input
-                            className="Phone-no-input"
-                            type="text"
-                            required="required"
-                            placeholder="Phone Number"
-                          />
-                        </div>
-                      </div>
-                      <div className="row3">
-                        <div className="Email">
-                          <label>Email</label>
-                          <input
-                            className="Email-input"
-                            type="text"
-                            required="required"
-                            placeholder="Email"
-                          />
-                        </div>
-                        <div className="ClassDiv">
-                          <div className="ClassHeading">
-                            <label>Class</label>
-                            <select
-                              className="classDD"
-                              placeholder="Class"
-                              style={{ padding: "3px" }}
-                              onChange={(event) => setStd(event.target.value)}
-                              value={std}
-                            >
-                              {Global.classDetail[0] ? (
-                                <>
-                                  <option value="1">Class 1</option>
-                                  <option value="2">Class 2</option>
-                                  <option value="3">Class 3</option>
-                                  <option value="4">Class 4</option>
-                                  <option value="5">Class 5</option>
-                                  <option value="6">Class 6</option>
-                                  <option value="7">Class 7</option>
-                                  <option value="8">Class 8</option>
-                                  <option value="9">Class 9</option>
-                                  <option value="10">Class 10</option>
-                                  <option value="11">Class 11</option>
-                                  <option value="12">Class 12</option>
-                                </>
-                              ) : (
-                                <option value="0">Class</option>
-                              )}
-                            </select>
-                          </div>
-                          <div className="DivHeading">
-                            <label>Div</label>
-                            <select
-                              className="divDD"
-                              style={{ padding: "3px" }}
-                              onChange={(e) => setDiv(e.target.value)}
-                              value={div}
-                            >
-                              {Global.classDetail[0] ? (
-                                selClass.map((data, index) => (
-                                  <option key={index} value={data.class_id}>
-                                    {data.div}
-                                  </option>
-                                ))
-                              ) : (
-                                <option value="0">-</option>
-                              )}
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row4">
-                        <div className="password">
-                          <label>Password</label>
-                          <input
-                            placeholder="Password"
-                            className="confirm-password-input"
-                          />
-                        </div>
-                        <div className="password">
-                          <label>Confirm Password</label>
-                          <input
-                            type="password"
-                            placeholder="Confirm Password"
-                            className="confirm-password-input"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <input
-                      className="submit-button"
-                      // onClick={() => {
-                      //   console.log();
-                      //   setAddModal(!addModal);
-                      // }}
-                      type="submit"
-                    />
-                  </form>
-                </div>
-              </div>
-            ) : null}
+            {addModal ? <AddTeacherModal toggleModal={toggleAddModal} /> : null}
           </div>
         </div>
         <div className="bodyT" style={{ marginBottom: "60px" }}>

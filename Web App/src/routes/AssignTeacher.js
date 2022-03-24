@@ -18,7 +18,7 @@ import {
   FaChevronRight,
   FaChevronLeft,
 } from "react-icons/fa";
-import ReactModal from "react-modal";
+// import ReactModal from "react-modal";
 import { HiHome } from "react-icons/hi";
 import { MdSchool } from "react-icons/md";
 import { SiGoogleclassroom } from "react-icons/si";
@@ -27,7 +27,7 @@ import studentDetails, { classAllotment } from "../constants/dummy-data";
 import Global from "../components/utils/global";
 import { com_name } from "../keys";
 
-const cookies = new Cookies();
+// const cookies = new Cookies();
 
 const Row = (props) => {
   const [modal, setModal] = React.useState(false);
@@ -119,62 +119,62 @@ export default function HomeScreen() {
 
   return (
     <div className="main-container">
-       <ProSidebar
-          collapsed={collapsed}
-          collapsedWidth={98}
-          style={{ position: "absolute", left: 0, top: 0 }}
-        >
-          <SidebarHeader>
-            <div
-              className="s-logo-container"
+      <ProSidebar
+        collapsed={collapsed}
+        collapsedWidth={98}
+        style={{ position: "absolute", left: 0, top: 0 }}
+      >
+        <SidebarHeader>
+          <div
+            className="s-logo-container"
+            onClick={() => {
+              navigate("/home");
+            }}
+          >
+            <img
+              src={logo}
+              alt="logo"
+              className="s-logo"
+              style={{ marginRight: collapsed ? 0 : 20 }}
+            />
+            {collapsed ? "" : com_name}
+          </div>
+        </SidebarHeader>
+        <SidebarContent>
+          <Menu iconShape="circle">
+            <MenuItem
+              icon={<HiHome color={"white"} />}
               onClick={() => {
                 navigate("/home");
               }}
             >
-              <img
-                src={logo}
-                alt="logo"
-                className="s-logo"
-                style={{ marginRight: collapsed ? 0 : 20 }}
-              />
-              {collapsed ? "" : com_name}
-            </div>
-          </SidebarHeader>
-          <SidebarContent>
-            <Menu iconShape="circle">
-              <MenuItem
-                icon={<HiHome color={"white"} />}
-                onClick={() => {
-                  navigate("/home");
-                }}
-              >
-                Home
-              </MenuItem>
-              <MenuItem
-                icon={<MdSchool color={"white"} />}
-                onClick={() => {
-                  navigate("/student");
-                }}
-              >
-                Students
-              </MenuItem>
-              <MenuItem
-                icon={<FaChalkboardTeacher color={"white"} />}
-                onClick={() => {
-                  navigate("/teacher");
-                }}
-              >
-                Teachers
-              </MenuItem>
-              <MenuItem
-                icon={<SiGoogleclassroom color={"white"} />}
-                onClick={() => {
-                  navigate("/modify-attend");
-                }}
-              >
-                Class
-              </MenuItem>
-              {/* <MenuItem
+              Home
+            </MenuItem>
+            <MenuItem
+              icon={<MdSchool color={"white"} />}
+              onClick={() => {
+                navigate("/student");
+              }}
+            >
+              Students
+            </MenuItem>
+            <MenuItem
+              icon={<FaChalkboardTeacher color={"white"} />}
+              onClick={() => {
+                navigate("/teacher");
+              }}
+            >
+              Teachers
+            </MenuItem>
+            <MenuItem
+              icon={<SiGoogleclassroom color={"white"} />}
+              onClick={() => {
+                navigate("/modify-attend");
+              }}
+            >
+              Class
+            </MenuItem>
+            {/* <MenuItem
                 icon={<BsUiChecks color={"white"} />}
                 onClick={() => {
                   navigate("/modify-attend");
@@ -182,44 +182,44 @@ export default function HomeScreen() {
               >
                 Attendance
               </MenuItem> */}
-              <SubMenu title="Attendance" icon={<BsUiChecks color={"white"} />}>
-                <MenuItem
-                  onClick={() => {
-                    navigate("/view-attend/overall");
-                  }}
-                >
-                  Overall
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    navigate("/view-attend/day-day");
-                  }}
-                >
-                  Day To Day
-                </MenuItem>
-              </SubMenu>
-            </Menu>
-          </SidebarContent>
-          <SidebarFooter
-            style={{
-              paddingLeft: 40,
-            }}
-          >
-            <div className="s-footer">
-              {collapsed ? (
-                <FaChevronRight
-                  className="s-icon"
-                  onClick={() => setCollapsed(!collapsed)}
-                />
-              ) : (
-                <FaChevronLeft
-                  className="s-icon"
-                  onClick={() => setCollapsed(!collapsed)}
-                />
-              )}
-            </div>
-          </SidebarFooter>
-        </ProSidebar>
+            <SubMenu title="Attendance" icon={<BsUiChecks color={"white"} />}>
+              <MenuItem
+                onClick={() => {
+                  navigate("/view-attend/overall");
+                }}
+              >
+                Overall
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate("/view-attend/day-day");
+                }}
+              >
+                Day To Day
+              </MenuItem>
+            </SubMenu>
+          </Menu>
+        </SidebarContent>
+        <SidebarFooter
+          style={{
+            paddingLeft: 40,
+          }}
+        >
+          <div className="s-footer">
+            {collapsed ? (
+              <FaChevronRight
+                className="s-icon"
+                onClick={() => setCollapsed(!collapsed)}
+              />
+            ) : (
+              <FaChevronLeft
+                className="s-icon"
+                onClick={() => setCollapsed(!collapsed)}
+              />
+            )}
+          </div>
+        </SidebarFooter>
+      </ProSidebar>
       <div
         className="assign-container"
         onClick={() => {
@@ -250,7 +250,7 @@ export default function HomeScreen() {
                 style={{ width: "20%", fontWeight: "bold", fontSize: 18 }}
               ></span>
             </div>
-            {filteredDet != [] ? (
+            {filteredDet !== [] ? (
               filteredDet.map((data, index) => {
                 return (
                   <Row
@@ -258,11 +258,11 @@ export default function HomeScreen() {
                     div={data.div}
                     teacherName={data.teacherName}
                     key={index}
-                    islast={index == filteredDet.length - 1 ? true : false}
+                    islast={index === filteredDet.length - 1 ? true : false}
                   />
                 );
               })
-            ) : classAllotDetail != [] ? (
+            ) : classAllotDetail !== [] ? (
               classAllotDetail.map((data, index) => {
                 return (
                   <Row
@@ -270,7 +270,9 @@ export default function HomeScreen() {
                     div={data.div}
                     teacherName={data.teacherName}
                     key={index}
-                    islast={index == classAllotDetail.length - 1 ? true : false}
+                    islast={
+                      index === classAllotDetail.length - 1 ? true : false
+                    }
                   />
                 );
               })
