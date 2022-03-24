@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ProSidebar,
   Menu,
@@ -8,6 +8,8 @@ import {
   SidebarContent,
 } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
+import { useNavigate } from "react-router-dom";
+
 import logo from "../../images/icon.png";
 import "../../css/sideBar.css";
 import { FaChalkboardTeacher, FaChevronRight } from "react-icons/fa";
@@ -15,8 +17,7 @@ import { HiHome } from "react-icons/hi";
 import { MdSchool } from "react-icons/md";
 import { SiGoogleclassroom } from "react-icons/si";
 import { BsUiChecks } from "react-icons/bs";
-import studentDetails from "../../constants/dummy-data";
-
+import Global from "../../components/utils/global";
 
 const Row = (props) => {
   const [checked, setChecked] = React.useState(props.checked);
@@ -29,22 +30,64 @@ const Row = (props) => {
       className="row-t"
       onClick={() => setChecked(!checked)}
     >
-      <span style={{ width: "15%" }}>{props.id}</span>
-      <span style={{ width: "80%" }}>{props.name}</span>
-      <span
-        style={{
-          width: "10%",
-          textAlign: "center",
-        }}
-      >
-        
+      <span style={{ width: "10%" }}>{props.id}</span>
+      <span style={{ width: "50%" }}>{props.name}</span>
+      <span style={{ width: "40%" }}>
+        {props.totPresent}/{props.totalWorkDays}
       </span>
+      <span style={{ width: "20%" }}>{props.perc}%</span>
     </div>
   );
 };
 
 export default function OverallPage() {
   const [collapsed, setCollapsed] = useState(true);
+  const [overallAtt, setOverallAtt] = useState();
+  const [totalWorkD, setTotalWorkD] = useState();
+
+  const navigate = useNavigate();
+
+  const fetchAllAttendance = async () => {
+    console.log("Class Id: ", Global.user.class_id);
+    if (!Global.user.class_id) {
+      return console.log("No class Id");
+    }
+    try {
+      const data = await Global.httpPOST("/getOverallAttendance", {
+        classId: Global.user.class_id,
+      });
+      if (!data.isError) {
+        console.log("fetch overall att complete");
+        setOverallAtt(data.totalStuAtt);
+        setTotalWorkD(data.totalWorkDays);
+      } else {
+        //handle error
+      }
+    } catch (err) {
+      console.log("Fetch overall att error:", err);
+      //handle error
+    }
+  };
+
+  useEffect(() => {
+    if (!Global.isLoggedIn()) {
+      return navigate("/");
+    }
+    if (!Global.user.classId) {
+      console.log("Fetching user");
+      Global.fetchUser()
+        .then(() => {
+          fetchAllAttendance();
+        })
+        .catch((e) => {
+          console.log("fetch user error: ", e);
+        });
+    } else {
+      if (!overallAtt) {
+        fetchAllAttendance();
+      }
+    }
+  }, []);
 
   return (
     <div className="main-container">
@@ -55,7 +98,7 @@ export default function OverallPage() {
       >
         <SidebarHeader>
           <div className="s-logo-container">
-          <img
+            <img
               src={logo}
               alt="logo"
               className="s-logo"
@@ -120,39 +163,63 @@ export default function OverallPage() {
                 <option>B</option>
               </select>
             </div>
-
-            <div className="table">
-              <div className="table-header">
-                <span style={{ width: "20%", fontWeight: "bold", fontSize: 18 }}>
-                  Id
-                </span>
-                <span style={{ width: "40%", fontWeight: "bold", fontSize: 18 }}>
-                  Name
-                </span>
-                <span style={{ width: "40%", fontWeight: "bold", fontSize: 18 }}>
-                  Day/Days
-                </span>
-                <span style={{ width: "20%", fontWeight: "bold", fontSize: 18 }}>
-                  Attendance
-                </span>
-                
-                
-              </div>
-              {studentDetails.map((data, index) => {
-                return (
-                  <Row
-                    name={data.name}
-                    id={data.stu_id.charAt(3) + data.stu_id.charAt(4)}
-                    attendance={data.attendance}
-                    islast={studentDetails.length - 1 === index ? true : false}
-                  />
-                );
-              })}
+          </div>
+          <div className="table">
+            <div className="table-header">
+              <span style={{ width: "10%", fontWeight: "bold", fontSize: 18 }}>
+                Id
+              </span>
+              <span style={{ width: "50%", fontWeight: "bold", fontSize: 18 }}>
+                Name
+              </span>
+              <span style={{ width: "40%", fontWeight: "bold", fontSize: 18 }}>
+                Present/Total Days
+              </span>
+              <span style={{ width: "20%", fontWeight: "bold", fontSize: 18 }}>
+                Percentage
+              </span>
             </div>
+            {overallAtt
+              ? overallAtt.map((data, index) => {
+                  let noOfPres = data.attendance.length;
+
+                  return (
+                    <Row
+                      name={data.name}
+                      id={data.stu_id.charAt(3) + data.stu_id.charAt(4)}
+                      attendance={data.attendance}
+                      islast={overallAtt.length - 1 === index ? true : false}
+                      totPresent={noOfPres}
+                      totalWorkDays={totalWorkD}
+                      perc={((noOfPres * 100) / totalWorkD).toFixed(0)}
+                    />
+                    // <View
+                    //   style={{
+                    //     flexDirection: "row",
+                    //     width: "100%",
+                    //     marginBottom: 15,
+                    //   }}
+                    //   key={index}
+                    // >
+                    //   <CustomText style={{ width: "12%", minWidth: 18 }}>
+                    //     {item.stu_id.charAt(3) + item.stu_id.charAt(4)}
+                    //   </CustomText>
+                    //   <CustomText style={{ width: "58%" }} numberOfLines={1}>
+                    //     {item.name}
+                    //   </CustomText>
+                    //   <CustomText style={{ width: "15%", minWidth: 28 }}>
+                    //     {noOfPres}/{totalWorkD}
+                    //   </CustomText>
+                    //   <CustomText style={{ width: "15%", minWidth: 28 }}>
+                    //     {((noOfPres * 100) / totalWorkD).toFixed(0)}%
+                    //   </CustomText>
+                    // </View>
+                  );
+                })
+              : null}
           </div>
         </div>
       </div>
-      );
     </div>
-  )
+  );
 }

@@ -17,7 +17,6 @@ import { SiGoogleclassroom } from "react-icons/si";
 import { BsUiChecks } from "react-icons/bs";
 import studentDetails from "../../constants/dummy-data";
 
-
 const Row = (props) => {
   const [checked, setChecked] = React.useState(props.checked);
 
@@ -36,9 +35,7 @@ const Row = (props) => {
           width: "40%",
           textAlign: "center",
         }}
-      >
-        
-      </span>
+      ></span>
     </div>
   );
 };
@@ -120,44 +117,40 @@ export default function DaytoDay() {
                 <option>B</option>
               </select>
             </div>
-
-            <div className="table">
-              <div className="table-header">
-                <span style={{ width: "17%", fontWeight: "bold", fontSize: 18 }}>
-                  Id
-                </span>
-                <span style={{ width: "40%", fontWeight: "bold", fontSize: 18 }}>
-                  Name
-                </span>
-                <span style={{ width: "40%", fontWeight: "bold", fontSize: 18 }}>
-                  Day/Days
-                </span>
-                <span style={{ width: "40%", fontWeight: "bold", fontSize: 18 }}>
-                  Day/Days
-                </span>
-                <span style={{ width: "40%", fontWeight: "bold", fontSize: 18 }}>
-                  Day/Days
-                </span>
-                <span style={{ width: "10%", fontWeight: "bold", fontSize: 18 }}>
-                  Day/Days
-                </span>
-                
-                
-              </div>
-              {studentDetails.map((data, index) => {
-                return (
-                  <Row
-                    name={data.name}
-                    id={data.stu_id.charAt(3) + data.stu_id.charAt(4)}
-                    islast={studentDetails.length - 1 === index ? true : false}
-                  />
-                );
-              })}
+          </div>
+          <div className="table">
+            <div className="table-header">
+              <span style={{ width: "17%", fontWeight: "bold", fontSize: 18 }}>
+                Id
+              </span>
+              <span style={{ width: "40%", fontWeight: "bold", fontSize: 18 }}>
+                Name
+              </span>
+              <span style={{ width: "40%", fontWeight: "bold", fontSize: 18 }}>
+                Day/Days
+              </span>
+              <span style={{ width: "40%", fontWeight: "bold", fontSize: 18 }}>
+                Day/Days
+              </span>
+              <span style={{ width: "40%", fontWeight: "bold", fontSize: 18 }}>
+                Day/Days
+              </span>
+              <span style={{ width: "10%", fontWeight: "bold", fontSize: 18 }}>
+                Day/Days
+              </span>
             </div>
+            {studentDetails.map((data, index) => {
+              return (
+                <Row
+                  name={data.name}
+                  id={data.stu_id.charAt(3) + data.stu_id.charAt(4)}
+                  islast={studentDetails.length - 1 === index ? true : false}
+                />
+              );
+            })}
           </div>
         </div>
       </div>
-      );
     </div>
-  )
+  );
 }
