@@ -22,12 +22,8 @@ import {
 import { HiHome } from "react-icons/hi";
 import { MdAccountCircle, MdSchool } from "react-icons/md";
 import { SiGoogleclassroom } from "react-icons/si";
-import {
-  BsCheck2Square,
-  BsFillCaretDownFill,
-  BsUiChecks,
-} from "react-icons/bs";
-import { AiFillSetting, AiOutlineCaretDown } from "react-icons/ai";
+import { BsUiChecks } from "react-icons/bs";
+import { AiFillSetting } from "react-icons/ai";
 import { IoIosPersonAdd, IoMdSchool } from "react-icons/io";
 import { FiLogOut } from "react-icons/fi";
 
