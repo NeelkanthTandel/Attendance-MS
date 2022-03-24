@@ -34,7 +34,7 @@ ReactDOM.render(
       <Route path="teacher" element={<Teacher />} />
       <Route path="assign-teacher" element={<AssignTeacher />} />
       <Route path="view-attend/overall" element={<OverallPage />} />
-      <Route path="view-attend/day-Day" element={<DaytoDay />} />
+      <Route path="view-attend/day-day" element={<DaytoDay />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")
