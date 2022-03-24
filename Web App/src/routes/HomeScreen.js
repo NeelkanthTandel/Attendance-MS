@@ -166,7 +166,7 @@ export default function HomeScreen() {
                 Global.logOutHandler();
                 navigate("/");
               }}
-              // style={{ marginRight: 15 }}
+            // style={{ marginRight: 15 }}
             />
             {/* <div
               style={{
