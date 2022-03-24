@@ -70,7 +70,7 @@ export default function HomeScreen() {
               {collapsed ? "" : com_name}
             </div>
           </SidebarHeader>
-          <SidebarContent style={{ paddingLeft: "10px" }}>
+          <SidebarContent>
             <Menu iconShape="circle">
               <MenuItem
                 icon={<HiHome color={"white"} />}
@@ -104,14 +104,30 @@ export default function HomeScreen() {
               >
                 Class
               </MenuItem>
-              <MenuItem
+              {/* <MenuItem
                 icon={<BsUiChecks color={"white"} />}
                 onClick={() => {
                   navigate("/modify-attend");
                 }}
               >
                 Attendance
-              </MenuItem>
+              </MenuItem> */}
+              <SubMenu title="Attendance" icon={<BsUiChecks color={"white"} />}>
+                <MenuItem
+                  onClick={() => {
+                    navigate("/view-attend/overall");
+                  }}
+                >
+                  Overall
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    navigate("/view-attend/day-day");
+                  }}
+                >
+                  Day To Day
+                </MenuItem>
+              </SubMenu>
             </Menu>
           </SidebarContent>
           <SidebarFooter
@@ -166,7 +182,7 @@ export default function HomeScreen() {
                 Global.logOutHandler();
                 navigate("/");
               }}
-            // style={{ marginRight: 15 }}
+              // style={{ marginRight: 15 }}
             />
             {/* <div
               style={{

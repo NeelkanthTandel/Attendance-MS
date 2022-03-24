@@ -147,6 +147,11 @@ export default function Teacher() {
   const [teacher, setTeacher] = useState();
   const [filteredDet, setFilteredDet] = useState();
   const [addModal, setAddModal] = React.useState(false);
+
+  const [std, setStd] = useState("1");
+  const [selClass, setSelClass] = useState([]);
+  const [div, setDiv] = useState("0");
+
   const toggleAddModal = () => {
     setAddModal(!addModal);
   };
@@ -170,8 +175,27 @@ export default function Teacher() {
   };
 
   useEffect(() => {
+    if (!Global.isLoggedIn()) {
+      return navigate("/");
+    }
+    if (!Global.user) {
+      console.log("Fetching user");
+      Global.fetchUser().then(console.log(Global.classDetail));
+    }
     fetchTeacherList();
   }, []);
+
+  useEffect(() => {
+    const tempClass = Global.classDetail.filter(
+      (data) => data.standard === parseInt(std)
+    );
+    setSelClass(
+      Global.classDetail.filter((data) => data.standard === parseInt(std))
+    );
+    setDiv(tempClass[0] ? tempClass[0].class_id : "0");
+
+    // console.log(div);
+  }, [std, Global.classDetail]);
 
   return (
     <div className="main-container">
@@ -338,31 +362,51 @@ export default function Teacher() {
                             className="classDD"
                             placeholder="Class"
                             style={{ padding: "3px" }}
+                            onChange={(event) => setStd(event.target.value)}
+                            value={std}
                           >
-                            <option>Class 1</option>
-                            <option>Class 2</option>
-                            <option>Class 3</option>
-                            <option>Class 4</option>
-                            <option>Class 5</option>
-                            <option>Class 6</option>
-                            <option>Class 7</option>
-                            <option>Class 8</option>
-                            <option>Class 9</option>
-                            <option>Class 10</option>
-                            <option>Class 11</option>
-                            <option>Class 12</option>
+                            {Global.classDetail[0] ? (
+                              <>
+                                <option value="1">Class 1</option>
+                                <option value="2">Class 2</option>
+                                <option value="3">Class 3</option>
+                                <option value="4">Class 4</option>
+                                <option value="5">Class 5</option>
+                                <option value="6">Class 6</option>
+                                <option value="7">Class 7</option>
+                                <option value="8">Class 8</option>
+                                <option value="9">Class 9</option>
+                                <option value="10">Class 10</option>
+                                <option value="11">Class 11</option>
+                                <option value="12">Class 12</option>
+                              </>
+                            ) : (
+                              <option value="0">Class</option>
+                            )}
                           </select>
                         </div>
                         <div className="DivHeading">
                           <label>Div</label>
-                          <select className="divDD" style={{ padding: "3px" }}>
-                            <option>A</option>
-                            <option>B</option>
+                          <select
+                            className="divDD"
+                            style={{ padding: "3px" }}
+                            onChange={(e) => setDiv(e.target.value)}
+                            value={div}
+                          >
+                            {Global.classDetail[0] ? (
+                              selClass.map((data, index) => (
+                                <option key={index} value={data.class_id}>
+                                  {data.div}
+                                </option>
+                              ))
+                            ) : (
+                              <option value="0">-</option>
+                            )}
                           </select>
                         </div>
                       </div>
                     </div>
-                    <div className="row4">
+                    {/* <div className="row4">
                       <div className="Address" style={{ width: "100%" }}>
                         <label>Address</label>
                         <textarea
@@ -372,7 +416,7 @@ export default function Teacher() {
                           placeholder="Address"
                         />
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                   <span
                     className="submit-button"

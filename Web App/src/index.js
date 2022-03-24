@@ -33,9 +33,8 @@ ReactDOM.render(
       <Route path="modify-attend" element={<ModifyAttend />} />
       <Route path="teacher" element={<Teacher />} />
       <Route path="assign-teacher" element={<AssignTeacher />} />
-      <Route path="overallPage" element={<OverallPage />} />
-      <Route path="daytoDay" element={<DaytoDay />} />
-      
+      <Route path="view-attend/overall" element={<OverallPage />} />
+      <Route path="view-attend/day-Day" element={<DaytoDay />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")

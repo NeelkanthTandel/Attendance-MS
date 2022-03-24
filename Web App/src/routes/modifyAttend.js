@@ -88,6 +88,7 @@ export default function HomeScreen() {
             checked={checked}
             className="status"
             // onChange={toggleAttendance}
+            onChange={() => {}}
             style={{
               width: 15,
               height: 15,
@@ -155,9 +156,9 @@ export default function HomeScreen() {
     if (!Global.isLoggedIn()) {
       return navigate("/");
     }
-    if (!Global.user) {
+    if (!Global.classDetail[0]) {
       console.log("Fetching user");
-      Global.fetchUser().then(console.log(Global.classDetail));
+      Global.fetchUser().then(filterDiv());
     }
     if (!attendanceDetail) {
       console.log("fetch");
@@ -171,7 +172,7 @@ export default function HomeScreen() {
     }
   }, [div, date]);
 
-  useEffect(() => {
+  const filterDiv = () => {
     const tempClass = Global.classDetail.filter(
       (data) => data.standard === parseInt(std)
     );
@@ -179,6 +180,10 @@ export default function HomeScreen() {
       Global.classDetail.filter((data) => data.standard === parseInt(std))
     );
     setDiv(tempClass[0] ? tempClass[0].class_id : "0");
+  };
+
+  useEffect(() => {
+    filterDiv();
 
     // console.log(div);
   }, [std, Global.classDetail]);
