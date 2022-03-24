@@ -83,7 +83,7 @@ export default function HomeScreen() {
               <MenuItem
                 icon={<MdSchool color={"white"} />}
                 onClick={() => {
-                  navigate("/modify-attend");
+                  navigate("/student");
                 }}
               >
                 Students
@@ -361,7 +361,7 @@ export default function HomeScreen() {
 
                 <div
                   className="quick-tools"
-                  onClick={() => navigate("/modify-attend")}
+                  onClick={() => navigate("/student")}
                 >
                   <div
                     style={{
@@ -388,7 +388,7 @@ export default function HomeScreen() {
                 <div
                   className="quick-tools"
                   style={{ marginRight: 0 }}
-                  onClick={() => navigate("/modify-attend")}
+                  onClick={() => navigate("/teacher")}
                 >
                   <div
                     style={{

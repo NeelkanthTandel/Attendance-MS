@@ -3,6 +3,7 @@ import {
   ProSidebar,
   Menu,
   MenuItem,
+  SubMenu,
   SidebarFooter,
   SidebarHeader,
   SidebarContent,
@@ -202,91 +203,107 @@ export default function HomeScreen() {
 
   return (
     <div className="main-container">
-      <ProSidebar
-        collapsed={collapsed}
-        collapsedWidth={98}
-        style={{ position: "absolute", left: 0, top: 0 }}
-      >
-        <SidebarHeader>
-          <div
-            className="s-logo-container"
-            onClick={() => {
-              navigate("/home");
-            }}
-          >
-            <img
-              src={logo}
-              alt="logo"
-              className="s-logo"
-              style={{ marginRight: collapsed ? 0 : 20 }}
-            />
-            {collapsed ? "" : com_name}
-          </div>
-        </SidebarHeader>
-        <SidebarContent style={{ paddingLeft: "10px" }}>
-          <Menu iconShape="circle">
-            <MenuItem
-              icon={<HiHome color={"white"} />}
+       <ProSidebar
+          collapsed={collapsed}
+          collapsedWidth={98}
+          style={{ position: "absolute", left: 0, top: 0 }}
+        >
+          <SidebarHeader>
+            <div
+              className="s-logo-container"
               onClick={() => {
                 navigate("/home");
               }}
             >
-              Home
-            </MenuItem>
-            <MenuItem
-              icon={<MdSchool color={"white"} />}
-              onClick={() => {
-                navigate("/modify-attend");
-              }}
-            >
-              Students
-            </MenuItem>
-            <MenuItem
-              icon={<FaChalkboardTeacher color={"white"} />}
-              onClick={() => {
-                navigate("/teacher");
-              }}
-            >
-              Teachers
-            </MenuItem>
-            <MenuItem
-              icon={<SiGoogleclassroom color={"white"} />}
-              onClick={() => {
-                navigate("/modify-attend");
-              }}
-            >
-              Class
-            </MenuItem>
-            <MenuItem
-              icon={<BsUiChecks color={"white"} />}
-              onClick={() => {
-                navigate("/modify-attend");
-              }}
-            >
-              Attendance
-            </MenuItem>
-          </Menu>
-        </SidebarContent>
-        <SidebarFooter
-          style={{
-            paddingLeft: 40,
-          }}
-        >
-          <div className="s-footer">
-            {collapsed ? (
-              <FaChevronRight
-                className="s-icon"
-                onClick={() => setCollapsed(!collapsed)}
+              <img
+                src={logo}
+                alt="logo"
+                className="s-logo"
+                style={{ marginRight: collapsed ? 0 : 20 }}
               />
-            ) : (
-              <FaChevronLeft
-                className="s-icon"
-                onClick={() => setCollapsed(!collapsed)}
-              />
-            )}
-          </div>
-        </SidebarFooter>
-      </ProSidebar>
+              {collapsed ? "" : com_name}
+            </div>
+          </SidebarHeader>
+          <SidebarContent>
+            <Menu iconShape="circle">
+              <MenuItem
+                icon={<HiHome color={"white"} />}
+                onClick={() => {
+                  navigate("/home");
+                }}
+              >
+                Home
+              </MenuItem>
+              <MenuItem
+                icon={<MdSchool color={"white"} />}
+                onClick={() => {
+                  navigate("/student");
+                }}
+              >
+                Students
+              </MenuItem>
+              <MenuItem
+                icon={<FaChalkboardTeacher color={"white"} />}
+                onClick={() => {
+                  navigate("/teacher");
+                }}
+              >
+                Teachers
+              </MenuItem>
+              <MenuItem
+                icon={<SiGoogleclassroom color={"white"} />}
+                onClick={() => {
+                  navigate("/modify-attend");
+                }}
+              >
+                Class
+              </MenuItem>
+              {/* <MenuItem
+                icon={<BsUiChecks color={"white"} />}
+                onClick={() => {
+                  navigate("/modify-attend");
+                }}
+              >
+                Attendance
+              </MenuItem> */}
+              <SubMenu title="Attendance" icon={<BsUiChecks color={"white"} />}>
+                <MenuItem
+                  onClick={() => {
+                    navigate("/view-attend/overall");
+                  }}
+                >
+                  Overall
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    navigate("/view-attend/day-day");
+                  }}
+                >
+                  Day To Day
+                </MenuItem>
+              </SubMenu>
+            </Menu>
+          </SidebarContent>
+          <SidebarFooter
+            style={{
+              paddingLeft: 40,
+            }}
+          >
+            <div className="s-footer">
+              {collapsed ? (
+                <FaChevronRight
+                  className="s-icon"
+                  onClick={() => setCollapsed(!collapsed)}
+                />
+              ) : (
+                <FaChevronLeft
+                  className="s-icon"
+                  onClick={() => setCollapsed(!collapsed)}
+                />
+              )}
+            </div>
+          </SidebarFooter>
+        </ProSidebar>
       <div
         className="modify-container"
         onClick={() => {

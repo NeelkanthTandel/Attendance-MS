@@ -8,6 +8,7 @@ import HomeScreen from "./routes/HomeScreen";
 import LoginPage from "./routes/LoginPage";
 import ModifyAttend from "./routes/modifyAttend";
 import Teacher from "./routes/Teacher";
+import Student from "./routes/Students";
 import AssignTeacher from "./routes/AssignTeacher";
 import OverallPage from "./routes/view/overallPage";
 import DaytoDay from "./routes/view/daytoDay";
@@ -28,10 +29,11 @@ import DaytoDay from "./routes/view/daytoDay";
 ReactDOM.render(
   <BrowserRouter>
     <Routes>
-      `<Route path="/" element={<LoginPage />} />
+      <Route path="/" element={<LoginPage />} />
       <Route path="home" element={<HomeScreen />} />
       <Route path="modify-attend" element={<ModifyAttend />} />
       <Route path="teacher" element={<Teacher />} />
+      <Route path="student" element={<Student />} />
       <Route path="assign-teacher" element={<AssignTeacher />} />
       <Route path="view-attend/overall" element={<OverallPage />} />
       <Route path="view-attend/day-day" element={<DaytoDay />} />
