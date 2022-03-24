@@ -9,6 +9,8 @@ import LoginPage from "./routes/LoginPage";
 import ModifyAttend from "./routes/modifyAttend";
 import Teacher from "./routes/Teacher";
 import AssignTeacher from "./routes/AssignTeacher";
+import OverallPage from "./routes/view/overallPage";
+import DaytoDay from "./routes/view/daytoDay";
 
 // import { useNavigate } from "react-router-dom";
 // import Cookies from "universal-cookie";
@@ -26,11 +28,14 @@ import AssignTeacher from "./routes/AssignTeacher";
 ReactDOM.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<LoginPage />} />
+      `<Route path="/" element={<LoginPage />} />
       <Route path="home" element={<HomeScreen />} />
       <Route path="modify-attend" element={<ModifyAttend />} />
       <Route path="teacher" element={<Teacher />} />
       <Route path="assign-teacher" element={<AssignTeacher />} />
+      <Route path="overallPage" element={<OverallPage />} />
+      <Route path="daytoDay" element={<DaytoDay />} />
+      
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")
