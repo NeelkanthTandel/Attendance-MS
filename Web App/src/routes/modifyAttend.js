@@ -10,6 +10,8 @@ import {
 import "react-pro-sidebar/dist/css/styles.css";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import logo from "../images/icon.png";
 import "../css/sideBar.css";
@@ -18,6 +20,7 @@ import {
   FaChevronRight,
   FaChevronLeft,
 } from "react-icons/fa";
+
 import { HiHome } from "react-icons/hi";
 import { MdSchool } from "react-icons/md";
 import { SiGoogleclassroom } from "react-icons/si";
@@ -87,6 +90,7 @@ export default function HomeScreen() {
             type="checkbox"
             checked={checked}
             className="status"
+            onChange={() => {}}
             // onChange={toggleAttendance}
             style={{
               width: 15,
@@ -124,7 +128,9 @@ export default function HomeScreen() {
 
   const onSaveHandler = async () => {
     if (!updatedAttIds[0]) {
-      return console.log("Nothing to update");
+      console.log("Nothing to update");
+      toast.dismiss();
+      return toast.warn("Nothing to update");
     }
 
     // const response = await fetch(`${API_URL}/modifyAttendance`, {
@@ -144,6 +150,8 @@ export default function HomeScreen() {
 
     console.log(data);
     fetchStuAttendance();
+    toast.dismiss();
+    toast.success("Updated Attendance Successfully");
     // if (date.getUTCDate() == new Date().getUTCDate()) {
     //   Global.fetchStuAttendance(new Date());
     // }
@@ -363,6 +371,7 @@ export default function HomeScreen() {
               </div>
             </div>
           </div>
+          <ToastContainer hideProgressBar newestOnTop position="top-center" />
 
           <div className="table">
             <div className="table-header">
