@@ -44,12 +44,11 @@ export default function HomeScreen(props) {
     setModal(!modal);
   };
   useEffect(() => {
-    // console.log(Global.user);
     if (!Global.isLoggedIn()) {
       return navigate("/");
     }
     if (!Global.user.name) {
-      Global.fetchUser().then(console.log("User fetched"));
+      Global.fetchUser().then(console.log(Global.user));
     }
   }, []);
 
@@ -219,7 +218,9 @@ export default function HomeScreen(props) {
                         onClick={toggleModal}
                       />
                       <label className="profile-labels">Phone Number : </label>
-                      <div className="profile-data">{Global.user.phone_no}</div>
+                      <div className="profile-data">
+                        {Global.user.phone_number}
+                      </div>
                     </div>
                     <div className="profile-row3">
                       <MdEmail
@@ -230,11 +231,11 @@ export default function HomeScreen(props) {
                       <label className="profile-labels">Mail Id : </label>
                       <div className="profile-data">{Global.user.mail_id}</div>
                     </div>
-                    <div className="profile-row4">
+                    {/* <div className="profile-row4">
                       <div className="profile-button" onClick={toggleModal}>
                         Ok
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

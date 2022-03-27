@@ -90,8 +90,9 @@ export default class Global {
           },
         });
         const data = await response.json();
-        // console.log(data);
-        Global.user = data.user;
+        console.log(data);
+        // Global.user = data.user;
+        this.setUserInfo(data.user, cookies.get("token"));
         Global.classDetail = data.classDet;
       } catch (err) {
         console.log("Error fetching user: ", err);
