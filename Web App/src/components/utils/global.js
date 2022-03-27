@@ -80,7 +80,7 @@ export default class Global {
 
   static fetchUser = async () => {
     if (cookies.get("token")) {
-      // console.log("Fetch user");
+      console.log("Fetch user in global");
       try {
         const response = await fetch(`${API_URL}/auth/me`, {
           method: "GET",

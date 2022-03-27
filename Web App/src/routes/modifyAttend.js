@@ -28,7 +28,7 @@ import { SiGoogleclassroom } from "react-icons/si";
 import { BsUiChecks } from "react-icons/bs";
 // import studentDetails from "../constants/dummy-data";
 import Global from "../components/utils/global";
-import { API_URL, com_name } from "../keys";
+import { com_name } from "../keys";
 
 const cookies = new Cookies();
 
@@ -110,20 +110,24 @@ export default function HomeScreen() {
     setOldDate(date);
     setAttendanceDetail();
     // setFilteredAttDet();
-    const data = await Global.httpPOST("/getAttendance", {
-      date: new Date(date),
-      classId: Global.classDetail[0] ? div : null,
-    });
-    console.log("att det:  Fetch compelete");
-    if (!data.isError) {
-      console.log("att det: ", data);
-      if (data.stu_att[0] && data.stu_att[0].attendance[0]) {
-        setAttendanceDetail(data.stu_att);
-        // setFilteredAttDet(data.stu_att);
-      } else {
-        setAttendanceDetail(null);
-        // setFilteredAttDet(null);
+    try {
+      const data = await Global.httpPOST("/getAttendance", {
+        date: new Date(date),
+        classId: Global.classDetail[0] ? div : null,
+      });
+      console.log("att det:  Fetch compelete");
+      if (!data.isError) {
+        console.log("att det: ", data);
+        if (data.stu_att[0] && data.stu_att[0].attendance[0]) {
+          setAttendanceDetail(data.stu_att);
+          // setFilteredAttDet(data.stu_att);
+        } else {
+          setAttendanceDetail(null);
+          // setFilteredAttDet(null);
+        }
       }
+    } catch (err) {
+      console.log("get attendance error:", err);
     }
   };
 
@@ -181,6 +185,7 @@ export default function HomeScreen() {
   }, [div, date]);
 
   const filterDiv = () => {
+    console.log("filter date");
     const tempClass = Global.classDetail.filter(
       (data) => data.standard === parseInt(std)
     );

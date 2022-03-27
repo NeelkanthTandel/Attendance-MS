@@ -164,6 +164,7 @@
   flex-direction: row;
   border-bottom: 2px solid;
   padding: 15px 0;
+  justify-content: center;
   align-items: center;
 }
 
@@ -281,6 +282,7 @@
   flex-direction: row;
   border-bottom: 2px solid;
   padding: 15px 0;
+  justify-content: center;
   align-items: center;
 }
 

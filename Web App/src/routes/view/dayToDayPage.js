@@ -24,7 +24,7 @@ import Global from "../../components/utils/global";
 import { useNavigate } from "react-router-dom";
 import { com_name } from "../../keys";
 
-export default function DaytoDay() {
+const DayToDayPage = () => {
   const [collapsed, setCollapsed] = useState(true);
   const [allDayAtt, setAllDayAtt] = useState();
   const [workingDays, setWorkingDays] = useState();
@@ -36,13 +36,13 @@ export default function DaytoDay() {
   const navigate = useNavigate();
 
   const fetchAllAttendance = async () => {
-    if (!Global.classDetail[0]) {
+    if (!classId) {
       return console.log("Selecet class");
     }
     console.log("get day attendance");
     try {
       const data = await Global.httpPOST("/getDayAttendance", {
-        classId: Global.user.class_id,
+        classId: classId,
       });
       if (!data.isError) {
         console.log("fetch overall att complete");
@@ -67,8 +67,7 @@ export default function DaytoDay() {
     if (!Global.classDetail[0]) {
       console.log("Fetching user");
       Global.fetchUser().then(filterDiv());
-    }
-    if (!allDayAtt) {
+    } else if (!allDayAtt) {
       console.log("fetch");
       fetchAllAttendance();
     } else if (workingDays[0].class_id !== classId) {
@@ -90,9 +89,7 @@ export default function DaytoDay() {
 
   useEffect(() => {
     filterDiv();
-
-    // console.log(div);
-  }, [std]);
+  }, [std, Global.classDetail]);
 
   const Rows = (props) => {
     var statusArr = [];
@@ -503,4 +500,6 @@ export default function DaytoDay() {
       </div>
     </div>
   );
-}
+};
+
+export default DayToDayPage;

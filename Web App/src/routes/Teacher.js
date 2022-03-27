@@ -180,6 +180,10 @@ export default function Teacher(props) {
     if (!Global.isLoggedIn()) {
       return navigate("/");
     }
+    if (!Global.classDetail[0]) {
+      console.log("Fetching user");
+      Global.fetchUser().then(filterDiv());
+    }
     if (!Global.user) {
       console.log("Fetching user");
       Global.fetchUser().then(console.log(Global.classDetail));
@@ -187,7 +191,7 @@ export default function Teacher(props) {
     fetchTeacherList();
   }, []);
 
-  useEffect(() => {
+  const filterDiv = () => {
     const tempClass = Global.classDetail.filter(
       (data) => data.standard === parseInt(std)
     );
@@ -195,6 +199,10 @@ export default function Teacher(props) {
       Global.classDetail.filter((data) => data.standard === parseInt(std))
     );
     setDiv(tempClass[0] ? tempClass[0].class_id : "0");
+  };
+
+  useEffect(() => {
+    filterDiv();
 
     // console.log(div);
   }, [std, Global.classDetail]);

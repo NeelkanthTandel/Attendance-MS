@@ -108,8 +108,6 @@ export default function OverallPage() {
     }
   }, [div]);
 
-  useEffect(() => {}, [div, date]);
-
   const filterDiv = () => {
     const tempClass = Global.classDetail.filter(
       (data) => data.standard === parseInt(std)

@@ -271,9 +271,10 @@ textarea:focus-visible {
   cursor: pointer;
 }
 
-.modify-container .body .table {
+.modify-container .body .table,
+.modify-container .body .ver-table {
   margin-top: 30px;
-  margin-right: 100px;
+  margin-right: 60px;
 
   display: flex;
   flex-direction: column;
@@ -283,6 +284,32 @@ textarea:focus-visible {
   border-radius: 10px;
   flex: 1;
   overflow: hidden;
+}
+
+.modify-container .body .ver-table {
+  flex-direction: row;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 4px;
+}
+
+/* Track */
+/* ::-webkit-scrollbar-track {
+  background: #fff;
+} */
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .modify-container .body .table .table-header {
@@ -298,6 +325,20 @@ textarea:focus-visible {
   border-left-width: 0px;
   border-right-width: 0px;
   border-bottom-width: 1.5px;
+  border-color: #1c2a40;
+  border-style: solid;
+}
+
+.modify-container .body .ver-table .ver-table-header {
+  display: flex;
+  flex-direction: column;
+  /* padding-left: 30px; */
+  /* padding-right: 15px; */
+  border-top-width: 0px;
+  border-left-width: 0px;
+  border-bottom-width: 0px;
+  border-right-width: 1.5px;
+  /* width: fit-content; */
   border-color: #1c2a40;
   border-style: solid;
 }
