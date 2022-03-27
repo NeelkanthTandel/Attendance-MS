@@ -20,25 +20,36 @@ import {
   FaUserCheck,
 } from "react-icons/fa";
 import { HiHome } from "react-icons/hi";
-import { MdAccountCircle, MdSchool } from "react-icons/md";
+import { MdAccountCircle, MdSchool, MdPhone, MdEmail } from "react-icons/md";
 import { SiGoogleclassroom } from "react-icons/si";
 import { BsUiChecks } from "react-icons/bs";
 import { AiFillSetting } from "react-icons/ai";
-import { IoIosPersonAdd, IoMdSchool } from "react-icons/io";
+import {
+  IoIosPersonAdd,
+  IoMdSchool,
+  IoMdClose,
+  IoMdPerson,
+} from "react-icons/io";
 import { FiLogOut } from "react-icons/fi";
 
 import color from "../constants/color";
 import { com_name } from "../keys";
 import Global from "../components/utils/global";
 
-export default function HomeScreen() {
+export default function HomeScreen(props) {
   const [collapsed, setCollapsed] = useState(true);
   const navigate = useNavigate();
-
+  const [modal, setModal] = React.useState(false);
+  const toggleModal = () => {
+    setModal(!modal);
+  };
   useEffect(() => {
-    // console.log(Global.user.name);
+    // console.log(Global.user);
     if (!Global.isLoggedIn()) {
       return navigate("/");
+    }
+    if (!Global.user.name) {
+      Global.fetchUser().then(console.log("User fetched"));
     }
   }, []);
 
@@ -159,6 +170,7 @@ export default function HomeScreen() {
               flexDirection: "row",
               justifyContent: "flex-end",
               alignItems: "center",
+              cursor: "pointer",
             }}
           >
             <AiFillSetting
@@ -170,7 +182,63 @@ export default function HomeScreen() {
               color={color.primary}
               size={24}
               style={{ marginRight: 20 }}
+              onClick={toggleModal}
             />
+            {modal ? (
+              <div className="profileModal">
+                <div
+                  onClick={toggleModal}
+                  className="profileModal-overlay"
+                ></div>
+                <div className="profileModal-content">
+                  <div className="profileModal-header">
+                    <div className="profileModal-header-title">
+                      Profile Detail
+                    </div>
+                    <IoMdClose
+                      className="icon-close"
+                      color="black"
+                      size={"22px"}
+                      onClick={toggleModal}
+                    />
+                  </div>
+                  <div className="profileModal-innerContent">
+                    <div className="profile-row1">
+                      <IoMdPerson
+                        color={color.primary}
+                        size={24}
+                        onClick={toggleModal}
+                      />
+                      <label className="profile-labels">Name : </label>
+                      <div className="profile-data">{Global.user.name}</div>
+                    </div>
+                    <div className="profile-row2">
+                      <MdPhone
+                        color={color.primary}
+                        size={24}
+                        onClick={toggleModal}
+                      />
+                      <label className="profile-labels">Phone Number : </label>
+                      <div className="profile-data">{Global.user.phone_no}</div>
+                    </div>
+                    <div className="profile-row3">
+                      <MdEmail
+                        color={color.primary}
+                        size={24}
+                        onClick={toggleModal}
+                      />
+                      <label className="profile-labels">Mail Id : </label>
+                      <div className="profile-data">{Global.user.mail_id}</div>
+                    </div>
+                    <div className="profile-row4">
+                      <div className="profile-button" onClick={toggleModal}>
+                        Ok
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : null}
             <FiLogOut
               color={color.primary}
               size={24}
