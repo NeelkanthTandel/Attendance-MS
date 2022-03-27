@@ -24,29 +24,33 @@ import Global from "../../components/utils/global";
 import { useNavigate } from "react-router-dom";
 import { com_name } from "../../keys";
 
-const DayToDayPage = () => {
+export default function DayToDay() {
   const [collapsed, setCollapsed] = useState(true);
   const [allDayAtt, setAllDayAtt] = useState();
   const [workingDays, setWorkingDays] = useState();
 
   const [std, setStd] = useState("1");
   const [selClass, setSelClass] = useState([]);
-  const [classId, setClassId] = useState("0");
+  const [div, setDiv] = useState("0");
 
+  const [date, setDate] = useState("");
+  const [oldDate, setOldDate] = useState();
+  // const [filteredAttDet, setFilteredAttDet] = useState();
   const navigate = useNavigate();
 
   const fetchAllAttendance = async () => {
-    if (!classId) {
-      return console.log("Selecet class");
+    console.log("Class Id: ", Global.user.class_id);
+    if (!Global.user.class_id) {
+      return console.log("No class Id");
     }
     console.log("get day attendance");
     try {
       const data = await Global.httpPOST("/getDayAttendance", {
-        classId: classId,
+        classId: div,
       });
       if (!data.isError) {
         console.log("fetch overall att complete");
-        // console.log(data.totalStuAtt[7]);
+        // console.log(data.totalStuAtt);
         setAllDayAtt(data.totalStuAtt);
         setWorkingDays(data.workingDays);
       } else {
@@ -66,15 +70,23 @@ const DayToDayPage = () => {
     }
     if (!Global.classDetail[0]) {
       console.log("Fetching user");
-      Global.fetchUser().then(filterDiv());
-    } else if (!allDayAtt) {
-      console.log("fetch");
-      fetchAllAttendance();
-    } else if (workingDays[0].class_id !== classId) {
-      console.log("classId changed");
-      fetchAllAttendance();
+      Global.fetchUser()
+        .then(() => {
+          filterDiv();
+          // fetchAllAttendance();
+        })
+        .catch((e) => {
+          console.log("fetch user error: ", e);
+        });
+    } else {
+      if (!allDayAtt || !allDayAtt[0]) {
+        fetchAllAttendance();
+      } else if (allDayAtt[0].class_id !== div) {
+        console.log("Div changed");
+        fetchAllAttendance();
+      }
     }
-  }, [classId]);
+  }, [div]);
 
   const filterDiv = () => {
     console.log("filter class");
@@ -84,11 +96,13 @@ const DayToDayPage = () => {
     setSelClass(
       Global.classDetail.filter((data) => data.standard === parseInt(std))
     );
-    setClassId(tempClass[0] ? tempClass[0].class_id : "0");
+    setDiv(tempClass[0] ? tempClass[0].class_id : "0");
   };
 
   useEffect(() => {
     filterDiv();
+
+    // console.log(div);
   }, [std, Global.classDetail]);
 
   const Rows = (props) => {
@@ -235,8 +249,8 @@ const DayToDayPage = () => {
       </ProSidebar>
       <div className="modify-container">
         <div className="header">
-          <div className="title"> View Day to Day Attendance</div>
-          <div className="save-btn">Day to Day Attendance</div>
+          <div className="title"> View Day To Day Attendance</div>
+          <div className="save-btn">Overall Attendance</div>
         </div>
 
         <div className="body">
@@ -269,8 +283,8 @@ const DayToDayPage = () => {
               </select>
               <select
                 className="filter"
-                onChange={(e) => setClassId(e.target.value)}
-                value={classId}
+                onChange={(e) => setDiv(e.target.value)}
+                value={div}
               >
                 {Global.classDetail[0] ? (
                   selClass.map((data, index) => (
@@ -284,60 +298,6 @@ const DayToDayPage = () => {
               </select>
             </div>
           </div>
-          {/* <div className="table">
-            <div className="table-header">
-              <span style={{ width: 30, fontWeight: "bold", fontSize: 18 }}>
-                Id
-              </span>
-              <span style={{ width: 200, fontWeight: "bold", fontSize: 18 }}>
-                Name
-              </span>
-
-              {workingDays && workingDays[0]
-                ? workingDays.map((data, index) => (
-                    // <CustomText
-                    //   style={{
-                    //     fontWeight: "700",
-                    //     paddingVertical: 5,
-                    //     paddingHorizontal: 10,
-                    //     borderBottomWidth:
-                    //       index == workingDays.length - 1 ? 0 : 0.5,
-                    //   }}
-                    //   key={index}
-                    // >
-                    //
-                    // </CustomText>
-                    <span
-                      style={{
-                        paddingLeft: 5,
-                        paddingRight: 5,
-                        fontWeight: "bold",
-                        fontSize: 12,
-                      }}
-                    >
-                      {new Date(data.date).getDate() +
-                        "/" +
-                        (new Date(data.date).getMonth() + 1) +
-                        "/" +
-                        new Date(data.date)
-                          .getFullYear()
-                          .toString()
-                          .slice(2, 4)}
-                    </span>
-                  ))
-                : null}
-            </div>
-            {studentDetails.map((data, index) => {
-              return (
-                <Row
-                  name={data.name}
-                  id={data.stu_id.charAt(3) + data.stu_id.charAt(4)}
-                  islast={studentDetails.length - 1 === index ? true : false}
-                />
-              );
-            })}
-          </div> */}
-
           <div className="ver-table">
             <div className="ver-table-header">
               <span
@@ -500,6 +460,4 @@ const DayToDayPage = () => {
       </div>
     </div>
   );
-};
-
-export default DayToDayPage;
+}

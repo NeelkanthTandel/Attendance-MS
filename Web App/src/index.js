@@ -11,7 +11,7 @@ import Teacher from "./routes/Teacher";
 import Student from "./routes/Students";
 import AssignTeacher from "./routes/AssignTeacher";
 import OverallPage from "./routes/view/overallPage";
-import DayToDayPage from "./routes/view/dayToDayPage";
+import DayToDay from "./routes/view/dayToDay";
 
 // import { useNavigate } from "react-router-dom";
 // import Cookies from "universal-cookie";
@@ -36,7 +36,7 @@ ReactDOM.render(
       <Route path="student" element={<Student />} />
       <Route path="assign-teacher" element={<AssignTeacher />} />
       <Route path="view-attend/overall" element={<OverallPage />} />
-      <Route path="view-attend/day-day" element={<DayToDayPage />} />
+      <Route path="view-attend/day-day" element={<DayToDay />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById("root")
