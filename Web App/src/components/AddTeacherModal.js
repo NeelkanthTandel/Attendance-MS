@@ -43,9 +43,9 @@ function AddTeacherModal(props) {
           console.log("add Teacher:", data.teacher_id);
           toast.dismiss();
           toast.success("Teacher created successfully");
-          props.toggleModal()
-        }
-        else {
+          props.fetchTeacherList();
+          props.toggleModal();
+        } else {
           toast.dismiss();
           toast.error(data.message);
         }
@@ -70,7 +70,6 @@ function AddTeacherModal(props) {
               />
             </div>
             <div className="add-modal-innerContent">
-              
               <div className="row1">
                 <div className="Name" style={{ width: "100%" }}>
                   <label>Name</label>
