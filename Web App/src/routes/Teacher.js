@@ -13,6 +13,8 @@ import {
 import "react-pro-sidebar/dist/css/styles.css";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
+import { ToastContainer, toast } from "react-toastify";
+
 import AddTeacherModal from "../components/AddTeacherModal";
 import logo from "../images/icon.png";
 import "../css/sideBar.css";
@@ -169,7 +171,7 @@ export default function Teacher(props) {
 
   const fetchTeacherList = async () => {
     const data = await Global.httpGET("/getTeacherList");
-    console.log("teacher: ", data);
+    console.log("teacher: ");
     if (!data.isError) {
       setTeacher(data.teacherList);
       setFilteredDet(data.teacherList);
@@ -203,8 +205,6 @@ export default function Teacher(props) {
 
   useEffect(() => {
     filterDiv();
-
-    // console.log(div);
   }, [std, Global.classDetail]);
 
   return (
@@ -322,7 +322,22 @@ export default function Teacher(props) {
             <div className="save-btn" onClick={toggleAddModal}>
               Add Teacher
             </div>
-            {addModal ? <AddTeacherModal toggleModal={toggleAddModal} /> : null}
+            {addModal ? (
+              <AddTeacherModal
+                toggleModal={toggleAddModal}
+                setDiv={setDiv}
+                selClass={selClass}
+                div={div}
+                std={std}
+                setStd={setStd}
+                lastTeacherId={teacher[teacher.length - 1].teacher_id}
+              />
+            ) : null}
+            <ToastContainer
+                hideProgressBar
+                newestOnTop
+                position="top-center"
+              />
           </div>
         </div>
         <div className="bodyT" style={{ marginBottom: "60px" }}>

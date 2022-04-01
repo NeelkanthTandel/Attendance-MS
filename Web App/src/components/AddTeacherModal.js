@@ -2,19 +2,57 @@ import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import "../css/teacher.css";
 import Global from "../components/utils/global";
+import { ToastContainer, toast } from "react-toastify";
 
 function AddTeacherModal(props) {
-  const [std, setStd] = useState("1");
-  const [selClass, setSelClass] = useState([]);
-  const [div, setDiv] = useState("0");
+  // const [std, setStd] = useState("1");
+  // const [selClass, setSelClass] = useState([]);
+  // const [div, setDiv] = useState("0");
 
   // const toggleAddModal = () => {
   //   setAddModal(!addModal);
   // };
 
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
     event.preventDefault();
-    console.log(event.target.name.value);
+    const name = event.target.name.value;
+    const teacherId = event.target.teacherId.value;
+    const phoneNo = event.target.phoneNumber.value;
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+    const conPassword = event.target.confirmPassword.value;
+    console.log(name, phoneNo, email, password, conPassword, teacherId);
+    if (password !== conPassword) {
+      console.log("error");
+      toast.dismiss();
+      toast.error("Password must match");
+    } else {
+      const teacherDetail = {
+        name,
+        teacher_id: teacherId,
+        password,
+        mail_id: email,
+        phone_number: phoneNo,
+        class_id: props.div,
+        isAdmin: false,
+      };
+      // console.log("Teacher Detail: ", teacherDetail);
+      try {
+        const data = await Global.httpPOST("/addTeacher", teacherDetail);
+        if (!data.isError) {
+          console.log("add Teacher:", data.teacher_id);
+          toast.dismiss();
+          toast.success("Teacher created successfully");
+          props.toggleModal()
+        }
+        else {
+          toast.dismiss();
+          toast.error(data.message);
+        }
+      } catch (err) {
+        console.log("add teacher error:", err.message);
+      }
+    }
   };
   return (
     <>
@@ -32,6 +70,7 @@ function AddTeacherModal(props) {
               />
             </div>
             <div className="add-modal-innerContent">
+              
               <div className="row1">
                 <div className="Name" style={{ width: "100%" }}>
                   <label>Name</label>
@@ -47,12 +86,19 @@ function AddTeacherModal(props) {
               <div className="row2">
                 <div className="Teacher-id">
                   <label>Teacher Id</label>
-                  <div
+                  {/* <div
                     className="Teacher-id-input"
                     style={{ fontWeight: "bold" }}
                   >
-                    SNT001
-                  </div>
+                    {props.lastTeacherId}
+                  </div> */}
+                  <input
+                    className="Teacher-id-input"
+                    type="text"
+                    required="required"
+                    placeholder={props.lastTeacherId}
+                    name="teacherId"
+                  />
                 </div>
                 <div className="Phone-no">
                   <label>Phone No.</label>
@@ -61,6 +107,7 @@ function AddTeacherModal(props) {
                     type="text"
                     required="required"
                     placeholder="Phone Number"
+                    name="phoneNumber"
                   />
                 </div>
               </div>
@@ -72,6 +119,7 @@ function AddTeacherModal(props) {
                     type="text"
                     required="required"
                     placeholder="Email"
+                    name="email"
                   />
                 </div>
                 <div className="ClassDiv">
@@ -81,8 +129,8 @@ function AddTeacherModal(props) {
                       className="classDD"
                       placeholder="Class"
                       style={{ padding: "3px" }}
-                      onChange={(event) => setStd(event.target.value)}
-                      value={std}
+                      onChange={(event) => props.setStd(event.target.value)}
+                      value={props.std}
                     >
                       {Global.classDetail[0] ? (
                         <>
@@ -109,11 +157,11 @@ function AddTeacherModal(props) {
                     <select
                       className="divDD"
                       style={{ padding: "3px" }}
-                      onChange={(e) => setDiv(e.target.value)}
-                      value={div}
+                      onChange={(e) => props.setDiv(e.target.value)}
+                      value={props.div}
                     >
                       {Global.classDetail[0] ? (
-                        selClass.map((data, index) => (
+                        props.selClass.map((data, index) => (
                           <option key={index} value={data.class_id}>
                             {data.div}
                           </option>
@@ -131,6 +179,7 @@ function AddTeacherModal(props) {
                   <input
                     placeholder="Password"
                     className="confirm-password-input"
+                    name="password"
                   />
                 </div>
                 <div className="password">
@@ -139,6 +188,7 @@ function AddTeacherModal(props) {
                     type="password"
                     placeholder="Confirm Password"
                     className="confirm-password-input"
+                    name="confirmPassword"
                   />
                 </div>
               </div>

@@ -10,7 +10,6 @@ import {
 } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
 import { useNavigate } from "react-router-dom";
-import Cookies from "universal-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -29,8 +28,6 @@ import { BsUiChecks } from "react-icons/bs";
 // import studentDetails from "../constants/dummy-data";
 import Global from "../components/utils/global";
 import { com_name } from "../keys";
-
-const cookies = new Cookies();
 
 export default function HomeScreen() {
   const [collapsed, setCollapsed] = useState(true);
@@ -203,12 +200,13 @@ export default function HomeScreen() {
 
   useEffect(() => {
     const tempDate = new Date().toLocaleDateString().split("/");
+    console.log("tempDate: ",tempDate);
     setDate(
       tempDate[2] +
         "-" +
         (tempDate[0] < 10 ? "0" + tempDate[0] : tempDate[0]) +
         "-" +
-        tempDate[1]
+        (tempDate[1] < 10 ? "0" + tempDate[1] : tempDate[1])
     );
     // fetchStuAttendance();
   }, []);
