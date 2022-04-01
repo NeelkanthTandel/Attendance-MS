@@ -10,6 +10,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const cors = require("cors");
 const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 const dblib = require("./modules/dblib");
 const requireToken = require("./middleware/requireToken");
@@ -84,6 +85,133 @@ app.get("/getTeacherList", requireToken, async (req, res) => {
     return res.status(200).send({ isError: false, teacherList });
   } catch (err) {
     console.log("getTeacherList: ", err);
+    return res.status(400).send({ isError: true, message: err.message });
+  }
+});
+
+app.post("/getStudentList", requireToken, async (req, res) => {
+  console.log("/getStudentList");
+  const classId = req.body.classId;
+  if (!classId) {
+    return res
+      .status(422)
+      .send({ isError: true, message: "Details must be provided" });
+  }
+  try {
+    const studentList = await prisma.student_detail.findMany({
+      orderBy: { stu_id: "asc" },
+      where: {
+        class_id: classId,
+      },
+      include: {
+        class_detail: {
+          select: {
+            standard: true,
+            div: true,
+          },
+        },
+      },
+    });
+    return res.status(200).send({ isError: false, studentList });
+  } catch (err) {
+    console.log("getStudentList: ", err);
+    return res.status(400).send({ isError: true, message: err.message });
+  }
+});
+
+app.post("/addTeacher", requireToken, async (req, res) => {
+  console.log("/addTeacher");
+  const { name, teacher_id, password, mail_id, phone_number, class_id } =
+    req.body;
+
+  if (
+    !name ||
+    !teacher_id ||
+    !password ||
+    !mail_id ||
+    !phone_number ||
+    !class_id
+  ) {
+    return res
+      .status(422)
+      .send({ isError: true, message: "Details must be provided" });
+  }
+
+  const teacher_det = {
+    name,
+    teacher_id,
+    password,
+    mail_id,
+    phone_number,
+    class_id,
+    isAdmin: false,
+  };
+
+  try {
+
+    const user = await prisma.teacher_detail.findFirst({
+      where: {
+        OR: [
+          {
+            teacher_id
+          },
+          {
+            mail_id
+          },
+          {
+            phone_number
+          }
+        ]
+      }
+    });
+    
+    if(user){
+      console.log("User exist with same details", user);
+      if(user.teacher_id === teacher_id ){
+        return res.status(400).send({ isError: true, isUserExist: true, message: "User with this teacher id already exist"});
+      }
+      else if(user.mail_id === mail_id){
+        return res.status(400).send({ isError: true, isUserExist: true, message: "User with this mail id already exist"});
+      }
+      else if(user.phone_number === phone_number){
+        return res.status(400).send({ isError: true, isUserExist: true, message: "User with this phone number already exist"});
+      }
+    }
+
+    bcrypt.hash(password, saltRounds, async function (err, hash) {
+      // Store hash in your password DB.
+      console.log("Hash Psas: ", hash);
+
+      if (hash) {
+        try {
+          const user = await prisma.teacher_detail.create({
+            data: {
+              name: name,
+              teacher_id: teacher_id,
+              password: hash,
+              mail_id: mail_id,
+              phone_number: phone_number,
+              // address: address,
+              class_id: class_id,
+              isAdmin: false,
+            },
+          });
+          console.log("id:", user.teacher_id);
+          return res
+            .status(200)
+            .send({ isError: false,isUserExist: false, teacher_id: user.teacher_id });
+        } catch (upload_err) {
+          console.log("err:", upload_err);
+        }
+      }
+      console.log(teacher_id, ": ", err);
+      // const res = { isError: true, err };
+      return res.status(400).send({ isError: true, isUserExist: false, message: err });
+    });
+    // const data = await dblib.createTeacher(teacher_det);
+    // console.log(data);
+  } catch (err) {
+    console.log("addTeacher: ", err);
     return res.status(400).send({ isError: true, message: err.message });
   }
 });

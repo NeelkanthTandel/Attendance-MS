@@ -28,7 +28,7 @@ model teacher_detail {
   password        String
   mail_id         String    @unique
   phone_number    String    @unique
-  address         String
+  address         String?
   class_id        String
   class_detail    class_detail     @relation(fields: [class_id], references: [class_id])
   isAdmin         Boolean   @default(false)

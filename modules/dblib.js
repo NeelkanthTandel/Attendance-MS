@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
+const passwordHash = require("password-hash");
 const saltRounds = 10;
 
 async function createStudent(name, rfid_id) {
@@ -29,24 +30,52 @@ function hashPassword(password) {
   });
 }
 
-async function createTeacher(teacherId, name, password) {
-  bcrypt.hash(password, saltRounds, async function (err, hash) {
-    // Store hash in your password DB.
-    console.log("Hash Psas: ", hash);
+// async function createTeacher(teacherId, name, password) {
+//   bcrypt.hash(password, saltRounds, async function (err, hash) {
+//     // Store hash in your password DB.
+//     console.log("Hash Psas: ", hash);
 
-    if (hash) {
-      const user = await prisma.teacher_detail.create({
-        data: {
-          name,
-          teacher_id: teacherId.toUpperCase(),
-          password: hash,
-        },
-      });
-      return user;
-    }
-    return err;
+//     if (hash) {
+//       const user = await prisma.teacher_detail.create({
+//         data: {
+//           name,
+//           teacher_id: teacherId.toUpperCase(),
+//           password: hash,
+//         },
+//       });
+//       return user;
+//     }
+//     return err;
+//   });
+// }
+
+const createTeacher = async (data) => {
+  // bcrypt.hash(data.password, saltRounds, async function (err, hash) {
+  // Store hash in your password DB.
+  console.log("Hash Psas: ", hash);
+
+  // if (hash) {
+  const user = await prisma.teacher_detail.create({
+    data: {
+      name: data.name,
+      teacher_id: data.teacher_id,
+      password: passwordHash.generate(data.password),
+      mail_id: data.mail_id,
+      phone_number: data.phone_number,
+      // address: data.address,
+      class_id: data.class_id,
+      isAdmin: data.isAdmin,
+    },
   });
-}
+  console.log("id:", user.teacher_id);
+  const res = { isError: false, teacher_id: user.teacher_id };
+  return res;
+  // }
+  // console.log(data.teacher_id, ": ", err);
+  // const res = { isError: true, err };
+  // return res;
+  // });
+};
 
 async function getTeacher(userId) {
   const user = await prisma.teacher_detail.findUnique({
@@ -195,7 +224,7 @@ const getAllAttendance = async (class_id, onLyPresent) => {
       },
     },
   });
-  // console.log(JSON.stringify(stuDet));
+  console.log(stuDet);
   return stuDet;
 };
 
@@ -238,10 +267,56 @@ const totalDistinctDay = async () => {
   });
 
   // console.log(count.length);
+  // console.log(distinctDay);
   return distinctDay;
 };
 
+const getDayToDayAttendance = async (classId) => {
+  const distinctDay = await totalDistinctDay();
+
+  // distinctDay.map((elem) => {});
+
+  const data = await prisma.attendance.findMany({
+    where: {
+      student_detail: {
+        class_id: classId,
+      },
+    },
+    orderBy: {
+      date: "asc",
+    },
+    select: {
+      date: true,
+      status: true,
+      student_detail: {
+        select: {
+          id: true,
+          name: true,
+          stu_id: true,
+          class_id: true,
+        },
+      },
+    },
+  });
+
+  var groupedData = [];
+
+  distinctDay.map((elem) => {
+    const filteredData = data.filter(
+      (item) => elem.date.toString() === item.date.toString()
+    );
+    groupedData.push({ date: elem.date, attDet: filteredData });
+  });
+
+  // console.log(groupedData);
+  return { totalStuAtt: groupedData, workingDays: distinctDay };
+  // console.log(data);
+};
+
+// getDayToDayAttendance();
+// totalDistinctDay();
 // totalWorkingDays();
+// getAllAttendance("class1A");
 
 module.exports = {
   getTeacher,
@@ -252,4 +327,6 @@ module.exports = {
   modifyExistingAttendance,
   totalDistinctDay,
   getAllAttendance,
+  getDayToDayAttendance,
+  createTeacher,
 };

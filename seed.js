@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
+const { createTeacher } = require("./modules/dblib");
 const saltRounds = 10;
 
 const classDetails = [
@@ -306,32 +307,6 @@ const createStudent = async (data) => {
     data,
   });
   console.log(stu.stu_id);
-};
-
-const createTeacher = async (data) => {
-  bcrypt.hash(data.password, saltRounds, async function (err, hash) {
-    // Store hash in your password DB.
-    console.log("Hash Psas: ", hash);
-
-    if (hash) {
-      const user = await prisma.teacher_detail.create({
-        data: {
-          name: data.name,
-          teacher_id: data.teacher_id,
-          password: hash,
-          mail_id: data.mail_id,
-          phone_number: data.phone_number,
-          address: data.address,
-          class_id: data.class_id,
-          isAdmin: data.isAdmin,
-        },
-      });
-      console.log(user.teacher_id);
-      return user.teacher_id;
-    }
-    console.log(data.teacher_id, ": ", err);
-    return err;
-  });
 };
 
 const seedTeachers = () => {
