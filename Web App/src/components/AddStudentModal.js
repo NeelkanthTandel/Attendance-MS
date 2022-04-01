@@ -8,10 +8,6 @@ function AddStudentModal(props) {
   const [selClass, setSelClass] = useState([]);
   const [div, setDiv] = useState("0");
 
-  // const toggleAddModal = () => {
-  //   setAddModal(!addModal);
-  // };
-
   const submitHandler = (event) => {
     event.preventDefault();
     console.log(event.target.name.value);

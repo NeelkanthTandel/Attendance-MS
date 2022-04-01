@@ -40,15 +40,20 @@ export default function HomeScreen(props) {
   const [collapsed, setCollapsed] = useState(true);
   const navigate = useNavigate();
   const [modal, setModal] = React.useState(false);
-  const toggleModal = () => {
+  const [settingModal, setSettingModal] = React.useState(false);
+  const profileToggleModal = () => {
     setModal(!modal);
   };
+  const ToggleModal = () => {
+    setSettingModal(!settingModal);
+  };
   useEffect(() => {
+    // console.log(Global.user);
     if (!Global.isLoggedIn()) {
       return navigate("/");
     }
     if (!Global.user.name) {
-      Global.fetchUser().then(console.log(Global.user));
+      Global.fetchUser().then(console.log("User fetched"));
     }
   }, []);
 
@@ -176,17 +181,40 @@ export default function HomeScreen(props) {
               color={color.primary}
               size={24}
               style={{ marginRight: 20 }}
+              onClick={ToggleModal}
+              // onClick={settingToggleModal}
             />
+            {settingModal ? (
+              <div className="profileModal">
+                <div
+                  onClick={ToggleModal}
+                  // onClick={settingToggleModal}
+                  className="profileModal-overlay"
+                />
+                <div className="profileModal-content">
+                  <div className="profileModal-header">
+                    <div className="profileModal-header-title">Setting</div>
+                    <IoMdClose
+                      className="icon-close"
+                      color="black"
+                      size={"22px"}
+                      // onClick={settingToggleModal}
+                      onClick={ToggleModal}
+                    />
+                  </div>
+                </div>
+              </div>
+            ) : null}
             <MdAccountCircle
               color={color.primary}
               size={24}
               style={{ marginRight: 20 }}
-              onClick={toggleModal}
+              onClick={profileToggleModal}
             />
             {modal ? (
               <div className="profileModal">
                 <div
-                  onClick={toggleModal}
+                  onClick={profileToggleModal}
                   className="profileModal-overlay"
                 ></div>
                 <div className="profileModal-content">
@@ -198,44 +226,64 @@ export default function HomeScreen(props) {
                       className="icon-close"
                       color="black"
                       size={"22px"}
-                      onClick={toggleModal}
+                      onClick={profileToggleModal}
                     />
                   </div>
                   <div className="profileModal-innerContent">
-                    <div className="profile-row1">
-                      <IoMdPerson
-                        color={color.primary}
-                        size={24}
-                        onClick={toggleModal}
-                      />
-                      <label className="profile-labels">Name : </label>
-                      <div className="profile-data">{Global.user.name}</div>
-                    </div>
-                    <div className="profile-row2">
-                      <MdPhone
-                        color={color.primary}
-                        size={24}
-                        onClick={toggleModal}
-                      />
-                      <label className="profile-labels">Phone Number : </label>
-                      <div className="profile-data">
-                        {Global.user.phone_number}
+                    <div className="column1">
+                      <div className="profile-circle">
+                        <span className="profile-circle-alpha">
+                          {Global.user.name.charAt(0)}
+                        </span>
                       </div>
                     </div>
-                    <div className="profile-row3">
-                      <MdEmail
-                        color={color.primary}
-                        size={24}
-                        onClick={toggleModal}
-                      />
-                      <label className="profile-labels">Mail Id : </label>
-                      <div className="profile-data">{Global.user.mail_id}</div>
-                    </div>
-                    {/* <div className="profile-row4">
-                      <div className="profile-button" onClick={toggleModal}>
-                        Ok
+                    <div className="column2">
+                      <div className="profile-row1">
+                        <IoMdPerson
+                          color={color.primary}
+                          size={24}
+                          onClick={profileToggleModal}
+                        />
+
+                        <div
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          <label className="profile-labels">Name</label>
+                          <div className="profile-data">{Global.user.name}</div>
+                        </div>
                       </div>
-                    </div> */}
+
+                      <div className="profile-row2">
+                        <MdPhone
+                          color={color.primary}
+                          size={24}
+                          onClick={profileToggleModal}
+                        />
+                        <div
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          <label className="profile-labels">Phone Number</label>
+                          <div className="profile-data">
+                            {Global.user.phone_number}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="profile-row3">
+                        <MdEmail
+                          color={color.primary}
+                          size={24}
+                          onClick={profileToggleModal}
+                        />
+                        <div
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          <label className="profile-labels">Mail Id </label>
+                          <div className="profile-data">
+                            {Global.user.mail_id}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

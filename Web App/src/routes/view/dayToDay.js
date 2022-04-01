@@ -422,6 +422,7 @@ export default function DayToDay() {
                         borderBottomWidth: 0.5,
                         // fontSize: 12,
                         textAlignVertical: "center",
+                        textOverflow: "ellipsis",
                       }}
                     >
                       {data.name}
