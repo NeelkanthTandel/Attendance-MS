@@ -148,33 +148,42 @@ app.post("/addTeacher", requireToken, async (req, res) => {
   };
 
   try {
-
     const user = await prisma.teacher_detail.findFirst({
       where: {
         OR: [
           {
-            teacher_id
+            teacher_id,
           },
           {
-            mail_id
+            mail_id,
           },
           {
-            phone_number
-          }
-        ]
-      }
+            phone_number,
+          },
+        ],
+      },
     });
-    
-    if(user){
+
+    if (user) {
       console.log("User exist with same details", user);
-      if(user.teacher_id === teacher_id ){
-        return res.status(400).send({ isError: true, isUserExist: true, message: "User with this teacher id already exist"});
-      }
-      else if(user.mail_id === mail_id){
-        return res.status(400).send({ isError: true, isUserExist: true, message: "User with this mail id already exist"});
-      }
-      else if(user.phone_number === phone_number){
-        return res.status(400).send({ isError: true, isUserExist: true, message: "User with this phone number already exist"});
+      if (user.teacher_id === teacher_id) {
+        return res.status(400).send({
+          isError: true,
+          isUserExist: true,
+          message: "User with this teacher id already exist",
+        });
+      } else if (user.mail_id === mail_id) {
+        return res.status(400).send({
+          isError: true,
+          isUserExist: true,
+          message: "User with this mail id already exist",
+        });
+      } else if (user.phone_number === phone_number) {
+        return res.status(400).send({
+          isError: true,
+          isUserExist: true,
+          message: "User with this phone number already exist",
+        });
       }
     }
 
@@ -197,21 +206,59 @@ app.post("/addTeacher", requireToken, async (req, res) => {
             },
           });
           console.log("id:", user.teacher_id);
-          return res
-            .status(200)
-            .send({ isError: false,isUserExist: false, teacher_id: user.teacher_id });
+          return res.status(200).send({
+            isError: false,
+            isUserExist: false,
+            teacher_id: user.teacher_id,
+          });
         } catch (upload_err) {
           console.log("err:", upload_err);
+          console.log("addTeacher: ", err);
+          return res
+            .status(400)
+            .send({ isError: true, message: upload_err.message });
         }
       }
       console.log(teacher_id, ": ", err);
       // const res = { isError: true, err };
-      return res.status(400).send({ isError: true, isUserExist: false, message: err });
+      return res
+        .status(400)
+        .send({ isError: true, isUserExist: false, message: err });
     });
     // const data = await dblib.createTeacher(teacher_det);
     // console.log(data);
   } catch (err) {
     console.log("addTeacher: ", err);
+    return res.status(400).send({ isError: true, message: err.message });
+  }
+});
+
+app.post("/deleteTeacher", requireToken, async (req, res) => {
+  console.log("/deleteTeacher");
+  const { teacher_id } = req.body;
+
+  if (!teacher_id) {
+    return res
+      .status(422)
+      .send({ isError: true, message: "Details must be provided" });
+  }
+
+  try {
+    const teacher = await prisma.teacher_detail.delete({
+      where: {
+        teacher_id,
+      },
+    });
+
+    console.log(teacher);
+    if (teacher) {
+      return res.status(200).send({
+        isError: false,
+        teacher_id: teacher.teacher_id,
+      });
+    }
+  } catch (err) {
+    console.log("deleteTeacher: ", err);
     return res.status(400).send({ isError: true, message: err.message });
   }
 });
