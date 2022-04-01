@@ -133,9 +133,12 @@ export default function Teacher(props) {
             minWidth: "100px",
           }}
         >
-          <span onClick={toggleModal} className="remove-button">
-            Remove
-          </span>
+          {Global.user.teacher_id === props.id ||
+          props.id === "SNT001" ? null : (
+            <span onClick={toggleModal} className="remove-button">
+              Remove
+            </span>
+          )}
           {modal ? (
             <div className="remove-modal">
               <div onClick={toggleModal} className="overlay"></div>

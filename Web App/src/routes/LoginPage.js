@@ -56,6 +56,7 @@ const LoginPage = () => {
     if (!data.isError && data.isCredMatch) {
       cookies.set("token", data.token, { path: "/" });
       console.log("Navigate: ");
+      Global.setUserInfo(data.user, data.token);
       navigate("/home");
     } else {
       setIsWrong(true);
