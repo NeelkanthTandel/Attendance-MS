@@ -4,16 +4,14 @@ const bcrypt = require("bcrypt");
 const passwordHash = require("password-hash");
 const saltRounds = 10;
 
-async function createStudent(name, rfid_id) {
+async function createStudent(data) {
   const user = await prisma.student_detail.create({
-    data: {
-      name,
-      rfid_id,
-    },
+    data,
   });
   // const user = await prisma.student_detail.delete({ where: { id: 2 } });
   console.log("Done creating new student", user);
   // console.log("Done");
+  return user;
 }
 
 function hashPassword(password) {
@@ -329,4 +327,5 @@ module.exports = {
   getAllAttendance,
   getDayToDayAttendance,
   createTeacher,
+  createStudent,
 };

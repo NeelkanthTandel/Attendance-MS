@@ -137,15 +137,12 @@ app.post("/addTeacher", requireToken, async (req, res) => {
       .send({ isError: true, message: "Details must be provided" });
   }
 
-  const teacher_det = {
-    name,
-    teacher_id,
-    password,
-    mail_id,
-    phone_number,
-    class_id,
-    isAdmin: false,
-  };
+  // if (name.toLowerCase() === "hetvi soni" || name.toLowerCase() === "hetvi") {
+  //   console.log("Special restrictions");
+  //   return res
+  //     .status(422)
+  //     .send({ isError: true, message: "This person is not allowed" });
+  // }
 
   try {
     const user = await prisma.teacher_detail.findFirst({
@@ -259,6 +256,77 @@ app.post("/deleteTeacher", requireToken, async (req, res) => {
     }
   } catch (err) {
     console.log("deleteTeacher: ", err);
+    return res.status(400).send({ isError: true, message: err.message });
+  }
+});
+
+app.post("/addStudent", requireToken, async (req, res) => {
+  console.log("/addStudent");
+  const { name, stu_id, rfid_id, parents_number, class_id } = req.body;
+  if (!name || !stu_id || !rfid_id || !parents_number || !class_id) {
+    return res
+      .status(422)
+      .send({ isError: true, message: "Details must be provided" });
+  }
+
+  // if (name.toLowerCase() === "hetvi soni" || name.toLowerCase() === "hetvi") {
+  //   console.log("Special restrictions");
+  //   return res
+  //     .status(422)
+  //     .send({ isError: true, message: "This person is not allowed" });
+  // }
+
+  try {
+    const user = await prisma.student_detail.findFirst({
+      where: {
+        OR: [
+          {
+            stu_id,
+          },
+          {
+            rfid_id,
+          },
+        ],
+      },
+    });
+
+    if (user) {
+      console.log("User exist with same details", user);
+      if (user.stu_id === stu_id) {
+        return res.status(400).send({
+          isError: true,
+          isUserExist: true,
+          message: "Student with this student id already exist",
+        });
+      } else if (user.rfid_id === rfid_id) {
+        return res.status(400).send({
+          isError: true,
+          isUserExist: true,
+          message: "Student with this RFID already exist",
+        });
+      }
+    }
+
+    const stuDet = {
+      stu_id,
+      name,
+      rfid_id,
+      parents_number,
+      class_id,
+    };
+
+    const newStu = await dblib.createStudent(stuDet);
+    console.log("id:", newStu.stu_id);
+    return res.status(200).send({
+      isError: false,
+      isUserExist: false,
+      student_id: newStu.stu_id,
+    });
+
+    // const data = await dblib.createTeacher(teacher_det);
+    // console.log(data);
+  } catch (err) {
+    console.log("addStudent: ", err);
     return res.status(400).send({ isError: true, message: err.message });
   }
 });
