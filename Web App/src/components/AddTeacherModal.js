@@ -36,7 +36,7 @@ function AddTeacherModal(props) {
         class_id: props.div,
         isAdmin: false,
       };
-      // console.log("Teacher Detail: ", teacherDetail);
+      console.log("Teacher Detail: ", teacherDetail);
       try {
         const data = await Global.httpPOST("/addTeacher", teacherDetail);
         if (!data.isError) {
@@ -47,7 +47,11 @@ function AddTeacherModal(props) {
           props.toggleModal();
         } else {
           toast.dismiss();
-          toast.error(data.message);
+          if (data.isUserExist) {
+            toast.error(data.message);
+          } else {
+            toast.error("Something went wrong.\nPlease try again later.");
+          }
         }
       } catch (err) {
         console.log("add teacher error:", err.message);
@@ -179,6 +183,7 @@ function AddTeacherModal(props) {
                     placeholder="Password"
                     className="confirm-password-input"
                     name="password"
+                    required="required"
                   />
                 </div>
                 <div className="password">
@@ -188,6 +193,7 @@ function AddTeacherModal(props) {
                     placeholder="Confirm Password"
                     className="confirm-password-input"
                     name="confirmPassword"
+                    required="required"
                   />
                 </div>
               </div>
