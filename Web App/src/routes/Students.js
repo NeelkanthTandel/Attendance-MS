@@ -13,6 +13,7 @@ import {
 import "react-pro-sidebar/dist/css/styles.css";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
+import { ToastContainer, toast } from "react-toastify";
 
 import logo from "../images/icon.png";
 import "../css/sideBar.css";
@@ -48,8 +49,8 @@ const Row = (props) => {
     >
       <span style={{ width: "10%", minWidth: "65px" }}>{props.id}</span>
       <span style={{ width: "50%", minWidth: "180px" }}>{props.name}</span>
-      <span style={{ width: "15%", minWidth: "65px" }}>{props.className}</span>
-      <span style={{ width: "15%", minWidth: "65px" }}>{props.div}</span>
+      <span style={{ width: "15%", minWidth: "65px" }}>{props.roll_no}</span>
+      <span style={{ width: "15%", minWidth: "65px" }}>{props.RFid}</span>
       <span
         style={{
           width: "20%",
@@ -99,15 +100,11 @@ const Row = (props) => {
                 {/* </div> */}
                 <div className="detail">
                   <b>RFID: </b>
-                  {props.mail_id}
+                  {props.RFid}
                 </div>
                 <div className="detail">
                   <b>Phone no.: </b>
-                  {props.phone_number}
-                </div>
-                <div className="detail">
-                  <b>Address: </b>
-                  {props.address}
+                  {props.parentsNo}
                 </div>
               </div>
               <div className="modal-button">
@@ -167,27 +164,53 @@ export default function Students() {
     );
   };
 
-  const fetchTeacherList = async () => {
-    const data = await Global.httpGET("/getTeacherList");
+  const fetchStudentList = async () => {
+    const data = await Global.httpPOST("/getStudentList", {
+      classId: div,
+    });
     console.log("teacher: ", data);
     if (!data.isError) {
-      setTeacher(data.teacherList);
-      setFilteredDet(data.teacherList);
+      setTeacher(data.studentList);
+      setFilteredDet(data.studentList);
+    } else {
+      toast.dismiss();
     }
   };
 
+  // useEffect(() => {
+  //   if (!Global.isLoggedIn()) {
+  //     return navigate("/");
+  //   }
+  //   if (!Global.user) {
+  //     console.log("Fetching user");
+  //     Global.fetchUser().then(console.log(Global.classDetail));
+  //   }
+  //   fetchStudentList();
+  // }, []);
+
   useEffect(() => {
+    console.log("modify: ", Global.classDetail);
+    // cookies.set('token', '', { path: '/' });
     if (!Global.isLoggedIn()) {
       return navigate("/");
     }
-    if (!Global.user) {
+    if (!Global.classDetail[0]) {
       console.log("Fetching user");
-      Global.fetchUser().then(console.log(Global.classDetail));
+      Global.fetchUser().then(() => {
+        console.log("fetch user completed");
+        filterDiv();
+      });
+    } else if (!teacher) {
+      console.log("fetch");
+      fetchStudentList();
+    } else if (teacher[0].class_id !== div) {
+      console.log("Div changed");
+      fetchStudentList();
     }
-    fetchTeacherList();
-  }, []);
+  }, [div]);
 
-  useEffect(() => {
+  const filterDiv = () => {
+    console.log("filter div");
     const tempClass = Global.classDetail.filter(
       (data) => data.standard === parseInt(std)
     );
@@ -195,7 +218,10 @@ export default function Students() {
       Global.classDetail.filter((data) => data.standard === parseInt(std))
     );
     setDiv(tempClass[0] ? tempClass[0].class_id : "0");
+  };
 
+  useEffect(() => {
+    filterDiv();
     // console.log(div);
   }, [std, Global.classDetail]);
 
@@ -321,11 +347,58 @@ export default function Students() {
                 div={div}
                 std={std}
                 setStd={setStd}
+                toggleModal={toggleAddModal}
+                lastStudentId={teacher[teacher.length - 1].stu_id}
               />
             ) : null}
+            <ToastContainer hideProgressBar newestOnTop position="top-center" />
           </div>
         </div>
         <div className="bodyT" style={{ marginBottom: "60px" }}>
+          <div className="filter-container">
+            <div>
+              <select
+                className="filter"
+                placeholder="Class"
+                onChange={(event) => setStd(event.target.value)}
+                value={std}
+              >
+                {Global.classDetail[0] ? (
+                  <>
+                    <option value="1">Class 1</option>
+                    <option value="2">Class 2</option>
+                    <option value="3">Class 3</option>
+                    <option value="4">Class 4</option>
+                    <option value="5">Class 5</option>
+                    <option value="6">Class 6</option>
+                    <option value="7">Class 7</option>
+                    <option value="8">Class 8</option>
+                    <option value="9">Class 9</option>
+                    <option value="10">Class 10</option>
+                    <option value="11">Class 11</option>
+                    <option value="12">Class 12</option>
+                  </>
+                ) : (
+                  <option value="0">Class</option>
+                )}
+              </select>
+              <select
+                className="filter"
+                onChange={(e) => setDiv(e.target.value)}
+                value={div}
+              >
+                {Global.classDetail[0] ? (
+                  selClass.map((data, index) => (
+                    <option key={index} value={data.class_id}>
+                      {data.div}
+                    </option>
+                  ))
+                ) : (
+                  <option value="0">-</option>
+                )}
+              </select>
+            </div>
+          </div>
           <input
             className="searchBar"
             placeholder="Search"
@@ -367,13 +440,17 @@ export default function Students() {
               ? filteredDet.map((data, index) => {
                   return (
                     <Row
-                      id={data.teacher_id}
+                      id={data.stu_id}
+                      roll_no={
+                        data.stu_id.charAt(2) +
+                        data.stu_id.charAt(3) +
+                        data.stu_id.charAt(4)
+                      }
                       name={data.name}
+                      RFid={data.rfid_id}
+                      parentsNo={data.parents_number}
                       className={data.class_detail.standard}
                       div={data.class_detail.div}
-                      mail_id={data.mail_id}
-                      phone_number={data.phone_number}
-                      address={data.address}
                       key={index}
                       islast={index === filteredDet.length - 1 ? true : false}
                     />
