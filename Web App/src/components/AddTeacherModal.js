@@ -192,11 +192,7 @@ function AddTeacherModal(props) {
                 </div>
               </div>
             </div>
-            <input
-              className="submit-button"
-              type="submit"
-              onClick={props.toggleModal}
-            />
+            <input className="submit-button" type="submit" />
           </form>
         </div>
       </div>

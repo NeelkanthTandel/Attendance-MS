@@ -8,7 +8,7 @@ import {
   MenuItem,
   SidebarFooter,
   SidebarHeader,
-  SidebarContent
+  SidebarContent,
 } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ import "../css/sideBar.css";
 import {
   FaChalkboardTeacher,
   FaChevronRight,
-  FaChevronLeft
+  FaChevronLeft,
 } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { HiHome } from "react-icons/hi";
@@ -30,6 +30,7 @@ import { BsUiChecks } from "react-icons/bs";
 // import Global from "../components/utils/global";
 import { com_name } from "../keys";
 import Global from "../components/utils/global";
+import AddStudentModal from "../components/AddStudentModal";
 
 const cookies = new Cookies();
 
@@ -41,7 +42,7 @@ const Row = (props) => {
   return (
     <div
       style={{
-        borderBottomWidth: props.islast ? 0 : 0.5
+        borderBottomWidth: props.islast ? 0 : 0.5,
       }}
       className="row-tT"
     >
@@ -54,7 +55,7 @@ const Row = (props) => {
           width: "20%",
           justifyContent: "flex-end",
           display: "flex",
-          minWidth: "100px"
+          minWidth: "100px",
         }}
       >
         <span onClick={toggleModal} className="remove-button">
@@ -283,7 +284,7 @@ export default function Students() {
         </SidebarContent>
         <SidebarFooter
           style={{
-            paddingLeft: 40
+            paddingLeft: 40,
           }}
         >
           <div className="s-footer">
@@ -314,137 +315,13 @@ export default function Students() {
               Add Students
             </div>
             {addModal ? (
-              <div className="add-modal">
-                <div onClick={toggleAddModal} className="overlay"></div>
-                <div className="add-modal-content">
-                  <div className="add-modal-header">
-                    <div className="add-modal-header-title">
-                      Add Student Detail
-                    </div>
-                    <IoMdClose
-                      className="icon-close"
-                      color="black"
-                      size={"22px"}
-                      onClick={() => {
-                        setAddModal(!addModal);
-                      }}
-                    />
-                  </div>
-                  <div className="add-modal-innerContent">
-                    <div className="row1">
-                      <div className="Name" style={{ width: "100%" }}>
-                        <label>Name</label>
-                        <input
-                          className="Name-input"
-                          type="text"
-                          required="required"
-                          placeholder="Name"
-                        />
-                      </div>
-                    </div>
-                    <div className="row2">
-                      <div className="Teacher-id">
-                        <label>Student Id</label>
-                        <div
-                          className="Teacher-id-input"
-                          style={{ fontWeight: "bold" }}
-                        >
-                          Student002
-                        </div>
-                      </div>
-                      <div className="Phone-no">
-                        <label>Parents phone no.</label>
-                        <input
-                          className="Phone-no-input"
-                          type="text"
-                          required="required"
-                          placeholder="Phone Number"
-                        />
-                      </div>
-                    </div>
-                    <div className="row3">
-                      <div className="Email">
-                        <label>RFID</label>
-                        <input
-                          className="Email-input"
-                          type="text"
-                          required="required"
-                          placeholder="rfid"
-                        />
-                      </div>
-                      <div className="ClassDiv">
-                        <div className="ClassHeading">
-                          <label>Class</label>
-                          <select
-                            className="classDD"
-                            placeholder="Class"
-                            style={{ padding: "3px" }}
-                            onChange={(event) => setStd(event.target.value)}
-                            value={std}
-                          >
-                            {Global.classDetail[0] ? (
-                              <>
-                                <option value="1">Class 1</option>
-                                <option value="2">Class 2</option>
-                                <option value="3">Class 3</option>
-                                <option value="4">Class 4</option>
-                                <option value="5">Class 5</option>
-                                <option value="6">Class 6</option>
-                                <option value="7">Class 7</option>
-                                <option value="8">Class 8</option>
-                                <option value="9">Class 9</option>
-                                <option value="10">Class 10</option>
-                                <option value="11">Class 11</option>
-                                <option value="12">Class 12</option>
-                              </>
-                            ) : (
-                              <option value="0">Class</option>
-                            )}
-                          </select>
-                        </div>
-                        <div className="DivHeading">
-                          <label>Div</label>
-                          <select
-                            className="divDD"
-                            style={{ padding: "3px" }}
-                            onChange={(e) => setDiv(e.target.value)}
-                            value={div}
-                          >
-                            {Global.classDetail[0] ? (
-                              selClass.map((data, index) => (
-                                <option key={index} value={data.class_id}>
-                                  {data.div}
-                                </option>
-                              ))
-                            ) : (
-                              <option value="0">-</option>
-                            )}
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <div className="row4">
-                      <div className="Address" style={{ width: "100%" }}>
-                        <label>Address</label>
-                        <textarea
-                          className="address-input"
-                          type="text"
-                          required="required"
-                          placeholder="Address"
-                        />
-                      </div>
-                    </div> */}
-                  </div>
-                  <span
-                    className="submit-button"
-                    onClick={() => {
-                      setAddModal(!addModal);
-                    }}
-                  >
-                    Submit
-                  </span>
-                </div>
-              </div>
+              <AddStudentModal
+                setDiv={setDiv}
+                selClass={selClass}
+                div={div}
+                std={std}
+                setStd={setStd}
+              />
             ) : null}
           </div>
         </div>
@@ -461,7 +338,7 @@ export default function Students() {
                   minWidth: "65px",
                   width: "10%",
                   fontWeight: "bold",
-                  fontSize: 18
+                  fontSize: 18,
                 }}
               >
                 Id
@@ -471,7 +348,7 @@ export default function Students() {
                   minWidth: "180px",
                   width: "50%",
                   fontWeight: "bold",
-                  fontSize: 18
+                  fontSize: 18,
                 }}
               >
                 Name

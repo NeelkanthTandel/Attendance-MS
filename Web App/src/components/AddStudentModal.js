@@ -1,16 +1,52 @@
 import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import "../css/teacher.css";
-import Global from "./utils/global";
+import Global from "../components/utils/global";
+import { ToastContainer, toast } from "react-toastify";
 
 function AddStudentModal(props) {
-  const [std, setStd] = useState("1");
-  const [selClass, setSelClass] = useState([]);
-  const [div, setDiv] = useState("0");
+  // const [std, setStd] = useState("1");
+  // const [selClass, setSelClass] = useState([]);
+  // const [div, setDiv] = useState("0");
 
-  const submitHandler = (event) => {
+  // const toggleAddModal = () => {
+  //   setAddModal(!addModal);
+  // };
+
+  const submitHandler = async (event) => {
     event.preventDefault();
-    console.log(event.target.name.value);
+    const name = event.target.name.value;
+    const RFID = event.target.rfid_id.value;
+    const studentID = event.target.stu_id.value;
+    const parentsPhoneNo = event.target.parents_number.value;
+    console.log(name, RFID, parentsPhoneNo);
+    const studentDetail = {
+      name,
+      stu_id: studentID,
+      rfid_id: RFID,
+      parents_number: parentsPhoneNo,
+      class_id: props.div,
+      isAdmin: false,
+    };
+
+    try {
+      const data = await Global.httpPOST("/addStudent", studentDetail);
+      if (data.isError) {
+        console.log("add Student:", data.RFid);
+        toast.dismiss("Details must be provided");
+      } else if (!data.isError) {
+        console.log("add Student:", data.RFid);
+        toast.dismiss();
+        toast.success("Student created successfully");
+        props.fetchTeacherList();
+        props.toggleModal();
+      } else {
+        toast.dismiss();
+        toast.error(data.message);
+      }
+    } catch (err) {
+      console.log("add student error:", err.message);
+    }
   };
   return (
     <>
@@ -19,7 +55,7 @@ function AddStudentModal(props) {
         <div className="add-modal-content">
           <form onSubmit={submitHandler}>
             <div className="add-modal-header">
-              <div className="add-modal-header-title">Add Teacher Detail</div>
+              <div className="add-modal-header-title">Add Student Detail</div>
               <IoMdClose
                 className="icon-close"
                 color="black"
@@ -77,8 +113,8 @@ function AddStudentModal(props) {
                       className="classDD"
                       placeholder="Class"
                       style={{ padding: "3px" }}
-                      onChange={(event) => setStd(event.target.value)}
-                      value={std}
+                      onChange={(event) => props.setStd(event.target.value)}
+                      value={props.std}
                     >
                       {Global.classDetail[0] ? (
                         <>
@@ -105,11 +141,11 @@ function AddStudentModal(props) {
                     <select
                       className="divDD"
                       style={{ padding: "3px" }}
-                      onChange={(e) => setDiv(e.target.value)}
-                      value={div}
+                      onChange={(e) => props.setDiv(e.target.value)}
+                      value={props.div}
                     >
                       {Global.classDetail[0] ? (
-                        selClass.map((data, index) => (
+                        props.selClass.map((data, index) => (
                           <option key={index} value={data.class_id}>
                             {data.div}
                           </option>
@@ -126,6 +162,7 @@ function AddStudentModal(props) {
           </form>
         </div>
       </div>
+      ;
     </>
   );
 }
