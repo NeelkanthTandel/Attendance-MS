@@ -15,8 +15,11 @@ import Global from "../components/utils/global";
 import color from "../Constants/Color";
 import CustomText from "../Constants/CustomText";
 import { API_URL } from "../keys";
+import { Ionicons } from "@expo/vector-icons";
 
 const LoginScreen = (props) => {
+  const [showPassword, setShowPassword] = useState(false);
+
   const signInHandler = async () => {
     if (!username || !password) {
       //alert
@@ -123,16 +126,30 @@ const LoginScreen = (props) => {
                 paddingHorizontal: 10,
                 backgroundColor: "#f6f6f6",
                 borderRadius: 10,
+                flexDirection: "row",
+                alignItems: "center",
               }}
             >
               <TextInput
                 placeholder="Password"
+                secureTextEntry={!showPassword}
                 placeholderTextColor={"#656565"}
                 onChangeText={(value) => {
                   setPassword(value);
                 }}
+                style={{ flex: 1 }}
                 value={password}
               />
+              <TouchableOpacity
+                style={{
+                  paddingLeft: 10,
+                  borderLeftWidth: 0.5,
+                  borderColor: "#bcbcbc",
+                }}
+                onPress={() => setShowPassword(!showPassword)}
+              >
+                <Ionicons name={showPassword ? "eye" : "eye-off"} size={18} />
+              </TouchableOpacity>
             </View>
           </View>
         </View>
