@@ -13,13 +13,13 @@ import CustomText from "../Constants/CustomText";
 import color from "../Constants/Color";
 import { API_URL } from "../keys";
 import Global from "../components/utils/global";
-
 const ModifyAttendScreen = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [attendanceDetail, setAttendanceDetail] = useState();
   const [filteredAttDet, setFilteredAttDet] = useState();
   // const [updatedAttIds, setUpdatedAttIds] = useState([]);
   let updatedAttIds = [];
+
   const [date, setDate] = useState(new Date());
 
   const fetchStuAttendance = async () => {
@@ -28,9 +28,14 @@ const ModifyAttendScreen = (props) => {
     const data = await Global.httpPOST("/getAttendance", { date });
     console.log("att det:  Fetch compelete");
     if (!data.isError) {
-      // console.log("att det: ", data);
-      setAttendanceDetail(data.stu_att);
-      setFilteredAttDet(data.stu_att);
+      console.log("att det: ", data);
+      if (data.stu_att[0].attendance[0]) {
+        setAttendanceDetail(data.stu_att);
+        setFilteredAttDet(data.stu_att);
+      } else {
+        setAttendanceDetail(null);
+        setFilteredAttDet(null);
+      }
     }
   };
 
@@ -87,6 +92,7 @@ const ModifyAttendScreen = (props) => {
           paddingHorizontal: 20,
           paddingVertical: 15,
         }}
+        activeOpacity={0.5}
         onPress={toggleAttendance}
       >
         <View style={{ flexDirection: "row", width: "100%" }}>
@@ -173,7 +179,7 @@ const ModifyAttendScreen = (props) => {
   };
 
   return (
-    <View style={styles.container} key={Global.token}>
+    <View style={{ ...styles.container }} key={Global.token}>
       <View>
         <View
           style={{
@@ -285,56 +291,22 @@ const ModifyAttendScreen = (props) => {
           </View>
         </View>
       </View>
-      <ScrollView
-        style={{
-          padding: 30,
-        }}
-      >
-        <View>
-          <View
-            style={{
-              flexDirection: "row",
-            }}
-          >
-            <CheckBox
-              isChecked={isPresentCheck}
-              onClick={() => {
-                setIsPresentCheck(!isPresentCheck);
-                setSearch("");
-              }}
-              tintColors={{
-                true: color.primary,
-              }}
-            />
-            <CustomText
+      <View style={{ flex: 1 }}>
+        <ScrollView
+          style={{
+            paddingHorizontal: 30,
+          }}
+        >
+          <View style={{ paddingTop: 30 }}>
+            <View
               style={{
-                color: color.primary,
-                fontSize: 16,
-                paddingLeft: 10,
-                paddingTop: 1,
-              }}
-              onPress={() => {
-                setIsPresentCheck(!isPresentCheck);
-                setSearch("");
+                flexDirection: "row",
               }}
             >
-              Show Present
-            </CustomText>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              paddingTop: 10,
-              paddingBottom: 30,
-            }}
-          >
-            <View style={{ flexDirection: "row" }}>
               <CheckBox
-                // disabled={true }
-                isChecked={isAbsentCheck}
+                isChecked={isPresentCheck}
                 onClick={() => {
-                  setIsAbsentCheck(!isAbsentCheck);
+                  setIsPresentCheck(!isPresentCheck);
                   setSearch("");
                 }}
                 tintColors={{
@@ -349,99 +321,137 @@ const ModifyAttendScreen = (props) => {
                   paddingTop: 1,
                 }}
                 onPress={() => {
-                  setIsAbsentCheck(!isAbsentCheck);
+                  setIsPresentCheck(!isPresentCheck);
                   setSearch("");
                 }}
               >
-                Show Absent
+                Show Present
               </CustomText>
             </View>
-            <View>
-              <CustomText
-                style={{
-                  color: color.primary,
-                  fontWeight: "bold",
-                }}
-              >
-                {date.getUTCDate() +
-                  "/" +
-                  (date.getUTCMonth() + 1) +
-                  "/" +
-                  date.getUTCFullYear()}
-              </CustomText>
-            </View>
-          </View>
-        </View>
-        <View style={{ borderWidth: 1, borderRadius: 10, marginBottom: 20 }}>
-          <View
-            style={{
-              flexDirection: "row",
-              width: "100%",
-              borderBottomWidth: 1,
-              padding: 10,
-            }}
-          >
-            <CustomText
-              style={{ width: "12%", minWidth: 18, fontWeight: "700" }}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                paddingTop: 10,
+                paddingBottom: 30,
+              }}
             >
-              Id
-            </CustomText>
-            <CustomText style={{ width: "78%", fontWeight: "700" }}>
-              Name
-            </CustomText>
-            <CustomText
-              style={{ width: "10%", minWidth: 28, fontWeight: "700" }}
-            >
-              P/A
-            </CustomText>
-          </View>
-          <View style={{}}>
-            {filteredAttDet ? (
-              filteredAttDet.map((item, index) => (
-                <TableRow
-                  id={item.stu_id.charAt(3) + item.stu_id.charAt(4)}
-                  name={item.name}
-                  attId={item.attendance[0] ? item.attendance[0].id : null}
-                  isPresent={
-                    item.attendance[0] ? item.attendance[0].status : false
-                  }
-                  stuId={item.stu_id}
-                  index={index}
-                  key={index}
-                  isPresentCheck={isPresentCheck}
-                  isAbsentCheck={isAbsentCheck}
+              <View style={{ flexDirection: "row" }}>
+                <CheckBox
+                  // disabled={true }
+                  isChecked={isAbsentCheck}
+                  onClick={() => {
+                    setIsAbsentCheck(!isAbsentCheck);
+                    setSearch("");
+                  }}
+                  tintColors={{
+                    true: color.primary,
+                  }}
                 />
-              ))
-            ) : (
-              <CustomText style={{ textAlign: "center", marginBottom: 15 }}>
-                Loading Data...
-              </CustomText>
-            )}
+                <CustomText
+                  style={{
+                    color: color.primary,
+                    fontSize: 16,
+                    paddingLeft: 10,
+                    paddingTop: 1,
+                  }}
+                  onPress={() => {
+                    setIsAbsentCheck(!isAbsentCheck);
+                    setSearch("");
+                  }}
+                >
+                  Show Absent
+                </CustomText>
+              </View>
+              <View>
+                <CustomText
+                  style={{
+                    color: color.primary,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {date.getUTCDate() +
+                    "/" +
+                    (date.getUTCMonth() + 1) +
+                    "/" +
+                    date.getUTCFullYear()}
+                </CustomText>
+              </View>
+            </View>
           </View>
-        </View>
-        <TouchableOpacity
+          <View style={{ borderWidth: 1, borderRadius: 10, marginBottom: 20 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                width: "100%",
+                borderBottomWidth: 1,
+                padding: 10,
+              }}
+            >
+              <CustomText
+                style={{ width: "12%", minWidth: 18, fontWeight: "700" }}
+              >
+                Id
+              </CustomText>
+              <CustomText style={{ width: "78%", fontWeight: "700" }}>
+                Name
+              </CustomText>
+              <CustomText
+                style={{ width: "10%", minWidth: 28, fontWeight: "700" }}
+              >
+                P/A
+              </CustomText>
+            </View>
+            <View style={{}}>
+              {filteredAttDet ? (
+                filteredAttDet.map((item, index) => (
+                  <TableRow
+                    id={item.stu_id.charAt(3) + item.stu_id.charAt(4)}
+                    name={item.name}
+                    attId={item.attendance[0] ? item.attendance[0].id : null}
+                    isPresent={
+                      item.attendance[0] ? item.attendance[0].status : false
+                    }
+                    stuId={item.stu_id}
+                    index={index}
+                    key={index}
+                    isPresentCheck={isPresentCheck}
+                    isAbsentCheck={isAbsentCheck}
+                  />
+                ))
+              ) : filteredAttDet == null ? (
+                <CustomText style={{ textAlign: "center", marginBottom: 15 }}>
+                  No Data Found
+                </CustomText>
+              ) : (
+                <CustomText style={{ textAlign: "center", marginBottom: 15 }}>
+                  Loading Data...
+                </CustomText>
+              )}
+            </View>
+          </View>
+        </ScrollView>
+      </View>
+      <TouchableOpacity
+        style={{
+          width: "100%",
+          padding: 12,
+          backgroundColor: color.primary,
+        }}
+        activeOpacity={0.6}
+        onPress={onSaveHandler}
+      >
+        <CustomText
           style={{
-            marginHorizontal: "75%",
-            width: "25%",
-            padding: 10,
-            borderRadius: 10,
-            backgroundColor: color.primary,
-            marginBottom: 50,
+            color: color.secondary,
+            fontWeight: "bold",
+            fontSize: 16,
+            textAlign: "center",
           }}
-          onPress={onSaveHandler}
         >
-          <CustomText
-            style={{
-              color: color.secondary,
-              fontWeight: "bold",
-              fontSize: 14,
-              textAlign: "center",
-            }}
-          >
-            Save
-          </CustomText>
-        </TouchableOpacity>
-      </ScrollView>
+          Save
+        </CustomText>
+      </TouchableOpacity>
     </View>
   );
 };

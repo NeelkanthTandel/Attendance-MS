@@ -17,7 +17,7 @@ const Day2DayReportScreen = () => {
       });
       if (!data.isError) {
         console.log("fetch overall att complete");
-        // console.log(data.totalStuAtt);
+        // console.log(data.totalStuAtt[7]);
         setAllDayAtt(data.totalStuAtt);
         setWorkingDays(data.workingDays);
       } else {
@@ -34,6 +34,41 @@ const Day2DayReportScreen = () => {
       fetchAllAttendance();
     }
   }, [isFocused]);
+
+  const Rows = (props) => {
+    console.log("---------------");
+    var statusArr = [];
+    for (var i = 0; i < workingDays.length; i++) {
+      var matchingData = props.data.attendance.find(
+        (elem) => elem.date.toString() === workingDays[i].date
+      );
+
+      if (matchingData) {
+        statusArr.push(matchingData.status ? "P" : "A");
+      } else {
+        statusArr.push("-");
+      }
+    }
+
+    return statusArr.map((data, ind) => (
+      <CustomText
+        style={{
+          padding: 5,
+          borderBottomWidth: ind == workingDays.length - 1 ? 0 : 0.5,
+        }}
+        key={ind}
+      >
+        {data}
+      </CustomText>
+    ));
+    // return props.data.attendance.map((att, ind) => {
+    //   // var i = 0;
+    //   // console.log("TEMP: ", i++);
+    //   return (
+
+    //   );
+    // });
+  };
 
   return (
     <View style={styles.container}>
@@ -80,9 +115,11 @@ const Day2DayReportScreen = () => {
             <CustomText
               style={{
                 fontWeight: "700",
-                paddingVertical: 5,
+                paddingVertical: 0,
+                height: 24,
+                textAlignVertical: "center",
                 paddingHorizontal: 10,
-                fontSize: 12,
+                // fontSize: 12,
                 borderBottomWidth: 0.5,
               }}
             >
@@ -128,26 +165,38 @@ const Day2DayReportScreen = () => {
                     <CustomText
                       style={{
                         padding: 5,
+                        paddingVertical: 0,
+                        height: 24,
                         borderBottomWidth: 0.5,
                         fontSize: 12,
+                        textAlignVertical: "center",
                       }}
                     >
                       {data.name}
                     </CustomText>
-                    {data.attendance && data.attendance[0]
-                      ? data.attendance.map((att, ind) => (
-                          <CustomText
-                            style={{
-                              padding: 5,
-                              borderBottomWidth:
-                                ind == data.attendance.length - 1 ? 0 : 0.5,
-                            }}
-                            key={ind}
-                          >
-                            {att.status ? "P" : "A"}
-                          </CustomText>
-                        ))
-                      : null}
+                    {workingDays && workingDays[0] ? (
+                      <Rows data={data} />
+                    ) : null}
+                    {/* {data.attendance.map((att, ind) => {
+                      var i = 0;
+                      console.log("TEMP: ", i++);
+                      return (
+                        <CustomText
+                          style={{
+                            padding: 5,
+                            borderBottomWidth:
+                              ind == data.attendance.length - 1 ? 0 : 0.5,
+                          }}
+                          key={ind}
+                        >
+                          {data.attendance && data.attendance[0]
+                            ? att.status
+                              ? "P"
+                              : "A"
+                            : "A"}
+                        </CustomText>
+                      );
+                    })} */}
                   </View>
                 ))
               ) : (

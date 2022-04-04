@@ -3,7 +3,6 @@ import { TouchableOpacity, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { AntDesign } from "@expo/vector-icons";
 import color from "../Constants/Color";
 import LoginScreen from "../screens/LoginScreen";
 import HomeScreen from "../screens/HomeScreen";
@@ -132,18 +131,6 @@ export default function MainNaviator(props) {
                       fontSize: 18,
                     },
                     headerTitleAlign: "center",
-                    // headerRight: () => (
-                    //   <TouchableOpacity>
-                    //     <CustomText
-                    //       style={{
-                    //         color: color.secondary,
-                    //         fontSize: 14,
-                    //       }}
-                    //     >
-                    //       Save
-                    //     </CustomText>
-                    //   </TouchableOpacity>
-                    // ),
                   }}
                 />
                 <Stack.Screen
