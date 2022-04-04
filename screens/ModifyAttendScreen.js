@@ -221,74 +221,6 @@ const ModifyAttendScreen = (props) => {
               flex: 1,
             }}
           />
-          <View style={{ marginLeft: 15 }}>
-            <TouchableOpacity
-              onPress={() => setIsModalVisible(!isModalVisible)}
-            >
-              <FontAwesome5 name="calendar-alt" size={23} color="white" />
-            </TouchableOpacity>
-            <Modal
-              animationType={"fade"}
-              transparent={true}
-              visible={isModalVisible}
-              onRequestClose={() => {
-                setIsModalVisible(!isModalVisible);
-              }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor: "rgba(0,0,0,0.5)",
-                }}
-              >
-                <View
-                  style={{
-                    backgroundColor: "white",
-                    borderRadius: 10,
-                    width: "50%",
-                  }}
-                >
-                  <TouchableOpacity
-                    style={{
-                      borderColor: color.primary,
-                      borderBottomWidth: 1,
-                      borderColor: color.primary,
-                      paddingVertical: 10,
-                      paddingHorizontal: 15,
-                    }}
-                    onPress={() => {
-                      setDate(new Date());
-                      setIsModalVisible(false);
-                    }}
-                  >
-                    <CustomText
-                      style={{
-                        color: color.primary,
-                        fontSize: 16,
-                      }}
-                    >
-                      Today
-                    </CustomText>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={{ paddingVertical: 10, marginLeft: "8%" }}
-                    onPress={() => {
-                      let prevDate = new Date();
-                      prevDate.setDate(prevDate.getDate() - 1);
-                      setDate(prevDate);
-                      setIsModalVisible(false);
-                    }}
-                  >
-                    <CustomText style={{ color: color.primary, fontSize: 16 }}>
-                      Yesterday
-                    </CustomText>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </Modal>
-          </View>
         </View>
       </View>
       <View style={{ flex: 1 }}>
@@ -364,70 +296,154 @@ const ModifyAttendScreen = (props) => {
                 </CustomText>
               </View>
               <View>
-                <CustomText
-                  style={{
-                    color: color.primary,
-                    fontWeight: "bold",
-                  }}
-                >
-                  {date.getUTCDate() +
-                    "/" +
-                    (date.getUTCMonth() + 1) +
-                    "/" +
-                    date.getUTCFullYear()}
-                </CustomText>
+                <View>
+                  <TouchableOpacity
+                    onPress={() => setIsModalVisible(!isModalVisible)}
+                  >
+                    <CustomText
+                      style={{
+                        color: color.primary,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {date.getUTCDate() +
+                        "/" +
+                        (date.getUTCMonth() + 1) +
+                        "/" +
+                        date.getUTCFullYear()}
+                    </CustomText>
+                  </TouchableOpacity>
+                  <Modal
+                    animationType={"fade"}
+                    transparent={true}
+                    visible={isModalVisible}
+                    onRequestClose={() => {
+                      setIsModalVisible(!isModalVisible);
+                    }}
+                  >
+                    <View
+                      style={{
+                        flex: 1,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: "rgba(0,0,0,0.5)",
+                      }}
+                    >
+                      <View
+                        style={{
+                          backgroundColor: "white",
+                          borderRadius: 10,
+                          width: "50%",
+                          overflow: "hidden",
+                        }}
+                      >
+                        <TouchableOpacity
+                          style={{
+                            borderColor: color.primary,
+                            borderBottomWidth: 0.5,
+                            borderColor: color.primary,
+                            paddingVertical: 10,
+                            paddingHorizontal: 15,
+
+                            backgroundColor:
+                              date.getDate() == new Date().getDate()
+                                ? "#d3d3d3"
+                                : "white",
+                          }}
+                          onPress={() => {
+                            setDate(new Date());
+                            setIsModalVisible(false);
+                          }}
+                        >
+                          <CustomText
+                            style={{
+                              color: color.primary,
+                              fontSize: 16,
+                            }}
+                          >
+                            Today
+                          </CustomText>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={{
+                            paddingVertical: 10,
+                            paddingHorizontal: 15,
+                            backgroundColor:
+                              date.getDate() != new Date().getDate()
+                                ? "#d3d3d3"
+                                : "white",
+                          }}
+                          onPress={() => {
+                            let prevDate = new Date();
+                            prevDate.setDate(prevDate.getDate() - 1);
+                            setDate(prevDate);
+                            setIsModalVisible(false);
+                          }}
+                        >
+                          <CustomText
+                            style={{ color: color.primary, fontSize: 16 }}
+                          >
+                            Yesterday
+                          </CustomText>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </Modal>
+                </View>
               </View>
             </View>
-          </View>
-          <View style={{ borderWidth: 1, borderRadius: 10, marginBottom: 20 }}>
             <View
-              style={{
-                flexDirection: "row",
-                width: "100%",
-                borderBottomWidth: 1,
-                padding: 10,
-              }}
+              style={{ borderWidth: 1, borderRadius: 10, marginBottom: 20 }}
             >
-              <CustomText
-                style={{ width: "12%", minWidth: 18, fontWeight: "700" }}
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: "100%",
+                  borderBottomWidth: 1,
+                  padding: 10,
+                }}
               >
-                Id
-              </CustomText>
-              <CustomText style={{ width: "78%", fontWeight: "700" }}>
-                Name
-              </CustomText>
-              <CustomText
-                style={{ width: "10%", minWidth: 28, fontWeight: "700" }}
-              >
-                P/A
-              </CustomText>
-            </View>
-            <View style={{}}>
-              {filteredAttDet ? (
-                filteredAttDet.map((item, index) => (
-                  <TableRow
-                    id={item.stu_id.charAt(3) + item.stu_id.charAt(4)}
-                    name={item.name}
-                    attId={item.attendance[0] ? item.attendance[0].id : null}
-                    isPresent={
-                      item.attendance[0] ? item.attendance[0].status : false
-                    }
-                    stuId={item.stu_id}
-                    index={index}
-                    key={index}
-                    isPresentCheck={isPresentCheck}
-                    isAbsentCheck={isAbsentCheck}
-                  />
-                ))
-              ) : filteredAttDet == null ? (
-                <CustomText style={{ textAlign: "center", marginBottom: 15 }}>
-                  No Data Found
+                <CustomText
+                  style={{ width: "12%", minWidth: 18, fontWeight: "700" }}
+                >
+                  Id
                 </CustomText>
-              ) : (
-                <CustomText style={{ textAlign: "center", marginBottom: 15 }}>
-                  Loading Data...
+                <CustomText style={{ width: "78%", fontWeight: "700" }}>
+                  Name
                 </CustomText>
-              )}
+                <CustomText
+                  style={{ width: "10%", minWidth: 28, fontWeight: "700" }}
+                >
+                  P/A
+                </CustomText>
+              </View>
+              <View style={{}}>
+                {filteredAttDet ? (
+                  filteredAttDet.map((item, index) => (
+                    <TableRow
+                      id={item.stu_id.charAt(3) + item.stu_id.charAt(4)}
+                      name={item.name}
+                      attId={item.attendance[0] ? item.attendance[0].id : null}
+                      isPresent={
+                        item.attendance[0] ? item.attendance[0].status : false
+                      }
+                      stuId={item.stu_id}
+                      index={index}
+                      key={index}
+                      isPresentCheck={isPresentCheck}
+                      isAbsentCheck={isAbsentCheck}
+                    />
+                  ))
+                ) : filteredAttDet == null ? (
+                  <CustomText style={{ textAlign: "center", marginBottom: 15 }}>
+                    No Data Found
+                  </CustomText>
+                ) : (
+                  <CustomText style={{ textAlign: "center", marginBottom: 15 }}>
+                    Loading Data...
+                  </CustomText>
+                )}
+              </View>
             </View>
           </View>
         </ScrollView>
