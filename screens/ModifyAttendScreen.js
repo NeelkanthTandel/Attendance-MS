@@ -18,6 +18,7 @@ const ModifyAttendScreen = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [attendanceDetail, setAttendanceDetail] = useState();
   const [filteredAttDet, setFilteredAttDet] = useState();
+  const [isPresentAll, setIsPresentAll] = useState();
   // const [updatedAttIds, setUpdatedAttIds] = useState([]);
   let updatedAttIds = [];
   const [date, setDate] = useState(new Date());
@@ -119,7 +120,7 @@ const ModifyAttendScreen = (props) => {
         (isPresentCheck && isAbsentCheck)
       ) {
         setFilteredAttDet(attendanceDetail);
-      } else if (isPresentCheck) {
+      } else if (isPresentCheck && !isAbsentCheck) {
         //keep stu with status true
         setFilteredAttDet(
           attendanceDetail.filter((data) => data.attendance[0].status)
@@ -405,6 +406,13 @@ const ModifyAttendScreen = (props) => {
               style={{ width: "10%", minWidth: 28, fontWeight: "700" }}
             >
               P/A
+              <CheckBox
+                isChecked={setIsPresentAll}
+                // onClick={toggleAttendance}
+                tintColors={{
+                  true: color.primary,
+                }}
+              />
             </CustomText>
           </View>
           <View style={{}}>

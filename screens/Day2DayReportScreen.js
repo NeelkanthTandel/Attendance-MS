@@ -82,7 +82,7 @@ const Day2DayReportScreen = () => {
                 fontWeight: "700",
                 paddingVertical: 5,
                 paddingHorizontal: 10,
-                fontSize: 12,
+                fontSize: 14,
                 borderBottomWidth: 0.5,
               }}
             >
@@ -110,7 +110,11 @@ const Day2DayReportScreen = () => {
                 ))
               : null}
           </View>
-          <ScrollView horizontal>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={true}
+            indicatorStyle={"black"}
+          >
             <View style={{ flexDirection: "row" }}>
               {allDayAtt && allDayAtt[0] ? (
                 allDayAtt.map((data, index) => (
@@ -129,7 +133,7 @@ const Day2DayReportScreen = () => {
                       style={{
                         padding: 5,
                         borderBottomWidth: 0.5,
-                        fontSize: 12,
+                        fontSize: 14,
                       }}
                     >
                       {data.name}
