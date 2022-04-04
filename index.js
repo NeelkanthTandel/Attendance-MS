@@ -102,6 +102,7 @@ app.post("/getStudentList", requireToken, async (req, res) => {
       orderBy: { stu_id: "asc" },
       where: {
         class_id: classId,
+        // is_deleted: false,
       },
       include: {
         class_detail: {
@@ -331,6 +332,39 @@ app.post("/addStudent", requireToken, async (req, res) => {
   }
 });
 
+app.post("/deleteStudent", requireToken, async (req, res) => {
+  console.log("/deleteStudent");
+  const { stu_id } = req.body;
+
+  if (!stu_id) {
+    return res
+      .status(422)
+      .send({ isError: true, message: "Details must be provided" });
+  }
+
+  try {
+    const student = await prisma.student_detail.update({
+      where: {
+        stu_id,
+      },
+      data: {
+        is_deleted: true,
+      },
+    });
+
+    console.log(student);
+    if (student) {
+      return res.status(200).send({
+        isError: false,
+        stu_id: student.stu_id,
+      });
+    }
+  } catch (err) {
+    console.log("deleteStudent: ", err);
+    return res.status(400).send({ isError: true, message: err.message });
+  }
+});
+
 // app.get("/getClass", requireToken, async (req, res) => {
 //   // const user = req.user;
 
@@ -349,7 +383,15 @@ app.post("/addStudent", requireToken, async (req, res) => {
 app.get("/auth/me", requireToken, async (req, res) => {
   try {
     const classDet = await prisma.class_detail.findMany();
-    return res.status(200).send({ isError: false, user: req.user, classDet });
+    const detCount = await dblib.countDetails();
+    return res.status(200).send({
+      isError: false,
+      user: req.user,
+      classDet,
+      totalStudent: detCount.totalStu,
+      studentsPresent: detCount.presentCount,
+      totalTeacher: detCount.totalTeacher,
+    });
   } catch (err) {
     console.log("me: ", err);
     return res.status(400).send({ isError: true, message: err.message });

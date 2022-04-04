@@ -19,6 +19,7 @@ model student_detail {
   class_id        String
   class_detail    class_detail     @relation(fields: [class_id], references: [class_id])
   attendance      attendance[]
+  is_deleted      Boolean   @default(false)
 }
 
 model teacher_detail {

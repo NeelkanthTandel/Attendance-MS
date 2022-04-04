@@ -222,7 +222,7 @@ const getAllAttendance = async (class_id, onLyPresent) => {
       },
     },
   });
-  console.log(stuDet);
+  // console.log(stuDet);
   return stuDet;
 };
 
@@ -231,6 +231,9 @@ const getAllAttendance = async (class_id, onLyPresent) => {
 const updateAttendanceTable = async () => {
   const stu_id = await prisma.student_detail.findMany({
     select: { stu_id: true },
+    where: {
+      is_deleted: false,
+    },
   });
 
   const att_det = [];
@@ -311,6 +314,20 @@ const getDayToDayAttendance = async (classId) => {
   // console.log(data);
 };
 
+const countDetails = async () => {
+  const stu_att = await prisma.attendance.findMany({
+    where: {
+      date: new Date(),
+    },
+  });
+
+  const totalTeacher = await prisma.teacher_detail.count();
+  console.log(totalTeacher);
+
+  const presentCount = stu_att.filter((ele) => ele.status).length;
+  return { presentCount, totalStu: stu_att.length, totalTeacher };
+};
+
 // getDayToDayAttendance();
 // totalDistinctDay();
 // totalWorkingDays();
@@ -328,4 +345,5 @@ module.exports = {
   getDayToDayAttendance,
   createTeacher,
   createStudent,
+  countDetails,
 };
