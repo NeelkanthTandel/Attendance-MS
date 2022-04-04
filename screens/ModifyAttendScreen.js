@@ -31,8 +31,8 @@ const ModifyAttendScreen = (props) => {
     if (!data.isError) {
       console.log("att det: ", data);
       if (data.stu_att[0].attendance[0]) {
-        setAttendanceDetail(data.stu_att);
-        setFilteredAttDet(data.stu_att);
+        setAttendanceDetail(data.stu_att.filter((ele) => ele.attendance[0]));
+        setFilteredAttDet(data.stu_att.filter((ele) => ele.attendance[0]));
       } else {
         setAttendanceDetail(null);
         setFilteredAttDet(null);
@@ -126,8 +126,10 @@ const ModifyAttendScreen = (props) => {
         (isPresentCheck && isAbsentCheck)
       ) {
         setFilteredAttDet(attendanceDetail);
-      } else if (isPresentCheck && !isAbsentCheck) {
+      } else if (isPresentCheck) {
         //keep stu with status true
+        //ish
+        //attendance: [null]
         setFilteredAttDet(
           attendanceDetail.filter((data) => data.attendance[0].status)
         );
@@ -417,8 +419,8 @@ const ModifyAttendScreen = (props) => {
                 >
                   P/A
                   <CheckBox
-                    isChecked={setIsPresentAll}
-                    // onClick={toggleAttendance}
+                    isChecked={false}
+                    onClick={() => {}}
                     tintColors={{
                       true: color.primary,
                     }}
