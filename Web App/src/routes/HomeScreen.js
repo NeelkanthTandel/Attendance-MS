@@ -41,6 +41,9 @@ export default function HomeScreen(props) {
   const navigate = useNavigate();
   const [modal, setModal] = React.useState(false);
   const [settingModal, setSettingModal] = React.useState(false);
+  const [studentCount, setStudentCount] = useState(Global.studentCount);
+  const [totalTeacher, setTotalTeacher] = useState(Global.totalTeacher);
+
   const profileToggleModal = () => {
     setModal(!modal);
   };
@@ -53,7 +56,14 @@ export default function HomeScreen(props) {
       return navigate("/");
     }
     if (!Global.user.name) {
-      Global.fetchUser().then(console.log("User fetched"));
+      Global.fetchUser().then(() => {
+        // console.log(Global.studentCount);
+        setStudentCount({
+          total: Global.studentCount.total,
+          totalPresent: Global.studentCount.totalPresent,
+        });
+        setTotalTeacher(Global.totalTeacher);
+      });
     }
   }, []);
 
@@ -174,13 +184,13 @@ export default function HomeScreen(props) {
               flexDirection: "row",
               justifyContent: "flex-end",
               alignItems: "center",
-              cursor: "pointer",
+              // cursor: "pointer",
             }}
           >
             <AiFillSetting
               color={color.primary}
               size={24}
-              style={{ marginRight: 20 }}
+              style={{ marginRight: 20, cursor: "pointer" }}
               onClick={ToggleModal}
               // onClick={settingToggleModal}
             />
@@ -208,7 +218,7 @@ export default function HomeScreen(props) {
             <MdAccountCircle
               color={color.primary}
               size={24}
-              style={{ marginRight: 20 }}
+              style={{ marginRight: 20, cursor: "pointer" }}
               onClick={profileToggleModal}
             />
             {modal ? (
@@ -295,7 +305,7 @@ export default function HomeScreen(props) {
                 Global.logOutHandler();
                 navigate("/");
               }}
-              // style={{ marginRight: 15 }}
+              style={{ cursor: "pointer" }}
             />
             {/* <div
               style={{
@@ -361,7 +371,7 @@ export default function HomeScreen(props) {
                       lineHeight: "40px",
                     }}
                   >
-                    450
+                    {studentCount.totalPresent}
                   </span>
                   <div
                     style={{
@@ -369,7 +379,7 @@ export default function HomeScreen(props) {
                       lineHeight: "10px",
                     }}
                   >
-                    students<br></br>present out of 468
+                    students<br></br>present out of {studentCount.total}
                   </div>
                 </div>
               </div>
@@ -405,7 +415,7 @@ export default function HomeScreen(props) {
                       lineHeight: "40px",
                     }}
                   >
-                    30
+                    {totalTeacher}
                   </span>
                   <div
                     style={{

@@ -33,7 +33,7 @@ function AddStudentModal(props) {
         props.toggleModal();
       } else {
         toast.dismiss();
-        if (data.isUserExsit) {
+        if (data.isUserExist) {
           toast.error(data.message);
         } else {
           toast.error("Something went wrong.\nPlease try again later.");

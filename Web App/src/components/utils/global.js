@@ -8,6 +8,11 @@ export default class Global {
   static token = null;
   static stuTodayAtt = [];
   static classDetail = [];
+  static studentCount = {
+    totalPresent: 0,
+    total: 0,
+  };
+  static totalTeacher = 0;
 
   // constructor() {
   //   console.log("Global");
@@ -25,6 +30,9 @@ export default class Global {
     this.user = {};
     this.token = null;
     this.stuTodayAtt = [];
+    this.studentCount.total = 0;
+    this.studentCount.totalPresent = 0;
+    this.totalTeacher = 0;
   };
 
   static httpPOST = async (endpoint, bodyData) => {
@@ -94,6 +102,9 @@ export default class Global {
         // Global.user = data.user;
         this.setUserInfo(data.user, cookies.get("token"));
         Global.classDetail = data.classDet;
+        Global.studentCount.total = data.totalStudent;
+        Global.studentCount.totalPresent = data.studentsPresent;
+        Global.totalTeacher = data.totalTeacher;
       } catch (err) {
         console.log("Error fetching user: ", err);
       }
@@ -116,6 +127,9 @@ const fetchUser = async () => {
       // console.log(data);
       Global.user = data.user;
       Global.classDetail = data.classDet;
+      Global.studentCount.total = data.totalStudents;
+      Global.studentCount.totalPresent = data.studentsPresent;
+      Global.totalTeacher = data.totalTeacher;
     } catch (err) {
       console.log("Error fetching user: ", err);
     }

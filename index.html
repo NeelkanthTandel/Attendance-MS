@@ -88,18 +88,17 @@
     async function readData() {
       var input = document.getElementById("floatingInput").value;
 
-      if (
-        input.charAt(input.length - 1) == "e" ||
-        input.charAt(input.length - 1) == "E"
-      ) {
-        console.log(input.substring(0, input.length - 1));
-        await markAttendance(input.substring(0, input.length - 1));
-        document.getElementById("floatingInput").value = "";
-      }
+      // if (
+      //   input.charAt(input.length - 1) == "e" ||
+      //   input.charAt(input.length - 1) == "E"
+      // ) {
+      console.log(input);
+      await markAttendance(input);
+      // }
     }
 
     function markAttendance(rfid_id) {
-      var apiUrl = "https://attendance-m-s.herokuapp.com/attendance/mark";
+      var apiUrl = "http://localhost:5000/attendance/mark";
       console.log("Fetching");
       fetch(apiUrl, {
         // mode: "no-cors",
@@ -131,6 +130,8 @@
       //   }
       // );
       console.log("Done");
+      document.getElementById("floatingInput").value = "";
+
     }
 
       //          "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --profile-directory="Profile 5"

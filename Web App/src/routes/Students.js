@@ -170,8 +170,8 @@ export default function Students() {
     });
     console.log("teacher: ", data);
     if (!data.isError) {
-      setTeacher(data.studentList);
-      setFilteredDet(data.studentList);
+      setTeacher(data.studentList.filter((ele) => !ele.is_deleted));
+      setFilteredDet(data.studentList.filter((ele) => !ele.is_deleted));
     } else {
       toast.dismiss();
     }
@@ -200,7 +200,7 @@ export default function Students() {
         console.log("fetch user completed");
         filterDiv();
       });
-    } else if (!teacher) {
+    } else if (!teacher || !teacher[0]) {
       console.log("fetch");
       fetchStudentList();
     } else if (teacher[0].class_id !== div) {
@@ -459,50 +459,6 @@ export default function Students() {
               : null}
           </div>
         </div>
-        {/* <div>
-          <select
-            className="filter"
-            placeholder="Class"
-            onChange={(event) => setStd(event.target.value)}
-            value={std}
-          >
-            {Global.classDetail[0] ? (
-              <>
-                <option value="1">Class 1</option>
-                <option value="2">Class 2</option>
-                <option value="3">Class 3</option>
-                <option value="4">Class 4</option>
-                <option value="5">Class 5</option>
-                <option value="6">Class 6</option>
-                <option value="7">Class 7</option>
-                <option value="8">Class 8</option>
-                <option value="9">Class 9</option>
-                <option value="10">Class 10</option>
-                <option value="11">Class 11</option>
-                <option value="12">Class 12</option>
-              </>
-            ) : (
-              <option value="0">Class</option>
-            )}
-          </select>
-          <select
-            className="filter"
-            onChange={(e) => setDiv(e.target.value)}
-            value={div}
-          >
-            {Global.classDetail[0] ? (
-              selClass.map((data, index) => (
-                <option key={index} value={data.class_id}>
-                  {data.div}
-                </option>
-              ))
-            ) : (
-              <option value="0">-</option>
-            )}
-          </select>
-        </div> */}
-
-        {/* <PopupT Popup={Popup} toggle={toggle} /> */}
       </div>
     </div>
   );

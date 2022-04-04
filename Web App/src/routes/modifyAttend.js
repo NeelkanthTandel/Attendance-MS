@@ -200,7 +200,7 @@ export default function HomeScreen() {
 
   useEffect(() => {
     const tempDate = new Date().toLocaleDateString().split("/");
-    console.log("tempDate: ",tempDate);
+    console.log("tempDate: ", tempDate);
     setDate(
       tempDate[2] +
         "-" +
@@ -419,19 +419,30 @@ export default function HomeScreen() {
             {attendanceDetail ? (
               attendanceDetail.map((data, index) => {
                 return (
-                  <Row
-                    name={data.name}
-                    id={data.stu_id.charAt(3) + data.stu_id.charAt(4)}
-                    islast={
-                      attendanceDetail.length - 1 === index ? true : false
-                    }
-                    attId={data.attendance[0] ? data.attendance[0].id : null}
-                    stuId={data.stu_id}
-                    key={index}
-                    isPresent={
-                      data.attendance[0] ? data.attendance[0].status : false
-                    }
-                  />
+                  <>
+                    {data.attendance[0] ? (
+                      <Row
+                        name={data.name}
+                        id={data.stu_id.charAt(3) + data.stu_id.charAt(4)}
+                        islast={
+                          attendanceDetail.filter((ele) => ele.attendance[0])
+                            .length -
+                            1 ===
+                          index
+                            ? true
+                            : false
+                        }
+                        attId={
+                          data.attendance[0] ? data.attendance[0].id : null
+                        }
+                        stuId={data.stu_id}
+                        key={index}
+                        isPresent={
+                          data.attendance[0] ? data.attendance[0].status : false
+                        }
+                      />
+                    ) : null}
+                  </>
                 );
               })
             ) : (
