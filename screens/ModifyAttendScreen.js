@@ -17,7 +17,7 @@ const ModifyAttendScreen = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [attendanceDetail, setAttendanceDetail] = useState();
   const [filteredAttDet, setFilteredAttDet] = useState();
-  const [isPresentAll, setIsPresentAll] = useState();
+  // const [isPresentAll, setIsPresentAll] = useState(null);
   // const [updatedAttIds, setUpdatedAttIds] = useState([]);
   let updatedAttIds = [];
 
@@ -52,6 +52,7 @@ const ModifyAttendScreen = (props) => {
 
   const TableRow = (props) => {
     const [isPresentACheck, setIsPresentACheck] = useState(props.isPresent);
+    // const [markAll, setIsMarkAll] = useState(props.markAll);
     // const [isModified, setIsModified] = useState(false);
 
     const toggleAttendance = () => {
@@ -85,6 +86,27 @@ const ModifyAttendScreen = (props) => {
 
     //   }
     // }, [isPresentACheck]);
+
+    // useEffect(() => {
+    //   console.log("Toggle");
+    //   if (markAll != null) {
+    //     const index = updatedAttIds.findIndex((d) => d.attId == props.attId);
+    //     console.log(index);
+    //     let currentStatus = isPresentACheck;
+
+    //     if (index >= 0) {
+    //       console.log("Removing");
+    //       updatedAttIds.splice(index, 1);
+    //     } else {
+    //       console.log("Inserting");
+    //       updatedAttIds.push({
+    //         stuId: props.stuId,
+    //         attId: props.attId,
+    //         status: !currentStatus,
+    //       });
+    //     }
+    //   }
+    // }, [markAll]);
 
     return (
       <TouchableOpacity
@@ -418,13 +440,15 @@ const ModifyAttendScreen = (props) => {
                   style={{ width: "10%", minWidth: 28, fontWeight: "700" }}
                 >
                   P/A
-                  <CheckBox
-                    isChecked={false}
-                    onClick={() => {}}
+                  {/* <CheckBox
+                    isChecked={isPresentAll == null ? false : isPresentAll}
+                    onClick={() => {
+                      setIsPresentAll(!isPresentAll);
+                    }}
                     tintColors={{
                       true: color.primary,
                     }}
-                  />
+                  /> */}
                 </CustomText>
               </View>
               <View style={{}}>
@@ -435,8 +459,15 @@ const ModifyAttendScreen = (props) => {
                       name={item.name}
                       attId={item.attendance[0] ? item.attendance[0].id : null}
                       isPresent={
-                        item.attendance[0] ? item.attendance[0].status : false
+                        // item.attendance[0] ? item.attendance[0].status : false
+                        item.attendance[0].status
+                        // isPresentAll == null
+                        //   ? item.attendance[0].status
+                        //   : isPresentAll
+                        //   ? true
+                        //   : false
                       }
+                      // markAll={isPresentAll}
                       stuId={item.stu_id}
                       index={index}
                       key={index}
