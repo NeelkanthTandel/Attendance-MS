@@ -98,7 +98,7 @@ const ProfileScreen = (props) => {
           </View>
           {/* <MaterialIcons name="edit" size={23} color={color.primary} /> */}
         </View>
-        <View
+        {/* <View
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -119,8 +119,8 @@ const ProfileScreen = (props) => {
               {Global.user.address}
             </CustomText>
           </View>
-          {/* <MaterialIcons name="edit" size={23} color={color.primary} /> */}
-        </View>
+          <MaterialIcons name="edit" size={23} color={color.primary} />
+        </View> */}
         <View
           style={{
             flexDirection: "row",

@@ -33,7 +33,7 @@ const LoginScreen = (props) => {
         password: password,
       });
       console.log("Data: ", data);
-      if (!data.isError && data.isCredMatch) {
+      if (!data.isError && data.isCredMatch && !data.user.isAdmin) {
         Global.setUserInfo(data.user, data.token);
         // console.log("Global data: ", Global.user);
         AsyncStorage.setItem("token", data.token);
@@ -48,7 +48,7 @@ const LoginScreen = (props) => {
           [{ text: "OK", onPress: () => console.log("Login error message") }]
         );
       }
-      if (!data.isCredMatch) {
+      if (!data.isCredMatch || data.user.isAdmin) {
         return Alert.alert("Alert", "Invalid Credential", [
           { text: "OK", onPress: () => console.log("Invalid Credential") },
         ]);
@@ -95,7 +95,7 @@ const LoginScreen = (props) => {
               fontWeight: "bold",
             }}
           >
-            Welcome to AppName!
+            Welcome to AMS!
           </CustomText>
         </View>
         <View style={{ paddingTop: 120, paddingHorizontal: 30 }}>
