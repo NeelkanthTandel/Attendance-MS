@@ -87,14 +87,14 @@
 
     async function readData() {
       var input = document.getElementById("floatingInput").value;
+      // console.log(input);
 
-      // if (
-      //   input.charAt(input.length - 1) == "e" ||
-      //   input.charAt(input.length - 1) == "E"
-      // ) {
-      console.log(input);
-      await markAttendance(input);
-      // }
+      if (
+        input.length === 10
+      ) {
+        console.log(input);
+        await markAttendance(input);
+      }
     }
 
     function markAttendance(rfid_id) {
