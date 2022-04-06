@@ -23,6 +23,7 @@ import { BsUiChecks } from "react-icons/bs";
 import Global from "../../components/utils/global";
 import { useNavigate } from "react-router-dom";
 import { com_name } from "../../keys";
+import SideBar from "../../components/sideBar";
 
 export default function DayToDay() {
   const [collapsed, setCollapsed] = useState(true);
@@ -46,7 +47,7 @@ export default function DayToDay() {
     console.log("get day attendance");
     try {
       const data = await Global.httpPOST("/getDayAttendance", {
-        classId: div,
+        classId: Global.user.isAdmin ? div : Global.user.class_id,
       });
       if (!data.isError) {
         console.log("fetch overall att complete");
@@ -146,157 +147,63 @@ export default function DayToDay() {
 
   return (
     <div className="main-container">
-      <ProSidebar
+      <SideBar
+        navigate={navigate}
         collapsed={collapsed}
-        collapsedWidth={98}
-        style={{ position: "absolute", left: 0, top: 0 }}
-      >
-        <SidebarHeader>
-          <div
-            className="s-logo-container"
-            onClick={() => {
-              navigate("/home");
-            }}
-          >
-            <img
-              src={logo}
-              alt="logo"
-              className="s-logo"
-              style={{ marginRight: collapsed ? 0 : 20 }}
-            />
-            {collapsed ? "" : com_name}
-          </div>
-        </SidebarHeader>
-        <SidebarContent>
-          <Menu iconShape="circle">
-            <MenuItem
-              icon={<HiHome color={"white"} />}
-              onClick={() => {
-                navigate("/home");
-              }}
-            >
-              Home
-            </MenuItem>
-            <MenuItem
-              icon={<MdSchool color={"white"} />}
-              onClick={() => {
-                navigate("/student");
-              }}
-            >
-              Students
-            </MenuItem>
-            <MenuItem
-              icon={<FaChalkboardTeacher color={"white"} />}
-              onClick={() => {
-                navigate("/teacher");
-              }}
-            >
-              Teachers
-            </MenuItem>
-            <MenuItem
-              icon={<SiGoogleclassroom color={"white"} />}
-              onClick={() => {
-                navigate("/modify-attend");
-              }}
-            >
-              Class
-            </MenuItem>
-            {/* <MenuItem
-                icon={<BsUiChecks color={"white"} />}
-                onClick={() => {
-                  navigate("/modify-attend");
-                }}
-              >
-                Attendance
-              </MenuItem> */}
-            <SubMenu title="Attendance" icon={<BsUiChecks color={"white"} />}>
-              <MenuItem
-                onClick={() => {
-                  navigate("/view-attend/overall");
-                }}
-              >
-                Overall
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  navigate("/view-attend/day-day");
-                }}
-              >
-                Day To Day
-              </MenuItem>
-            </SubMenu>
-          </Menu>
-        </SidebarContent>
-        <SidebarFooter
-          style={{
-            paddingLeft: 40,
-          }}
-        >
-          <div className="s-footer">
-            {collapsed ? (
-              <FaChevronRight
-                className="s-icon"
-                onClick={() => setCollapsed(!collapsed)}
-              />
-            ) : (
-              <FaChevronLeft
-                className="s-icon"
-                onClick={() => setCollapsed(!collapsed)}
-              />
-            )}
-          </div>
-        </SidebarFooter>
-      </ProSidebar>
+        setCollapsed={setCollapsed}
+      />
       <div className="modify-container">
         <div className="header">
-          <div className="title"> View Day To Day Attendance</div>
-          <div className="save-btn">Overall Attendance</div>
+          <div className="title">Day To Day Attendance</div>
+          {/* <div className="save-btn">Overall Attendance</div> */}
         </div>
 
         <div className="body">
           <div className="filter-container">
-            <div>
-              <select
-                className="filter"
-                placeholder="Class"
-                onChange={(event) => setStd(event.target.value)}
-                value={std}
-              >
-                {Global.classDetail[0] ? (
-                  <>
-                    <option value="1">Class 1</option>
-                    <option value="2">Class 2</option>
-                    <option value="3">Class 3</option>
-                    <option value="4">Class 4</option>
-                    <option value="5">Class 5</option>
-                    <option value="6">Class 6</option>
-                    <option value="7">Class 7</option>
-                    <option value="8">Class 8</option>
-                    <option value="9">Class 9</option>
-                    <option value="10">Class 10</option>
-                    <option value="11">Class 11</option>
-                    <option value="12">Class 12</option>
-                  </>
-                ) : (
-                  <option value="0">Class</option>
-                )}
-              </select>
-              <select
-                className="filter"
-                onChange={(e) => setDiv(e.target.value)}
-                value={div}
-              >
-                {Global.classDetail[0] ? (
-                  selClass.map((data, index) => (
-                    <option key={index} value={data.class_id}>
-                      {data.div}
-                    </option>
-                  ))
-                ) : (
-                  <option value="0">-</option>
-                )}
-              </select>
-            </div>
+            {Global.user.isAdmin ? (
+              <div>
+                <select
+                  className="filter"
+                  placeholder="Class"
+                  onChange={(event) => setStd(event.target.value)}
+                  value={std}
+                >
+                  {Global.classDetail[0] ? (
+                    <>
+                      <option value="1">Class 1</option>
+                      <option value="2">Class 2</option>
+                      <option value="3">Class 3</option>
+                      <option value="4">Class 4</option>
+                      <option value="5">Class 5</option>
+                      <option value="6">Class 6</option>
+                      <option value="7">Class 7</option>
+                      <option value="8">Class 8</option>
+                      <option value="9">Class 9</option>
+                      <option value="10">Class 10</option>
+                      <option value="11">Class 11</option>
+                      <option value="12">Class 12</option>
+                    </>
+                  ) : (
+                    <option value="0">Class</option>
+                  )}
+                </select>
+                <select
+                  className="filter"
+                  onChange={(e) => setDiv(e.target.value)}
+                  value={div}
+                >
+                  {Global.classDetail[0] ? (
+                    selClass.map((data, index) => (
+                      <option key={index} value={data.class_id}>
+                        {data.div}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="0">-</option>
+                  )}
+                </select>
+              </div>
+            ) : null}
           </div>
           <div className="ver-table">
             <div className="ver-table-header">

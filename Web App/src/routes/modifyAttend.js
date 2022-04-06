@@ -28,10 +28,12 @@ import { BsUiChecks } from "react-icons/bs";
 // import studentDetails from "../constants/dummy-data";
 import Global from "../components/utils/global";
 import { com_name } from "../keys";
+import SideBar from "../components/sideBar";
 
 export default function HomeScreen() {
   const [collapsed, setCollapsed] = useState(true);
   const [attendanceDetail, setAttendanceDetail] = useState();
+  const [markAll, setMarkAll] = useState(null);
   let updatedAttIds = [];
 
   const [std, setStd] = useState("1");
@@ -110,13 +112,17 @@ export default function HomeScreen() {
     try {
       const data = await Global.httpPOST("/getAttendance", {
         date: new Date(date),
-        classId: Global.classDetail[0] ? div : null,
+        classId: Global.user.isAdmin
+          ? Global.classDetail[0]
+            ? div
+            : null
+          : Global.user.class_id,
       });
       console.log("att det:  Fetch compelete");
       if (!data.isError) {
         console.log("att det: ", data);
         if (data.stu_att[0] && data.stu_att[0].attendance[0]) {
-          setAttendanceDetail(data.stu_att);
+          setAttendanceDetail(data.stu_att.filter((ele) => ele.attendance[0]));
           // setFilteredAttDet(data.stu_att);
         } else {
           setAttendanceDetail(null);
@@ -213,107 +219,11 @@ export default function HomeScreen() {
 
   return (
     <div className="main-container">
-      <ProSidebar
+      <SideBar
+        navigate={navigate}
         collapsed={collapsed}
-        collapsedWidth={98}
-        style={{ position: "absolute", left: 0, top: 0 }}
-      >
-        <SidebarHeader>
-          <div
-            className="s-logo-container"
-            onClick={() => {
-              navigate("/home");
-            }}
-          >
-            <img
-              src={logo}
-              alt="logo"
-              className="s-logo"
-              style={{ marginRight: collapsed ? 0 : 20 }}
-            />
-            {collapsed ? "" : com_name}
-          </div>
-        </SidebarHeader>
-        <SidebarContent>
-          <Menu iconShape="circle">
-            <MenuItem
-              icon={<HiHome color={"white"} />}
-              onClick={() => {
-                navigate("/home");
-              }}
-            >
-              Home
-            </MenuItem>
-            <MenuItem
-              icon={<MdSchool color={"white"} />}
-              onClick={() => {
-                navigate("/student");
-              }}
-            >
-              Students
-            </MenuItem>
-            <MenuItem
-              icon={<FaChalkboardTeacher color={"white"} />}
-              onClick={() => {
-                navigate("/teacher");
-              }}
-            >
-              Teachers
-            </MenuItem>
-            <MenuItem
-              icon={<SiGoogleclassroom color={"white"} />}
-              onClick={() => {
-                navigate("/modify-attend");
-              }}
-            >
-              Class
-            </MenuItem>
-            {/* <MenuItem
-                icon={<BsUiChecks color={"white"} />}
-                onClick={() => {
-                  navigate("/modify-attend");
-                }}
-              >
-                Attendance
-              </MenuItem> */}
-            <SubMenu title="Attendance" icon={<BsUiChecks color={"white"} />}>
-              <MenuItem
-                onClick={() => {
-                  navigate("/view-attend/overall");
-                }}
-              >
-                Overall
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  navigate("/view-attend/day-day");
-                }}
-              >
-                Day To Day
-              </MenuItem>
-            </SubMenu>
-          </Menu>
-        </SidebarContent>
-        <SidebarFooter
-          style={{
-            paddingLeft: 40,
-          }}
-        >
-          <div className="s-footer">
-            {collapsed ? (
-              <FaChevronRight
-                className="s-icon"
-                onClick={() => setCollapsed(!collapsed)}
-              />
-            ) : (
-              <FaChevronLeft
-                className="s-icon"
-                onClick={() => setCollapsed(!collapsed)}
-              />
-            )}
-          </div>
-        </SidebarFooter>
-      </ProSidebar>
+        setCollapsed={setCollapsed}
+      />
       <div
         className="modify-container"
         onClick={() => {
@@ -329,48 +239,50 @@ export default function HomeScreen() {
 
         <div className="body">
           <div className="filter-container">
-            <div>
-              <select
-                className="filter"
-                placeholder="Class"
-                onChange={(event) => setStd(event.target.value)}
-                value={std}
-              >
-                {Global.classDetail[0] ? (
-                  <>
-                    <option value="1">Class 1</option>
-                    <option value="2">Class 2</option>
-                    <option value="3">Class 3</option>
-                    <option value="4">Class 4</option>
-                    <option value="5">Class 5</option>
-                    <option value="6">Class 6</option>
-                    <option value="7">Class 7</option>
-                    <option value="8">Class 8</option>
-                    <option value="9">Class 9</option>
-                    <option value="10">Class 10</option>
-                    <option value="11">Class 11</option>
-                    <option value="12">Class 12</option>
-                  </>
-                ) : (
-                  <option value="0">Class</option>
-                )}
-              </select>
-              <select
-                className="filter"
-                onChange={(e) => setDiv(e.target.value)}
-                value={div}
-              >
-                {Global.classDetail[0] ? (
-                  selClass.map((data, index) => (
-                    <option key={index} value={data.class_id}>
-                      {data.div}
-                    </option>
-                  ))
-                ) : (
-                  <option value="0">-</option>
-                )}
-              </select>
-            </div>
+            {Global.user.isAdmin ? (
+              <div>
+                <select
+                  className="filter"
+                  placeholder="Class"
+                  onChange={(event) => setStd(event.target.value)}
+                  value={std}
+                >
+                  {Global.classDetail[0] ? (
+                    <>
+                      <option value="1">Class 1</option>
+                      <option value="2">Class 2</option>
+                      <option value="3">Class 3</option>
+                      <option value="4">Class 4</option>
+                      <option value="5">Class 5</option>
+                      <option value="6">Class 6</option>
+                      <option value="7">Class 7</option>
+                      <option value="8">Class 8</option>
+                      <option value="9">Class 9</option>
+                      <option value="10">Class 10</option>
+                      <option value="11">Class 11</option>
+                      <option value="12">Class 12</option>
+                    </>
+                  ) : (
+                    <option value="0">Class</option>
+                  )}
+                </select>
+                <select
+                  className="filter"
+                  onChange={(e) => setDiv(e.target.value)}
+                  value={div}
+                >
+                  {Global.classDetail[0] ? (
+                    selClass.map((data, index) => (
+                      <option key={index} value={data.class_id}>
+                        {data.div}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="0">-</option>
+                  )}
+                </select>
+              </div>
+            ) : null}
             <div style={{ display: "flex", alignItems: "center" }}>
               <input
                 onChange={(e) => setDate(e.target.value)}
@@ -382,7 +294,7 @@ export default function HomeScreen() {
                   alignSelf: "baseline",
                 }}
               />
-              <div
+              {/* <div
                 style={{
                   color: "#1c2a40",
                   fontWeight: "bold",
@@ -392,7 +304,7 @@ export default function HomeScreen() {
                 onClick={() => {}}
               >
                 Apply
-              </div>
+              </div> */}
             </div>
           </div>
           <ToastContainer hideProgressBar newestOnTop position="top-center" />
@@ -411,37 +323,47 @@ export default function HomeScreen() {
                   fontWeight: "bold",
                   fontSize: 18,
                   textAlign: "center",
+                  // display: "flex",
+                  // alignItems: "center",
                 }}
               >
                 Status
+                {/* <input
+                  type="checkbox"
+                  checked={markAll}
+                  // className="markAll"
+                  onChange={() => setMarkAll(!markAll)}
+                  // onChange={toggleAttendance}
+                  style={{
+                    width: 15,
+                    height: 15,
+                    accentColor: "#1c2a40",
+                    marginLeft: "15px",
+                  }}
+                /> */}
               </span>
             </div>
             {attendanceDetail ? (
               attendanceDetail.map((data, index) => {
                 return (
                   <>
-                    {data.attendance[0] ? (
-                      <Row
-                        name={data.name}
-                        id={data.stu_id.charAt(3) + data.stu_id.charAt(4)}
-                        islast={
-                          attendanceDetail.filter((ele) => ele.attendance[0])
-                            .length -
-                            1 ===
-                          index
-                            ? true
-                            : false
-                        }
-                        attId={
-                          data.attendance[0] ? data.attendance[0].id : null
-                        }
-                        stuId={data.stu_id}
-                        key={index}
-                        isPresent={
-                          data.attendance[0] ? data.attendance[0].status : false
-                        }
-                      />
-                    ) : null}
+                    <Row
+                      name={data.name}
+                      id={data.stu_id.charAt(3) + data.stu_id.charAt(4)}
+                      islast={
+                        attendanceDetail.length - 1 === index ? true : false
+                      }
+                      attId={data.attendance[0] ? data.attendance[0].id : null}
+                      stuId={data.stu_id}
+                      key={index}
+                      isPresent={
+                        markAll == null
+                          ? data.attendance[0].status
+                          : markAll
+                          ? true
+                          : false
+                      }
+                    />
                   </>
                 );
               })

@@ -32,6 +32,7 @@ import { BsUiChecks } from "react-icons/bs";
 import { com_name } from "../keys";
 import Global from "../components/utils/global";
 import AddStudentModal from "../components/AddStudentModal";
+import SideBar from "../components/sideBar";
 
 const cookies = new Cookies();
 
@@ -39,6 +40,26 @@ const Row = (props) => {
   const [modal, setModal] = React.useState(false);
   const toggleModal = () => {
     setModal(!modal);
+  };
+  const removeStudentHandler = async () => {
+    console.log("Delete Student ", props.id);
+    if (!props.id) {
+      return console.log("No student id found");
+    }
+    try {
+      const data = await Global.httpPOST("/deleteStudent", {
+        stu_id: props.id,
+      });
+      if (!data.isError) {
+        console.log("delte stu:", data.stu_id);
+        toast.dismiss();
+        toast.success("student removed successfully");
+        props.fetchStudentList();
+        setModal(!modal);
+      }
+    } catch (err) {
+      console.log("Delete student error: ", err);
+    }
   };
   return (
     <div
@@ -125,7 +146,7 @@ const Row = (props) => {
                   // onChange={setNewTeacher(newTeacher)}
                   style={{ borderLeftWidth: "0.5px" }}
                   onClick={() => {
-                    setModal(!modal);
+                    removeStudentHandler();
                   }}
                 >
                   Confirm
@@ -146,6 +167,7 @@ export default function Students() {
   const [teacher, setTeacher] = useState();
   const [filteredDet, setFilteredDet] = useState();
   const [addModal, setAddModal] = React.useState(false);
+  const [lastStudentId, setLastStudentId] = useState("");
 
   const [std, setStd] = useState("1");
   const [selClass, setSelClass] = useState([]);
@@ -170,6 +192,11 @@ export default function Students() {
     });
     console.log("teacher: ", data);
     if (!data.isError) {
+      setLastStudentId(
+        data.studentList[0]
+          ? data.studentList[data.studentList.length - 1].stu_id
+          : "00001"
+      );
       setTeacher(data.studentList.filter((ele) => !ele.is_deleted));
       setFilteredDet(data.studentList.filter((ele) => !ele.is_deleted));
     } else {
@@ -227,107 +254,11 @@ export default function Students() {
 
   return (
     <div className="main-container">
-      <ProSidebar
+      <SideBar
+        navigate={navigate}
         collapsed={collapsed}
-        collapsedWidth={98}
-        style={{ position: "absolute", left: 0, top: 0 }}
-      >
-        <SidebarHeader>
-          <div
-            className="s-logo-container"
-            onClick={() => {
-              navigate("/home");
-            }}
-          >
-            <img
-              src={logo}
-              alt="logo"
-              className="s-logo"
-              style={{ marginRight: collapsed ? 0 : 20 }}
-            />
-            {collapsed ? "" : com_name}
-          </div>
-        </SidebarHeader>
-        <SidebarContent>
-          <Menu iconShape="circle">
-            <MenuItem
-              icon={<HiHome color={"white"} />}
-              onClick={() => {
-                navigate("/home");
-              }}
-            >
-              Home
-            </MenuItem>
-            <MenuItem
-              icon={<MdSchool color={"white"} />}
-              onClick={() => {
-                navigate("/student");
-              }}
-            >
-              Students
-            </MenuItem>
-            <MenuItem
-              icon={<FaChalkboardTeacher color={"white"} />}
-              onClick={() => {
-                navigate("/teacher");
-              }}
-            >
-              Teachers
-            </MenuItem>
-            <MenuItem
-              icon={<SiGoogleclassroom color={"white"} />}
-              onClick={() => {
-                navigate("/modify-attend");
-              }}
-            >
-              Class
-            </MenuItem>
-            {/* <MenuItem
-                icon={<BsUiChecks color={"white"} />}
-                onClick={() => {
-                  navigate("/modify-attend");
-                }}
-              >
-                Attendance
-              </MenuItem> */}
-            <SubMenu title="Attendance" icon={<BsUiChecks color={"white"} />}>
-              <MenuItem
-                onClick={() => {
-                  navigate("/view-attend/overall");
-                }}
-              >
-                Overall
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  navigate("/view-attend/day-day");
-                }}
-              >
-                Day To Day
-              </MenuItem>
-            </SubMenu>
-          </Menu>
-        </SidebarContent>
-        <SidebarFooter
-          style={{
-            paddingLeft: 40,
-          }}
-        >
-          <div className="s-footer">
-            {collapsed ? (
-              <FaChevronRight
-                className="s-icon"
-                onClick={() => setCollapsed(!collapsed)}
-              />
-            ) : (
-              <FaChevronLeft
-                className="s-icon"
-                onClick={() => setCollapsed(!collapsed)}
-              />
-            )}
-          </div>
-        </SidebarFooter>
-      </ProSidebar>
+        setCollapsed={setCollapsed}
+      />
       <div
         className="modify-containerT"
         onClick={() => {
@@ -348,7 +279,8 @@ export default function Students() {
                 std={std}
                 setStd={setStd}
                 toggleModal={toggleAddModal}
-                lastStudentId={teacher[teacher.length - 1].stu_id}
+                lastStudentId={lastStudentId}
+                fetchStudentList={fetchStudentList}
               />
             ) : null}
             <ToastContainer hideProgressBar newestOnTop position="top-center" />
@@ -453,6 +385,7 @@ export default function Students() {
                       div={data.class_detail.div}
                       key={index}
                       islast={index === filteredDet.length - 1 ? true : false}
+                      fetchStudentList={fetchStudentList}
                     />
                   );
                 })

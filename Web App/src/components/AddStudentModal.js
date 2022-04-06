@@ -29,7 +29,7 @@ function AddStudentModal(props) {
         console.log("add Student:", data.RFid);
         toast.dismiss();
         toast.success("Student created successfully");
-        props.fetchTeacherList();
+        props.fetchStudentList();
         props.toggleModal();
       } else {
         toast.dismiss();

@@ -33,6 +33,7 @@ import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 // import Global from "../components/utils/global";
 import { com_name } from "../keys";
 import Global from "../components/utils/global";
+import SideBar from "../components/sideBar";
 
 const cookies = new Cookies();
 
@@ -100,7 +101,7 @@ export default function Teacher(props) {
         const data = await Global.httpPOST("/deleteTeacher", {
           teacher_id: props.id,
         });
-        if (!data.error) {
+        if (!data.isError) {
           console.log("add Teacher:", data.teacher_id);
           toast.dismiss();
           toast.success("Teacher removed successfully");
@@ -234,107 +235,11 @@ export default function Teacher(props) {
 
   return (
     <div className="main-container">
-      <ProSidebar
+      <SideBar
+        navigate={navigate}
         collapsed={collapsed}
-        collapsedWidth={98}
-        style={{ position: "absolute", left: 0, top: 0 }}
-      >
-        <SidebarHeader>
-          <div
-            className="s-logo-container"
-            onClick={() => {
-              navigate("/home");
-            }}
-          >
-            <img
-              src={logo}
-              alt="logo"
-              className="s-logo"
-              style={{ marginRight: collapsed ? 0 : 20 }}
-            />
-            {collapsed ? "" : com_name}
-          </div>
-        </SidebarHeader>
-        <SidebarContent>
-          <Menu iconShape="circle">
-            <MenuItem
-              icon={<HiHome color={"white"} />}
-              onClick={() => {
-                navigate("/home");
-              }}
-            >
-              Home
-            </MenuItem>
-            <MenuItem
-              icon={<MdSchool color={"white"} />}
-              onClick={() => {
-                navigate("/student");
-              }}
-            >
-              Students
-            </MenuItem>
-            <MenuItem
-              icon={<FaChalkboardTeacher color={"white"} />}
-              onClick={() => {
-                navigate("/teacher");
-              }}
-            >
-              Teachers
-            </MenuItem>
-            <MenuItem
-              icon={<SiGoogleclassroom color={"white"} />}
-              onClick={() => {
-                navigate("/modify-attend");
-              }}
-            >
-              Class
-            </MenuItem>
-            {/* <MenuItem
-                icon={<BsUiChecks color={"white"} />}
-                onClick={() => {
-                  navigate("/modify-attend");
-                }}
-              >
-                Attendance
-              </MenuItem> */}
-            <SubMenu title="Attendance" icon={<BsUiChecks color={"white"} />}>
-              <MenuItem
-                onClick={() => {
-                  navigate("/view-attend/overall");
-                }}
-              >
-                Overall
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  navigate("/view-attend/day-day");
-                }}
-              >
-                Day To Day
-              </MenuItem>
-            </SubMenu>
-          </Menu>
-        </SidebarContent>
-        <SidebarFooter
-          style={{
-            paddingLeft: 40,
-          }}
-        >
-          <div className="s-footer">
-            {collapsed ? (
-              <FaChevronRight
-                className="s-icon"
-                onClick={() => setCollapsed(!collapsed)}
-              />
-            ) : (
-              <FaChevronLeft
-                className="s-icon"
-                onClick={() => setCollapsed(!collapsed)}
-              />
-            )}
-          </div>
-        </SidebarFooter>
-      </ProSidebar>
+        setCollapsed={setCollapsed}
+      />
       <div
         className="modify-containerT"
         onClick={() => {

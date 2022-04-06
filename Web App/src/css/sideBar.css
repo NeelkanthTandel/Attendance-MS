@@ -10,7 +10,7 @@ textarea:focus-visible {
 }
 
 .pro-sidebar .pro-menu .pro-menu-item > .pro-inner-item {
-  padding-left: 30px;
+  padding-left: 30px !important;
 }
 
 .s-logo-container {
