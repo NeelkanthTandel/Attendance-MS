@@ -81,6 +81,7 @@ const LoginScreen = (props) => {
           position: "absolute",
           marginBottom: "30%",
           bottom: 0,
+          width: "100%",
         }}
       >
         <View style={{ width: "100%", alignItems: "center" }}>
@@ -156,7 +157,7 @@ const LoginScreen = (props) => {
         <View style={{ paddingHorizontal: 30, paddingTop: 35 }}>
           <View
             style={{
-              width: 300,
+              width: "100%",
               padding: 10,
               backgroundColor: color.primary,
               borderRadius: 10,
@@ -180,7 +181,7 @@ const LoginScreen = (props) => {
           </View>
         </View>
 
-        <View
+        {/* <View
           style={{
             paddingHorizontal: 123,
             paddingTop: 10,
@@ -197,7 +198,7 @@ const LoginScreen = (props) => {
               Forgot Password?
             </CustomText>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
     </KeyboardAvoidingView>
   );
