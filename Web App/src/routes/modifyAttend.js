@@ -30,10 +30,13 @@ import Global from "../components/utils/global";
 import { com_name } from "../keys";
 import SideBar from "../components/sideBar";
 
-export default function HomeScreen() {
+export default function ModifyAttend() {
   const [collapsed, setCollapsed] = useState(true);
   const [attendanceDetail, setAttendanceDetail] = useState();
   const [markAll, setMarkAll] = useState(null);
+
+  const [isPresentCheck, setIsPresentCheck] = useState(false);
+  const [isAbsentCheck, setIsAbsentCheck] = useState(false);
   let updatedAttIds = [];
 
   const [std, setStd] = useState("1");
@@ -42,7 +45,7 @@ export default function HomeScreen() {
 
   const [date, setDate] = useState("");
   const [oldDate, setOldDate] = useState();
-  // const [filteredAttDet, setFilteredAttDet] = useState();
+  const [filteredAttDet, setFilteredAttDet] = useState();
   const navigate = useNavigate();
 
   const Row = (props) => {
@@ -108,7 +111,7 @@ export default function HomeScreen() {
     }
     setOldDate(date);
     setAttendanceDetail();
-    // setFilteredAttDet();
+    setFilteredAttDet();
     try {
       const data = await Global.httpPOST("/getAttendance", {
         date: new Date(date),
@@ -123,10 +126,10 @@ export default function HomeScreen() {
         console.log("att det: ", data);
         if (data.stu_att[0] && data.stu_att[0].attendance[0]) {
           setAttendanceDetail(data.stu_att.filter((ele) => ele.attendance[0]));
-          // setFilteredAttDet(data.stu_att);
+          setFilteredAttDet(data.stu_att);
         } else {
           setAttendanceDetail(null);
-          // setFilteredAttDet(null);
+          setFilteredAttDet(null);
         }
       }
     } catch (err) {
@@ -216,6 +219,29 @@ export default function HomeScreen() {
     );
     // fetchStuAttendance();
   }, []);
+
+  useEffect(() => {
+    if (attendanceDetail && attendanceDetail[0]) {
+      if (
+        (!isPresentCheck && !isAbsentCheck) ||
+        (isPresentCheck && isAbsentCheck)
+      ) {
+        setFilteredAttDet(attendanceDetail);
+      } else if (isPresentCheck) {
+        //keep stu with status true
+        //ish
+        //attendance: [null]
+        setFilteredAttDet(
+          attendanceDetail.filter((data) => data.attendance[0].status)
+        );
+      } else if (isAbsentCheck) {
+        //keep stu with status false
+        setFilteredAttDet(
+          attendanceDetail.filter((data) => !data.attendance[0].status)
+        );
+      }
+    }
+  });
 
   return (
     <div className="main-container">
@@ -343,15 +369,15 @@ export default function HomeScreen() {
                 /> */}
               </span>
             </div>
-            {attendanceDetail ? (
-              attendanceDetail.map((data, index) => {
+            {filteredAttDet ? (
+              filteredAttDet.map((data, index) => {
                 return (
                   <>
                     <Row
                       name={data.name}
                       id={data.stu_id.charAt(3) + data.stu_id.charAt(4)}
                       islast={
-                        attendanceDetail.length - 1 === index ? true : false
+                        filteredAttDet.length - 1 === index ? true : false
                       }
                       attId={data.attendance[0] ? data.attendance[0].id : null}
                       stuId={data.stu_id}
