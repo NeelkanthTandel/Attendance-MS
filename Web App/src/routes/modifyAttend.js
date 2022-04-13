@@ -316,6 +316,17 @@ export default function ModifyAttend() {
                 type="date"
                 placeholder="Date"
                 className="filter"
+                min={
+                  new Date(new Date().setDate(new Date().getDate() - 1))
+                    .toISOString()
+                    .split("T")[0]
+                }
+                max={
+                  new Date(new Date().setDate(new Date().getDate()))
+                    .toISOString()
+                    .split("T")[0]
+                }
+                // min={"2022-04-11"}
                 style={{
                   alignSelf: "baseline",
                 }}
