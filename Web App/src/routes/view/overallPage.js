@@ -212,7 +212,11 @@ export default function OverallPage() {
                       islast={overallAtt.length - 1 === index ? true : false}
                       totPresent={noOfPres}
                       totalWorkDays={totalWorkD}
-                      perc={((noOfPres * 100) / totalWorkD).toFixed(0)}
+                      perc={
+                        (((noOfPres * 100) / totalWorkD).toFixed(0) < 10
+                          ? "0"
+                          : "") + ((noOfPres * 100) / totalWorkD).toFixed(0)
+                      }
                       key={index}
                     />
                     // <View
