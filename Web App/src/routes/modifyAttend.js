@@ -266,9 +266,9 @@ export default function ModifyAttend() {
 
         <div className="body">
           <div className="filter-container">
-            {Global.user.isAdmin ? (
-              <div style={{ flexDirection: "column" }}>
-                <div>
+            <div style={{ flexDirection: "column" }}>
+              {Global.user.isAdmin ? (
+                <div style={{ marginBottom: 15 }}>
                   <select
                     className="filter"
                     placeholder="Class"
@@ -310,86 +310,85 @@ export default function ModifyAttend() {
                     )}
                   </select>
                 </div>
+              ) : null}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexDirection: "row",
+                }}
+              >
                 <div
                   style={{
                     display: "flex",
-                    alignItems: "center",
                     flexDirection: "row",
-                    marginTop: 15,
+                    alignItems: "center",
+                    marginRight: 30,
                   }}
                 >
-                  <div
+                  <input
+                    type="checkbox"
+                    checked={isPresentCheck}
+                    // className="markAll"
+                    onChange={() => setIsPresentCheck(!isPresentCheck)}
+                    // onChange={toggleAttendance}
                     style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      marginRight: 30,
+                      width: 15,
+                      height: 15,
+                      accentColor: "#1c2a40",
+                    }}
+                  />
+                  <span
+                    style={{
+                      color: "black",
+                      fontSize: 16,
+                      paddingLeft: 10,
+                      paddingTop: 1,
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      setIsPresentCheck(!isPresentCheck);
                     }}
                   >
-                    <input
-                      type="checkbox"
-                      checked={isPresentCheck}
-                      // className="markAll"
-                      onChange={() => setIsPresentCheck(!isPresentCheck)}
-                      // onChange={toggleAttendance}
-                      style={{
-                        width: 15,
-                        height: 15,
-                        accentColor: "#1c2a40",
-                      }}
-                    />
-                    <span
-                      style={{
-                        color: "black",
-                        fontSize: 16,
-                        paddingLeft: 10,
-                        paddingTop: 1,
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        setIsPresentCheck(!isPresentCheck);
-                      }}
-                    >
-                      Show Present
-                    </span>
-                  </div>
-                  <div
+                    Show Present
+                  </span>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={isAbsentCheck}
+                    // className="markAll"
+                    onChange={() => setIsAbsentCheck(!isAbsentCheck)}
+                    // onChange={toggleAttendance}
                     style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
+                      width: 15,
+                      height: 15,
+                      accentColor: "#1c2a40",
+                    }}
+                  />
+                  <span
+                    style={{
+                      color: "black",
+                      fontSize: 16,
+                      paddingLeft: 10,
+                      paddingTop: 1,
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      setIsAbsentCheck(!isAbsentCheck);
                     }}
                   >
-                    <input
-                      type="checkbox"
-                      checked={isAbsentCheck}
-                      // className="markAll"
-                      onChange={() => setIsAbsentCheck(!isAbsentCheck)}
-                      // onChange={toggleAttendance}
-                      style={{
-                        width: 15,
-                        height: 15,
-                        accentColor: "#1c2a40",
-                      }}
-                    />
-                    <span
-                      style={{
-                        color: "black",
-                        fontSize: 16,
-                        paddingLeft: 10,
-                        paddingTop: 1,
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        setIsAbsentCheck(!isAbsentCheck);
-                      }}
-                    >
-                      Show Absent
-                    </span>
-                  </div>
+                    Show Absent
+                  </span>
                 </div>
               </div>
-            ) : null}
+            </div>
             <div style={{ display: "flex", alignItems: "center" }}>
               <input
                 onChange={(e) => setDate(e.target.value)}
