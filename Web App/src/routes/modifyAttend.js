@@ -29,6 +29,7 @@ import { BsUiChecks } from "react-icons/bs";
 import Global from "../components/utils/global";
 import { com_name } from "../keys";
 import SideBar from "../components/sideBar";
+import color from "../constants/color";
 
 export default function ModifyAttend() {
   const [collapsed, setCollapsed] = useState(true);
@@ -266,47 +267,127 @@ export default function ModifyAttend() {
         <div className="body">
           <div className="filter-container">
             {Global.user.isAdmin ? (
-              <div>
-                <select
-                  className="filter"
-                  placeholder="Class"
-                  onChange={(event) => setStd(event.target.value)}
-                  value={std}
+              <div style={{ flexDirection: "column" }}>
+                <div>
+                  <select
+                    className="filter"
+                    placeholder="Class"
+                    onChange={(event) => setStd(event.target.value)}
+                    value={std}
+                  >
+                    {Global.classDetail[0] ? (
+                      <>
+                        <option value="1">Class 1</option>
+                        <option value="2">Class 2</option>
+                        <option value="3">Class 3</option>
+                        <option value="4">Class 4</option>
+                        <option value="5">Class 5</option>
+                        <option value="6">Class 6</option>
+                        <option value="7">Class 7</option>
+                        <option value="8">Class 8</option>
+                        <option value="9">Class 9</option>
+                        <option value="10">Class 10</option>
+                        <option value="11">Class 11</option>
+                        <option value="12">Class 12</option>
+                      </>
+                    ) : (
+                      <option value="0">Class</option>
+                    )}
+                  </select>
+                  <select
+                    className="filter"
+                    onChange={(e) => setDiv(e.target.value)}
+                    value={div}
+                  >
+                    {Global.classDetail[0] ? (
+                      selClass.map((data, index) => (
+                        <option key={index} value={data.class_id}>
+                          {data.div}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="0">-</option>
+                    )}
+                  </select>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    marginTop: 15,
+                  }}
                 >
-                  {Global.classDetail[0] ? (
-                    <>
-                      <option value="1">Class 1</option>
-                      <option value="2">Class 2</option>
-                      <option value="3">Class 3</option>
-                      <option value="4">Class 4</option>
-                      <option value="5">Class 5</option>
-                      <option value="6">Class 6</option>
-                      <option value="7">Class 7</option>
-                      <option value="8">Class 8</option>
-                      <option value="9">Class 9</option>
-                      <option value="10">Class 10</option>
-                      <option value="11">Class 11</option>
-                      <option value="12">Class 12</option>
-                    </>
-                  ) : (
-                    <option value="0">Class</option>
-                  )}
-                </select>
-                <select
-                  className="filter"
-                  onChange={(e) => setDiv(e.target.value)}
-                  value={div}
-                >
-                  {Global.classDetail[0] ? (
-                    selClass.map((data, index) => (
-                      <option key={index} value={data.class_id}>
-                        {data.div}
-                      </option>
-                    ))
-                  ) : (
-                    <option value="0">-</option>
-                  )}
-                </select>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      marginRight: 30,
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isPresentCheck}
+                      // className="markAll"
+                      onChange={() => setIsPresentCheck(!isPresentCheck)}
+                      // onChange={toggleAttendance}
+                      style={{
+                        width: 15,
+                        height: 15,
+                        accentColor: "#1c2a40",
+                      }}
+                    />
+                    <span
+                      style={{
+                        color: "black",
+                        fontSize: 16,
+                        paddingLeft: 10,
+                        paddingTop: 1,
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        setIsPresentCheck(!isPresentCheck);
+                      }}
+                    >
+                      Show Present
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isAbsentCheck}
+                      // className="markAll"
+                      onChange={() => setIsAbsentCheck(!isAbsentCheck)}
+                      // onChange={toggleAttendance}
+                      style={{
+                        width: 15,
+                        height: 15,
+                        accentColor: "#1c2a40",
+                      }}
+                    />
+                    <span
+                      style={{
+                        color: "black",
+                        fontSize: 16,
+                        paddingLeft: 10,
+                        paddingTop: 1,
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        setIsAbsentCheck(!isAbsentCheck);
+                      }}
+                    >
+                      Show Absent
+                    </span>
+                  </div>
+                </div>
               </div>
             ) : null}
             <div style={{ display: "flex", alignItems: "center" }}>
