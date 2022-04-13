@@ -109,10 +109,8 @@ const OverallReportScreen = () => {
                     </CustomText>
                     <CustomText style={{ width: "15%", minWidth: 28 }}>
                       {((noOfPres * 100) / totalWorkD).toFixed(0) < 10
-                        ? "00"
-                        : ((noOfPres * 100) / totalWorkD).toFixed(0) < 100
                         ? "0"
-                        : null}
+                        : ""}
                       {((noOfPres * 100) / totalWorkD).toFixed(0)}%
                     </CustomText>
                   </View>
